@@ -1,0 +1,17 @@
+{
+  "name": "my-react-app",
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "dev-server",
+      "command": "until [ -f node_modules/.package-lock.json ]; do echo 'Waiting for npm install to finish...'; sleep 3; done; BROWSER=none HOST=0.0.0.0 PORT=3000 npm start",
+      "description": "Create React App development server on port 3000 with hot reload. Waits for npm install to finish so webpack does not cache a missing-module error on a cold boot."
+    }
+  ],
+  "ports": [
+    {
+      "name": "web",
+      "port": 3000
+    }
+  ]
+}
