@@ -22,7 +22,7 @@ export const ALIASES = {
 };
 
 const LINE_RE =
-  /(\d+)\.?\s*[🥇🥈🥉]?\s*([A-Za-z.'\-\s]+?)\s+(\d+)\s*App[s]?\s*\|\s*(\d+)\s*CX(.*)/i;
+  /(\d+)\.?\s*(?:🥇|🥈|🥉)?\s*([A-Za-z.'\-\s]+?)\s+(\d+)\s*App[s]?\s*\|\s*(\d+)\s*CX(.*)/i;
 const BANNER_RE = /DG:\s*(\d+)\/(\d+)\s*\|\s*(\d+)\s*NL LEFT\s*\|\s*(.+)/i;
 
 export function normalizeName(rawName) {
