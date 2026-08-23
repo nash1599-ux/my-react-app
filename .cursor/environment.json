@@ -1,0 +1,16 @@
+{
+  "name": "my-react-app",
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "dev-server",
+      "command": "BROWSER=none npm start"
+    }
+  ],
+  "ports": [
+    {
+      "name": "React dev server",
+      "port": 3000
+    }
+  ]
+}
