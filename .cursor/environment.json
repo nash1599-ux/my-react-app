@@ -1,0 +1,17 @@
+{
+  "name": "my-react-app",
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "dev-server",
+      "command": "BROWSER=none HOST=0.0.0.0 PORT=3000 npm start",
+      "description": "Create React App development server on port 3000 with hot reload."
+    }
+  ],
+  "ports": [
+    {
+      "name": "web",
+      "port": 3000
+    }
+  ]
+}
