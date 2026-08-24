@@ -1,12 +1,15 @@
 import {
+  applyLastWeekFinal,
+  DEFAULT_TEAM_WEEKLY_GOAL,
   estimatedEarned,
   formatSignedPercent,
   normalizeName,
+  OFFICIAL_SNAPSHOT,
   parseBoardText,
   rankReps,
+  setTeamWeeklyGoal,
   summarizeBoard,
   tierBonus,
-  OFFICIAL_SNAPSHOT,
 } from "./board";
 
 describe("salesboard scoring", () => {
@@ -26,33 +29,63 @@ describe("salesboard scoring", () => {
     expect(estimatedEarned(9, 5)).toBe(928);
   });
 
-  test("ranks the official snapshot with Jordan on top", () => {
+  test("rolls last week production into the new week snapshot", () => {
     const board = summarizeBoard(OFFICIAL_SNAPSHOT);
+    expect(board.totals.apps).toBe(0);
+    expect(board.totals.cx).toBe(0);
+    expect(board.lastWeek.totals.apps).toBe(56);
+    expect(board.lastWeek.totals.cx).toBe(25);
+    expect(board.lastWeek.totals.earned).toBe(5620);
+    expect(board.lastWeek.pendingWeekend).toBe(true);
+    expect(board.weeklyGoal.goal).toBe(DEFAULT_TEAM_WEEKLY_GOAL);
+    expect(board.weeklyGoal.nlLeft).toBe(28);
     expect(board.reps[0].displayName).toBe("Jordan Aguirre");
-    expect(board.reps[0].rank).toBe(1);
-    expect(board.reps[1].displayName).toBe("Steveo Ramos");
-    expect(board.totals.apps).toBe(56);
-    expect(board.totals.cx).toBe(25);
-    expect(board.totals.earned).toBe(5620);
+    expect(board.reps[0].apps).toBe(0);
+    expect(board.reps[0].lastWeekApps).toBe(17);
     expect(formatSignedPercent(325)).toBe("+325%");
     expect(formatSignedPercent(null)).toBe("new");
   });
 
-  test("parses a short Slack scoreboard paste", () => {
+  test("parses a this-week Slack scoreboard paste and keeps last week", () => {
     const board = parseBoardText(`
 G-UNIT SALES BOARD
-DG: 4/10 | 3 NL LEFT | Sunday
+DG: 4/10 | 25 NL LEFT | Monday
 
 1. 🥇 Quay Tyler 12 Apps | 8 CX
 2. 🥈 Ky. Tisdale 10 Apps | 7 CX
 3. 🥉 Steve Nash 8 Apps | 5 CX
 `);
-    expect(board.day).toBe("Sunday");
-    expect(board.dgNum).toBe(4);
-    expect(board.goals.find((goal) => goal.id === "team").nlLeft).toBe(3);
-    expect(board.reps[0].name).toBe("Jaquay Tyler");
-    expect(board.reps[2].name).toBe("Nashly Paul");
+    expect(board.day).toBe("Monday");
     expect(board.totals.apps).toBe(30);
+    expect(board.weeklyGoal.nlLeft).toBe(25);
+    expect(board.weeklyGoal.goal).toBe(45);
+    expect(board.lastWeek.totals.apps).toBe(56);
+    expect(board.reps[0].name).toBe("Jaquay Tyler");
+    expect(board.reps.find((rep) => rep.name === "Nashly Paul").lastWeekApps).toBe(7);
+  });
+
+  test("saves a pasted Saturday/Sunday board as last week final", () => {
+    const board = applyLastWeekFinal(
+      `
+1. Jordan Aguirre 18 Apps | 8 CX
+2. Steveo Ramos 11 Apps | 6 CX
+`,
+      OFFICIAL_SNAPSHOT
+    );
+    expect(board.totals.apps).toBe(0);
+    expect(board.lastWeek.pendingWeekend).toBe(false);
+    expect(board.lastWeek.totals.apps).toBe(29);
+    expect(board.lastWeek.totals.cx).toBe(14);
+    expect(board.reps[0].displayName).toBe("Jordan Aguirre");
+    expect(board.reps[0].lastWeekApps).toBe(18);
+    expect(board.reps[0].lastWeekCx).toBe(8);
+  });
+
+  test("updates the team weekly goal remaining", () => {
+    const board = setTeamWeeklyGoal(OFFICIAL_SNAPSHOT, 40);
+    expect(board.weeklyGoal.goal).toBe(40);
+    expect(board.weeklyGoal.nlLeft).toBe(40);
+    expect(board.goals[0].label).toBe("This week team goal");
   });
 
   test("flags CX greater than apps without rewriting counts", () => {

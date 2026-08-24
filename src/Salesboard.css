@@ -21,6 +21,8 @@
 .board-hero,
 .goal-card,
 .stat-grid article,
+.week-goal,
+.last-week,
 .leaderboard,
 .daily,
 .notes,
@@ -116,12 +118,55 @@
 .tone-warn h2 { color: var(--warn); }
 .tone-goal h2 { color: var(--gold); }
 
+.week-goal,
+.last-week,
 .leaderboard,
 .daily,
 .notes,
 .updater {
   margin-top: 14px;
   padding: 20px 22px 24px;
+}
+
+.progress {
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+}
+
+.goal-form,
+.updater-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.goal-form input {
+  width: 88px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #0b1220;
+  color: var(--text);
+  padding: 8px 10px;
+}
+
+.goal-form button,
+.updater button[type="submit"] {
+  background: var(--blue);
+  color: #041018;
+  font-weight: 800;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  cursor: pointer;
 }
 
 .section-head,
@@ -192,6 +237,14 @@ tr.podium td {
   padding-top: 12px;
 }
 
+.daily-bars-7 {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.bar-pending {
+  background: rgba(255, 255, 255, 0.14);
+}
+
 .daily-bar {
   display: flex;
   flex-direction: column;
@@ -229,9 +282,7 @@ tr.podium td {
 }
 
 .updater button[type="submit"] {
-  background: var(--blue);
-  color: #041018;
-  font-weight: 800;
+  width: fit-content;
 }
 
 .updater form {

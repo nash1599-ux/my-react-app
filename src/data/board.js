@@ -5,7 +5,8 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v1";
+export const STORAGE_KEY = "gunit-salesboard-v2";
+export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
   quay: "Jaquay Tyler",
@@ -70,14 +71,24 @@ function wowFromLastWeek(apps, lastWeekApps) {
 export function hydrateRep(rep) {
   const apps = Number(rep.apps) || 0;
   const cx = Number(rep.cx) || 0;
+  const lastWeekApps =
+    rep.lastWeekApps === null || rep.lastWeekApps === undefined
+      ? null
+      : Number(rep.lastWeekApps) || 0;
+  const lastWeekCx =
+    rep.lastWeekCx === null || rep.lastWeekCx === undefined
+      ? null
+      : Number(rep.lastWeekCx) || 0;
   const wow =
     rep.wow === null || rep.wow === undefined
-      ? wowFromLastWeek(apps, rep.lastWeekApps)
+      ? wowFromLastWeek(apps, lastWeekApps)
       : Number(rep.wow);
   return {
     ...rep,
     apps,
     cx,
+    lastWeekApps,
+    lastWeekCx,
     displayName: rep.displayName || rep.name,
     name: normalizeName(rep.name || rep.displayName),
     cxPct: cxPercent(apps, cx),
@@ -91,137 +102,230 @@ export function hydrateRep(rep) {
 export function rankReps(reps) {
   return [...reps]
     .map(hydrateRep)
-    .sort((a, b) => b.apps - a.apps || b.cx - a.cx || a.name.localeCompare(b.name))
+    .sort(
+      (a, b) =>
+        b.apps - a.apps ||
+        b.cx - a.cx ||
+        (b.lastWeekApps || 0) - (a.lastWeekApps || 0) ||
+        a.name.localeCompare(b.name)
+    )
     .map((rep, index) => ({ ...rep, rank: index + 1 }));
+}
+
+function emptyDaily() {
+  return { mon: 0, tue: 0, wed: 0, thu: 0, fri: 0, sat: 0, sun: 0 };
+}
+
+export function summarizeTotals(reps, rate = BLENDED_RATE) {
+  const apps = reps.reduce((sum, rep) => sum + (Number(rep.apps) || 0), 0);
+  const cx = reps.reduce((sum, rep) => sum + (Number(rep.cx) || 0), 0);
+  const bonus = reps.reduce((sum, rep) => sum + tierBonus(rep.cx), 0);
+  return {
+    apps,
+    cx,
+    cxPct: cxPercent(apps, cx),
+    earned: Math.round(apps * rate + bonus),
+  };
+}
+
+export function withWeeklyGoal(board, totals) {
+  const goal = Number(board.teamWeeklyGoal || DEFAULT_TEAM_WEEKLY_GOAL);
+  const produced = totals.cx;
+  const nlLeft = Math.max(0, goal - produced);
+  const pct = goal ? Math.min(100, Math.round((produced / goal) * 100)) : 0;
+  return {
+    teamWeeklyGoal: goal,
+    weeklyGoal: {
+      goal,
+      produced,
+      nlLeft,
+      pct,
+      hit: produced >= goal,
+    },
+    goals: [
+      {
+        id: "team",
+        label: "This week team goal",
+        goal,
+        produced,
+        nlLeft,
+        tone: nlLeft <= 3 ? "hot" : nlLeft <= 10 ? "warn" : "goal",
+      },
+    ],
+  };
 }
 
 export function summarizeBoard(board) {
   const reps = rankReps(board.reps || []);
-  const apps = reps.reduce((sum, rep) => sum + rep.apps, 0);
-  const cx = reps.reduce((sum, rep) => sum + rep.cx, 0);
   const rate = board.blendedRate || BLENDED_RATE;
-  const earned = Math.round(
-    apps * rate + reps.reduce((sum, rep) => sum + rep.bonus, 0)
+  const totals = summarizeTotals(reps, rate);
+  const lastWeekReps = rankReps(
+    (board.lastWeek?.reps || []).map((rep) => ({
+      ...rep,
+      lastWeekApps: rep.prevWeekApps,
+      lastWeekCx: rep.prevWeekCx,
+    }))
   );
+  const lastWeekTotals =
+    board.lastWeek?.totals || summarizeTotals(lastWeekReps, rate);
   return {
     ...board,
     reps,
-    totals: {
-      apps,
-      cx,
-      cxPct: cxPercent(apps, cx),
-      earned,
-    },
+    totals,
+    lastWeek: board.lastWeek
+      ? {
+          ...board.lastWeek,
+          reps: lastWeekReps.length ? lastWeekReps : board.lastWeek.reps,
+          totals: lastWeekTotals,
+        }
+      : null,
+    ...withWeeklyGoal(board, totals),
   };
 }
 
-export const OFFICIAL_SNAPSHOT = {
-  title: "G-UNIT SALES BOARD",
-  day: "Sunday",
-  sourceLabel: "Thursday full board + Sunday goal update",
-  dataAsOf: "Last full export Thursday Aug 20",
-  dgNum: 8,
-  dgDen: 10,
-  blendedRate: BLENDED_RATE,
-  goals: [
-    { id: "team", label: "Team goal", nlLeft: 3, tone: "hot" },
-    { id: "office", label: "Office goal", nlLeft: 9, tone: "warn" },
-    { id: "cancun", label: "Cancun bonus", nlLeft: 10, tone: "goal" },
-  ],
-  dailyTotals: { mon: 10, tue: 10, wed: 7, thu: 8, fri: 12 },
+const LAST_WEEK_REPS = [
+  {
+    displayName: "Jordan Aguirre",
+    name: "Jordan Aguirre",
+    apps: 17,
+    cx: 6,
+    prevWeekApps: 4,
+    prevWeekCx: 2,
+    rollingAvg: 10.5,
+    daily: [2, 4, 3, 2, 0],
+  },
+  {
+    displayName: "Steveo Ramos",
+    name: "Ismael Ramos",
+    apps: 9,
+    cx: 5,
+    prevWeekApps: 8,
+    prevWeekCx: 7,
+    rollingAvg: 8.5,
+    daily: [0, 3, 2, 0, 3],
+  },
+  {
+    displayName: "Steve Nash",
+    name: "Nashly Paul",
+    apps: 7,
+    cx: 3,
+    prevWeekApps: 14,
+    prevWeekCx: 6,
+    rollingAvg: 9.7,
+    daily: [4, 0, 0, 0, 3],
+  },
+  {
+    displayName: "Matthew Grant",
+    name: "Matthew Grant",
+    apps: 6,
+    cx: 4,
+    prevWeekApps: 10,
+    prevWeekCx: 3,
+    rollingAvg: 7.0,
+    daily: [2, 2, 0, 2, 0],
+  },
+  {
+    displayName: "Ky. Tisdale",
+    name: "Kyron Tisdale",
+    apps: 6,
+    cx: 1,
+    prevWeekApps: 6,
+    prevWeekCx: 3,
+    rollingAvg: 5.0,
+    daily: [0, 1, 0, 0, 3],
+  },
+  {
+    displayName: "Shaad Hypolite",
+    name: "Rashaad Hypolite",
+    apps: 6,
+    cx: 4,
+    prevWeekApps: 7,
+    prevWeekCx: 3,
+    rollingAvg: 7.3,
+    daily: [0, 0, 2, 4, 0],
+  },
+  {
+    displayName: "Gianna Smith",
+    name: "Gianna Smith",
+    apps: 5,
+    cx: 2,
+    prevWeekApps: null,
+    prevWeekCx: null,
+    rollingAvg: 5.0,
+    daily: [2, 0, 0, 0, 3],
+  },
+  {
+    displayName: "Quay Tyler",
+    name: "Jaquay Tyler",
+    apps: 0,
+    cx: 0,
+    prevWeekApps: 4,
+    prevWeekCx: 1,
+    rollingAvg: 2.0,
+    daily: [0, 0, 0, 0, 0],
+  },
+];
+
+export const LAST_WEEK_CLOSED = {
+  label: "Last week · Aug 17–23",
+  day: "Sunday close",
+  sourceLabel: "Thursday full export + Sunday remaining",
+  pendingWeekend: true,
+  sundayRemaining: { team: 3, office: 9, cancun: 10 },
+  dailyTotals: { mon: 10, tue: 10, wed: 7, thu: 8, fri: 12, sat: null, sun: null },
   notes: [
-    "Sunday update: 3 NL left for team, 9 for office, 10 for Cancun.",
-    "Rep-level apps/CX are from the last full board export (Thursday).",
-    "Jemilise Malave removed 8/17. Tiauri Shaff folded into Steve Nash on 8/18.",
-    "Est. $ = (Apps × $97.50) + CX tier bonus. Not payroll.",
+    "Closed with Thursday per-rep numbers. Saturday and Sunday from Google Docs are still pending.",
+    "Sunday remaining: 3 NL team, 9 office, 10 Cancun.",
   ],
-  reps: [
-    {
-      displayName: "Jordan Aguirre",
-      name: "Jordan Aguirre",
-      apps: 17,
-      cx: 6,
-      lastWeekApps: 4,
-      lastWeekCx: 2,
-      rollingAvg: 10.5,
-      daily: [2, 4, 3, 2, 0],
-    },
-    {
-      displayName: "Steveo Ramos",
-      name: "Ismael Ramos",
-      apps: 9,
-      cx: 5,
-      lastWeekApps: 8,
-      lastWeekCx: 7,
-      rollingAvg: 8.5,
-      daily: [0, 3, 2, 0, 3],
-    },
-    {
-      displayName: "Steve Nash",
-      name: "Nashly Paul",
-      apps: 7,
-      cx: 3,
-      lastWeekApps: 14,
-      lastWeekCx: 6,
-      rollingAvg: 9.7,
-      daily: [4, 0, 0, 0, 3],
-    },
-    {
-      displayName: "Matthew Grant",
-      name: "Matthew Grant",
-      apps: 6,
-      cx: 4,
-      lastWeekApps: 10,
-      lastWeekCx: 3,
-      rollingAvg: 7.0,
-      daily: [2, 2, 0, 2, 0],
-    },
-    {
-      displayName: "Ky. Tisdale",
-      name: "Kyron Tisdale",
-      apps: 6,
-      cx: 1,
-      lastWeekApps: 6,
-      lastWeekCx: 3,
-      rollingAvg: 5.0,
-      daily: [0, 1, 0, 0, 3],
-    },
-    {
-      displayName: "Shaad Hypolite",
-      name: "Rashaad Hypolite",
-      apps: 6,
-      cx: 4,
-      lastWeekApps: 7,
-      lastWeekCx: 3,
-      rollingAvg: 7.3,
-      daily: [0, 0, 2, 4, 0],
-    },
-    {
-      displayName: "Gianna Smith",
-      name: "Gianna Smith",
-      apps: 5,
-      cx: 2,
-      lastWeekApps: null,
-      lastWeekCx: null,
-      wow: null,
-      rollingAvg: 5.0,
-      daily: [2, 0, 0, 0, 3],
-    },
-    {
-      displayName: "Quay Tyler",
-      name: "Jaquay Tyler",
-      apps: 0,
-      cx: 0,
-      lastWeekApps: 4,
-      lastWeekCx: 1,
-      rollingAvg: 2.0,
-      daily: [0, 0, 0, 0, 0],
-    },
-  ],
+  reps: LAST_WEEK_REPS,
+  totals: summarizeTotals(LAST_WEEK_REPS.map(hydrateRep)),
 };
 
-export function parseBoardText(text) {
-  const source = String(text || "");
+export function rolloverIntoNewWeek(lastWeek = LAST_WEEK_CLOSED, teamWeeklyGoal = DEFAULT_TEAM_WEEKLY_GOAL) {
+  const closed = {
+    ...lastWeek,
+    reps: rankReps(lastWeek.reps || []),
+    totals: lastWeek.totals || summarizeTotals((lastWeek.reps || []).map(hydrateRep)),
+  };
+  const reps = closed.reps.map((rep) => ({
+    displayName: rep.displayName,
+    name: rep.name,
+    apps: 0,
+    cx: 0,
+    lastWeekApps: rep.apps,
+    lastWeekCx: rep.cx,
+    rollingAvg: rep.rollingAvg ?? null,
+    daily: [0, 0, 0, 0, 0, 0, 0],
+    flags: [],
+  }));
+
+  return summarizeBoard({
+    title: "G-UNIT SALES BOARD",
+    day: "Monday",
+    weekLabel: "Week of Aug 24",
+    sourceLabel: "New week · last week production archived",
+    dataAsOf: "This week started Monday Aug 24",
+    dgNum: 0,
+    dgDen: 10,
+    blendedRate: BLENDED_RATE,
+    teamWeeklyGoal,
+    lastWeek: closed,
+    dailyTotals: emptyDaily(),
+    notes: [
+      "Last week is archived so G-Unit can track this week's team goal against last week's production.",
+      closed.pendingWeekend
+        ? "Saturday/Sunday last-week counts are still pending from the Google Doc."
+        : "Last week includes the latest pasted weekend close.",
+      `This week's team goal is ${teamWeeklyGoal} NL (from last week's 25 CX + 3 remaining Sunday). Paste a new target if the Google Doc differs.`,
+      "Est. $ = (Apps × $97.50) + CX tier bonus. Not payroll.",
+    ],
+    reps,
+  });
+}
+
+export const OFFICIAL_SNAPSHOT = rolloverIntoNewWeek(LAST_WEEK_CLOSED, DEFAULT_TEAM_WEEKLY_GOAL);
+
+function parseRows(source) {
   const bannerMatch = source.match(BANNER_RE);
   const banner = bannerMatch
     ? {
@@ -261,28 +365,122 @@ export function parseBoardText(text) {
     throw new Error("No ranked rows found. Use lines like: 1. Jordan Aguirre 17 Apps | 6 CX");
   }
 
-  const goals = banner.nlLeft === undefined
-    ? OFFICIAL_SNAPSHOT.goals
-    : OFFICIAL_SNAPSHOT.goals.map((goal) =>
-        goal.id === "team" ? { ...goal, nlLeft: banner.nlLeft } : goal
-      );
+  return { banner, reps };
+}
+
+export function parseBoardText(text, previous = OFFICIAL_SNAPSHOT) {
+  const { banner, reps } = parseRows(String(text || ""));
+  const lastWeekByName = Object.fromEntries(
+    (previous.lastWeek?.reps || []).map((rep) => [rep.name, rep])
+  );
+
+  const merged = reps.map((rep) => {
+    const prior = lastWeekByName[rep.name];
+    return {
+      ...rep,
+      lastWeekApps: prior ? prior.apps : null,
+      lastWeekCx: prior ? prior.cx : null,
+    };
+  });
+
+  const teamWeeklyGoal =
+    banner.nlLeft !== undefined
+      ? (previous.teamWeeklyGoal || DEFAULT_TEAM_WEEKLY_GOAL)
+      : previous.teamWeeklyGoal || DEFAULT_TEAM_WEEKLY_GOAL;
+
+  const next = summarizeBoard({
+    ...previous,
+    day: banner.day || previous.day,
+    dgNum: banner.dgNum ?? previous.dgNum,
+    dgDen: banner.dgDen ?? previous.dgDen,
+    sourceLabel: "Pasted this-week scoreboard",
+    dataAsOf: "Updated from pasted scoreboard text",
+    teamWeeklyGoal,
+    notes: [
+      "This week updated from pasted Slack scoreboard text.",
+      "Last week production is still archived on the board.",
+    ],
+    reps: merged,
+  });
+
+  if (banner.nlLeft !== undefined) {
+    next.teamWeeklyGoal = next.totals.cx + banner.nlLeft;
+    return summarizeBoard(next);
+  }
+  return next;
+}
+
+export function applyLastWeekFinal(text, previous = OFFICIAL_SNAPSHOT) {
+  const { banner, reps } = parseRows(String(text || ""));
+  const closedReps = reps.map((rep) => ({
+    ...rep,
+    prevWeekApps: null,
+    prevWeekCx: null,
+  }));
+  const closed = {
+    label: "Last week · Aug 17–23",
+    day: banner.day || "Sunday close",
+    sourceLabel: "Pasted Saturday/Sunday final",
+    pendingWeekend: false,
+    sundayRemaining: {
+      team: banner.nlLeft ?? previous.lastWeek?.sundayRemaining?.team ?? 0,
+      office: previous.lastWeek?.sundayRemaining?.office ?? 0,
+      cancun: previous.lastWeek?.sundayRemaining?.cancun ?? 0,
+    },
+    dailyTotals: previous.lastWeek?.dailyTotals || emptyDaily(),
+    notes: ["Last week final applied from pasted Saturday/Sunday board."],
+    reps: closedReps,
+    totals: summarizeTotals(closedReps.map(hydrateRep)),
+  };
+
+  const byName = Object.fromEntries(closedReps.map((rep) => [rep.name, rep]));
+  const current = (previous.reps || []).map((rep) => {
+    const closedRep = byName[rep.name];
+    return {
+      ...rep,
+      lastWeekApps: closedRep ? closedRep.apps : rep.lastWeekApps,
+      lastWeekCx: closedRep ? closedRep.cx : rep.lastWeekCx,
+      wow: undefined,
+    };
+  });
+
+  const missing = closedReps.filter(
+    (rep) => !current.some((row) => row.name === rep.name)
+  );
+  const extras = missing.map((rep) => ({
+    displayName: rep.displayName,
+    name: rep.name,
+    apps: 0,
+    cx: 0,
+    lastWeekApps: rep.apps,
+    lastWeekCx: rep.cx,
+    daily: [0, 0, 0, 0, 0, 0, 0],
+    flags: [],
+  }));
 
   return summarizeBoard({
-    ...OFFICIAL_SNAPSHOT,
-    day: banner.day || OFFICIAL_SNAPSHOT.day,
-    dgNum: banner.dgNum ?? OFFICIAL_SNAPSHOT.dgNum,
-    dgDen: banner.dgDen ?? OFFICIAL_SNAPSHOT.dgDen,
-    sourceLabel: "Pasted board update",
-    dataAsOf: "Updated from pasted scoreboard text",
-    goals,
-    dailyTotals: {},
+    ...previous,
+    sourceLabel: "New week · last week weekend close applied",
+    dataAsOf: "Last week updated from pasted weekend board",
+    lastWeek: closed,
     notes: [
-      "Board updated from pasted Slack scoreboard text.",
-      ...(banner.nlLeft !== undefined
-        ? [`Team NL left set to ${banner.nlLeft} from the pasted banner.`]
-        : []),
+      "Last week now includes the pasted Saturday/Sunday final.",
+      "This week's counts are unchanged.",
+      `Team weekly goal remains ${previous.teamWeeklyGoal || DEFAULT_TEAM_WEEKLY_GOAL} NL.`,
     ],
-    reps,
+    reps: [...current, ...extras],
+  });
+}
+
+export function setTeamWeeklyGoal(board, goal) {
+  const nextGoal = Math.max(0, Number(goal) || 0);
+  return summarizeBoard({
+    ...board,
+    teamWeeklyGoal: nextGoal,
+    notes: [
+      ...(board.notes || []).filter((note) => !note.includes("This week's team goal is")),
+      `This week's team goal is ${nextGoal} NL.`,
+    ],
   });
 }
 
