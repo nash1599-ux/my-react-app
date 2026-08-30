@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v2";
+export const STORAGE_KEY = "gunit-salesboard-v3";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -20,15 +20,53 @@ export const ALIASES = {
   "shaad hypolite": "Rashaad Hypolite",
   jayden: "Jayden Dale",
   jordan: "Jordan Aguirre",
+  "jordan #23": "Jordan Aguirre",
+  "jordan 23": "Jordan Aguirre",
+  gigi: "Gianna Smith",
+  "gigi smith": "Gianna Smith",
 };
 
 const LINE_RE =
-  /(\d+)\.?\s*(?:🥇|🥈|🥉)?\s*([A-Za-z.'\-\s]+?)\s+(\d+)\s*App[s]?\s*\|\s*(\d+)\s*CX(.*)/i;
+  /(?:(\d+)\.?\s*)?(?:🥇|🥈|🥉)?\s*([A-Za-z][A-Za-z0-9.#'\-\s]*?)\s+(\d+)\s*App[s]?\s*\|\s*(\d+)\s*CX(.*)/i;
 const BANNER_RE = /DG:\s*(\d+)\/(\d+)\s*\|\s*(\d+)\s*NL LEFT\s*\|\s*(.+)/i;
+const SLACK_MEDAL_REPLACEMENTS = [
+  [/:first_place_medal:/gi, "1. 🥇 "],
+  [/:second_place_medal:/gi, "2. 🥈 "],
+  [/:third_place_medal:/gi, "3. 🥉 "],
+];
+const DAY_ALIASES = {
+  mondi: "Monday",
+  mon: "Monday",
+  tue: "Tuesday",
+  tues: "Tuesday",
+  wed: "Wednesday",
+  thu: "Thursday",
+  thur: "Thursday",
+  thurs: "Thursday",
+  fri: "Friday",
+  sat: "Saturday",
+  sun: "Sunday",
+};
+
+export function preprocessSlackBoard(text) {
+  let out = String(text || "");
+  for (const [token, replacement] of SLACK_MEDAL_REPLACEMENTS) {
+    out = out.replace(token, replacement);
+  }
+  return out.replace(/:[a-z0-9_+-]+:/gi, "");
+}
+
+export function normalizeDay(rawDay) {
+  const cleaned = String(rawDay || "")
+    .replace(/[║╔╗╚╝═━]+/g, "")
+    .replace(/\s+/g, " ")
+    .replace(/^[|\s]+|[|\s]+$/g, "");
+  return DAY_ALIASES[cleaned.toLowerCase()] || cleaned;
+}
 
 export function normalizeName(rawName) {
-  const key = String(rawName || "").trim().toLowerCase();
-  return ALIASES[key] || String(rawName || "").trim();
+  const cleaned = String(rawName || "").trim().replace(/\s+/g, " ");
+  return ALIASES[cleaned.toLowerCase()] || cleaned;
 }
 
 export function tierBonus(cx) {
@@ -323,24 +361,42 @@ export function rolloverIntoNewWeek(lastWeek = LAST_WEEK_CLOSED, teamWeeklyGoal 
   });
 }
 
-export const OFFICIAL_SNAPSHOT = rolloverIntoNewWeek(LAST_WEEK_CLOSED, DEFAULT_TEAM_WEEKLY_GOAL);
+export const WEEK_OPENING = rolloverIntoNewWeek(LAST_WEEK_CLOSED, DEFAULT_TEAM_WEEKLY_GOAL);
+
+export const MONDAY_BOARD_TEXT = `
+╔══════════════════════════════════════╗
+║    :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag:      ║
+║  :bar_chart: DG:9/12 |50 NL LEFT |  MONDI ║
+╚══════════════════════════════════════╝
+:trophy: LEADERBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+:first_place_medal:    Gigi Smith            6 Apps | 2 CX
+:second_place_medal: Matthew Grant        1 App  | 1 CX
+:third_place_medal:Steveo Ramos     0 App | 1 CX
+4. Jordan #23             0 App|  1 CX
+5. Ky.  Tisdale             0 App  | 1 CX
+6 Cam Winfield                 2 App | 1 CX
+7.Shaad Hypolite         0 App | 0 CX
+8. Steve Nash             0 App  | 0 CX
+`;
 
 function parseRows(source) {
-  const bannerMatch = source.match(BANNER_RE);
+  const text = preprocessSlackBoard(source);
+  const bannerMatch = text.match(BANNER_RE);
   const banner = bannerMatch
     ? {
         dgNum: Number(bannerMatch[1]),
         dgDen: Number(bannerMatch[2]),
         nlLeft: Number(bannerMatch[3]),
-        day: bannerMatch[4].trim(),
+        day: normalizeDay(bannerMatch[4]),
       }
     : {};
 
   const reps = [];
-  for (const rawLine of source.split(/\r?\n/)) {
+  for (const rawLine of text.split(/\r?\n/)) {
     const match = rawLine.match(LINE_RE);
     if (!match) continue;
-    const displayName = match[2].trim();
+    const displayName = match[2].trim().replace(/\s+/g, " ");
     const apps = Number(match[3]);
     const cx = Number(match[4]);
     const tail = (match[5] || "").trim();
@@ -409,6 +465,8 @@ export function parseBoardText(text, previous = OFFICIAL_SNAPSHOT) {
   }
   return next;
 }
+
+export const OFFICIAL_SNAPSHOT = parseBoardText(MONDAY_BOARD_TEXT, WEEK_OPENING);
 
 export function applyLastWeekFinal(text, previous = OFFICIAL_SNAPSHOT) {
   const { banner, reps } = parseRows(String(text || ""));
