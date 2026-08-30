@@ -14,6 +14,9 @@
 # misc
 .DS_Store
 .env.local
+service_account.json
+oauth_token.json
+*-credentials.json
 .env.development.local
 .env.test.local
 .env.production.local

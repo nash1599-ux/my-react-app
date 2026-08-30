@@ -2,6 +2,9 @@ import unittest
 
 from update_gunit_board import (
     apply_departures_and_folds,
+    build_authorization_url,
+    credential_kind,
+    extract_oauth_code,
     looks_like_full_board,
     normalize_name,
     parse_board,
@@ -179,6 +182,34 @@ class SlackMondayBoardTests(unittest.TestCase):
         self.assertEqual(ranked[0]["apps"], 6)
         self.assertEqual(ranked[1]["name"], "Cam Winfield")
         self.assertTrue(any("Jordan" in note or "DATA ERROR" in note for note in notes))
+
+
+class CredentialKindTests(unittest.TestCase):
+    def test_detects_service_account(self):
+        self.assertEqual(
+            credential_kind({"type": "service_account", "client_email": "bot@x.iam.gserviceaccount.com"}),
+            "service_account",
+        )
+
+    def test_detects_installed_oauth_client(self):
+        self.assertEqual(credential_kind({"installed": {"client_id": "abc.apps.googleusercontent.com"}}), "oauth_client")
+
+    def test_detects_oauth_token(self):
+        self.assertEqual(credential_kind({"refresh_token": "1//x", "token": "ya29.x"}), "oauth_token")
+
+    def test_extracts_code_from_localhost_url(self):
+        self.assertEqual(
+            extract_oauth_code("http://localhost/?code=4/0Aabc&scope=https://www.googleapis.com/auth/spreadsheets"),
+            "4/0Aabc",
+        )
+        self.assertEqual(extract_oauth_code("4/0Aabc"), "4/0Aabc")
+
+    def test_authorization_url_uses_localhost_and_offline_access(self):
+        url = build_authorization_url({"installed": {"client_id": "abc.apps.googleusercontent.com"}})
+        self.assertIn("client_id=abc.apps.googleusercontent.com", url)
+        self.assertIn("redirect_uri=http%3A%2F%2Flocalhost", url)
+        self.assertIn("access_type=offline", url)
+        self.assertIn("spreadsheets", url)
 
 
 class FullTsvBoardTests(unittest.TestCase):

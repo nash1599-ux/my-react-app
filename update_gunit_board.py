@@ -13,12 +13,15 @@ and the special event log).
 
 Setup required before a live write:
   1. Google Sheets API + Drive API enabled on the GCP project.
-  2. Service account JSON stored as a Cursor environment secret.
-     Prefer GOOGLE_SERVICE_ACCOUNT_JSON (raw key JSON). Alternatively set
-     GOOGLE_APPLICATION_CREDENTIALS to a file path. Never commit the JSON.
-  3. Target Google Sheet shared as Editor with the service account email
-     (ends in @<project>.iam.gserviceaccount.com).
-  4. GUNIT_SHEET_ID set to the spreadsheet ID, or use the default below.
+  2. Put either a service-account key OR a desktop OAuth client JSON in
+     GOOGLE_SERVICE_ACCOUNT_JSON (or GOOGLE_APPLICATION_CREDENTIALS).
+     Never commit the JSON.
+  3. Desktop OAuth client (starts with "installed"): sign in once with
+     --auth-url, then pass --oauth-code <code or localhost URL>. After
+     that, save GOOGLE_OAUTH_TOKEN_JSON (refresh token) for later runs.
+  4. Service account: share the sheet as Editor with the client_email.
+     Desktop OAuth: sign in as a Google user who already has Editor access.
+  5. GUNIT_SHEET_ID set to the spreadsheet ID, or use the default below.
 
 pip install -r requirements-gunit.txt
 """
@@ -31,7 +34,9 @@ import json
 import os
 import re
 import sys
-import tempfile
+import urllib.error
+import urllib.parse
+import urllib.request
 from datetime import date
 from io import StringIO
 
@@ -40,6 +45,8 @@ from io import StringIO
 # ============================================================
 SHEET_ID = os.environ.get("GUNIT_SHEET_ID", "1-a64P6SQyTg8Cq3d_uuYOKHCIpZh0uKizTYDi85FjEw")
 CREDS_PATH = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "service_account.json")
+OAUTH_TOKEN_PATH = os.environ.get("GOOGLE_OAUTH_TOKEN_PATH", "oauth_token.json")
+OAUTH_REDIRECT_URI = os.environ.get("GOOGLE_OAUTH_REDIRECT_URI", "http://localhost")
 WORKSHEET_NAME = "G-Unit Board"
 BLENDED_RATE_DEFAULT = 97.50
 
@@ -542,44 +549,175 @@ def rank_rows(rows, blended_rate=BLENDED_RATE_DEFAULT):
 # ============================================================
 # GOOGLE SHEETS I/O
 # ============================================================
-def resolve_creds_path():
-    """Return a credentials file path, materializing JSON from env if needed."""
+def load_google_json():
+    """Load the Google client/key JSON from env or a local file."""
     raw_json = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON", "").strip()
     if raw_json:
-        parsed = json.loads(raw_json)
-        if parsed.get("type") != "service_account" or "installed" in parsed or "web" in parsed:
-            raise SystemExit(
-                "GOOGLE_SERVICE_ACCOUNT_JSON is a desktop OAuth client, not a "
-                "service-account key. Replace the secret with JSON that has "
-                '"type": "service_account" and a client_email, then share the '
-                "sheet with that email."
-            )
-        handle = tempfile.NamedTemporaryFile(
-            mode="w",
-            prefix="gunit-sa-",
-            suffix=".json",
-            delete=False,
-        )
-        json.dump(parsed, handle)
-        handle.close()
-        return handle.name
-
+        return json.loads(raw_json)
     if os.path.isfile(CREDS_PATH):
-        return CREDS_PATH
-
+        with open(CREDS_PATH, encoding="utf-8") as handle:
+            return json.load(handle)
     raise FileNotFoundError(
-        "Google service account credentials were not found. Set "
-        "GOOGLE_SERVICE_ACCOUNT_JSON (raw JSON secret) or "
-        "GOOGLE_APPLICATION_CREDENTIALS (path to the key file), and share "
-        f"the spreadsheet with the service account email."
+        "Google credentials were not found. Set GOOGLE_SERVICE_ACCOUNT_JSON "
+        "(raw JSON secret) or GOOGLE_APPLICATION_CREDENTIALS (path to the key file)."
     )
 
 
-def get_worksheet():
-    import gspread
-    from google.oauth2.service_account import Credentials
+def credential_kind(parsed):
+    """Classify a Google JSON blob: service_account, oauth_client, oauth_token, or unknown."""
+    if not isinstance(parsed, dict):
+        return "unknown"
+    if parsed.get("type") == "service_account":
+        return "service_account"
+    if "installed" in parsed or "web" in parsed:
+        return "oauth_client"
+    if parsed.get("refresh_token") or parsed.get("token"):
+        return "oauth_token"
+    return "unknown"
 
-    creds = Credentials.from_service_account_file(resolve_creds_path(), scopes=list(SHEETS_SCOPES))
+
+def oauth_client_section(parsed):
+    if not isinstance(parsed, dict):
+        raise ValueError("OAuth client JSON must be an object.")
+    section = parsed.get("installed") or parsed.get("web")
+    if not isinstance(section, dict) or not section.get("client_id"):
+        raise ValueError("OAuth client JSON is missing installed/web.client_id.")
+    return section
+
+
+def extract_oauth_code(value):
+    """Accept a raw auth code or the http://localhost/?code=... redirect URL."""
+    text = (value or "").strip()
+    if not text:
+        return ""
+    if "code=" in text:
+        parsed = urllib.parse.urlparse(text)
+        query = urllib.parse.parse_qs(parsed.query)
+        fragment = urllib.parse.parse_qs(parsed.fragment)
+        code = (query.get("code") or fragment.get("code") or [""])[0]
+        return urllib.parse.unquote(code)
+    return text
+
+
+def build_authorization_url(parsed, redirect_uri=OAUTH_REDIRECT_URI):
+    section = oauth_client_section(parsed)
+    params = {
+        "client_id": section["client_id"],
+        "redirect_uri": redirect_uri,
+        "response_type": "code",
+        "scope": " ".join(SHEETS_SCOPES),
+        "access_type": "offline",
+        "prompt": "consent",
+    }
+    auth_uri = section.get("auth_uri") or "https://accounts.google.com/o/oauth2/v2/auth"
+    return f"{auth_uri}?{urllib.parse.urlencode(params)}"
+
+
+def load_oauth_token_info():
+    raw = os.environ.get("GOOGLE_OAUTH_TOKEN_JSON", "").strip()
+    if raw:
+        return json.loads(raw)
+    if os.path.isfile(OAUTH_TOKEN_PATH):
+        with open(OAUTH_TOKEN_PATH, encoding="utf-8") as handle:
+            return json.load(handle)
+    return None
+
+
+def exchange_oauth_code(parsed, code, redirect_uri=OAUTH_REDIRECT_URI):
+    section = oauth_client_section(parsed)
+    payload = urllib.parse.urlencode(
+        {
+            "code": code,
+            "client_id": section["client_id"],
+            "client_secret": section.get("client_secret", ""),
+            "redirect_uri": redirect_uri,
+            "grant_type": "authorization_code",
+        }
+    ).encode()
+    token_uri = section.get("token_uri") or "https://oauth2.googleapis.com/token"
+    request = urllib.request.Request(token_uri, data=payload, method="POST")
+    request.add_header("Content-Type", "application/x-www-form-urlencoded")
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            body = json.loads(response.read().decode())
+    except urllib.error.HTTPError as error:
+        detail = error.read().decode()[:400]
+        raise SystemExit(f"Google OAuth token exchange failed ({error.code}): {detail}") from error
+    if body.get("error"):
+        raise SystemExit(f"Google OAuth token exchange failed: {body.get('error_description') or body['error']}")
+    return {
+        "token": body.get("access_token"),
+        "refresh_token": body.get("refresh_token"),
+        "token_uri": token_uri,
+        "client_id": section["client_id"],
+        "client_secret": section.get("client_secret", ""),
+        "scopes": list(SHEETS_SCOPES),
+    }
+
+
+def credentials_from_oauth_token(token_info):
+    from google.auth.transport.requests import Request
+    from google.oauth2.credentials import Credentials
+
+    creds = Credentials.from_authorized_user_info(token_info, scopes=list(SHEETS_SCOPES))
+    if not creds.valid:
+        if not creds.refresh_token:
+            raise SystemExit(
+                "Saved Google OAuth token is expired and has no refresh_token. "
+                "Run with --auth-url and pass a fresh --oauth-code."
+            )
+        creds.refresh(Request())
+    return creds
+
+
+def print_authorization_help(parsed):
+    url = build_authorization_url(parsed)
+    print("The saved Google key is a desktop OAuth client. Sign in once with the Google account that can edit the G-Unit sheet.")
+    print()
+    print("1. Open this URL while signed into that Google account:")
+    print(url)
+    print()
+    print("2. Approve access. The browser will try to open http://localhost and fail. That is expected.")
+    print("3. Copy the full address bar URL (it contains code=...) and rerun with:")
+    print('   python update_gunit_board.py --oauth-code "PASTE_URL_HERE" --board-file monday-board.txt')
+
+
+def get_credentials(oauth_code=None):
+    parsed = load_google_json()
+    kind = credential_kind(parsed)
+    if kind == "service_account":
+        from google.oauth2.service_account import Credentials
+
+        return Credentials.from_service_account_info(parsed, scopes=list(SHEETS_SCOPES))
+
+    if kind == "oauth_token":
+        return credentials_from_oauth_token(parsed)
+
+    if kind != "oauth_client":
+        raise SystemExit(
+            "GOOGLE_SERVICE_ACCOUNT_JSON is not a service-account key or desktop OAuth client."
+        )
+
+    token_info = load_oauth_token_info()
+    code = extract_oauth_code(oauth_code or os.environ.get("GOOGLE_OAUTH_CODE", ""))
+    if code:
+        token_info = exchange_oauth_code(parsed, code)
+        if token_info.get("refresh_token"):
+            with open(OAUTH_TOKEN_PATH, "w", encoding="utf-8") as handle:
+                json.dump(token_info, handle)
+        return credentials_from_oauth_token(token_info)
+
+    if token_info:
+        return credentials_from_oauth_token(token_info)
+
+    print_authorization_help(parsed)
+    raise SystemExit(2)
+
+
+def get_worksheet(oauth_code=None):
+    import gspread
+
+    creds = get_credentials(oauth_code=oauth_code)
     client = gspread.authorize(creds)
     sheet = client.open_by_key(SHEET_ID)
     try:
@@ -883,7 +1021,20 @@ def main(argv=None):
         action="store_true",
         help="Parse and print the ranked board without writing to Google Sheets",
     )
+    parser.add_argument(
+        "--auth-url",
+        action="store_true",
+        help="Print the desktop OAuth login URL and exit",
+    )
+    parser.add_argument(
+        "--oauth-code",
+        help="Authorization code or http://localhost/?code=... URL from the OAuth redirect",
+    )
     args = parser.parse_args(argv)
+
+    if args.auth_url:
+        print_authorization_help(load_google_json())
+        return 0
 
     text = load_board_text(args)
     banner, rows = parse_board(text)
@@ -894,7 +1045,7 @@ def main(argv=None):
     previous = {}
     ws = None
     if not args.dry_run:
-        ws = get_worksheet()
+        ws = get_worksheet(oauth_code=args.oauth_code)
         previous = read_previous_state(ws)
 
     banner, final_rows, all_notes = process_board(text, previous)
