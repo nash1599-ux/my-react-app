@@ -547,6 +547,13 @@ def resolve_creds_path():
     raw_json = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON", "").strip()
     if raw_json:
         parsed = json.loads(raw_json)
+        if parsed.get("type") != "service_account" or "installed" in parsed or "web" in parsed:
+            raise SystemExit(
+                "GOOGLE_SERVICE_ACCOUNT_JSON is a desktop OAuth client, not a "
+                "service-account key. Replace the secret with JSON that has "
+                '"type": "service_account" and a client_email, then share the '
+                "sheet with that email."
+            )
         handle = tempfile.NamedTemporaryFile(
             mode="w",
             prefix="gunit-sa-",
