@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v3";
+export const STORAGE_KEY = "gunit-salesboard-v4";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -24,10 +24,14 @@ export const ALIASES = {
   "jordan 23": "Jordan Aguirre",
   gigi: "Gianna Smith",
   "gigi smith": "Gianna Smith",
+  cam: "Cam Winfield",
+  "cam winfield": "Cam Winfield",
+  "matthew 2": "Matthew 2",
+  "matthew²": "Matthew 2",
 };
 
 const LINE_RE =
-  /(?:(\d+)\.?\s*)?(?:🥇|🥈|🥉)?\s*([A-Za-z][A-Za-z0-9.#'\-\s]*?)\s+(\d+)\s*App[s]?\s*\|\s*(\d+)\s*CX(.*)/i;
+  /(?:(\d+)\.?\s*)?(?:🥇|🥈|🥉)?\s*([A-Za-z][A-Za-z0-9.#'\-\s\u00B2\u00B3]*?)\s+(\d+)\s*App[s]?\s*\|\s*(\d+)\s*CX(.*)/i;
 const BANNER_RE = /DG:\s*(\d+)\/(\d+)\s*\|\s*(\d+)\s*NL LEFT\s*\|\s*(.+)/i;
 const SLACK_MEDAL_REPLACEMENTS = [
   [/:first_place_medal:/gi, "1. 🥇 "],
@@ -45,6 +49,7 @@ const DAY_ALIASES = {
   thurs: "Thursday",
   fri: "Friday",
   sat: "Saturday",
+  satdi: "Saturday",
   sun: "Sunday",
 };
 
@@ -53,7 +58,10 @@ export function preprocessSlackBoard(text) {
   for (const [token, replacement] of SLACK_MEDAL_REPLACEMENTS) {
     out = out.replace(token, replacement);
   }
-  return out.replace(/:[a-z0-9_+-]+:/gi, "");
+  return out
+    .replace(/:[a-z0-9_+-]+:/gi, "")
+    .replace(/[²]/g, "2")
+    .replace(/[³]/g, "3");
 }
 
 export function normalizeDay(rawDay) {
@@ -65,7 +73,11 @@ export function normalizeDay(rawDay) {
 }
 
 export function normalizeName(rawName) {
-  const cleaned = String(rawName || "").trim().replace(/\s+/g, " ");
+  const cleaned = String(rawName || "")
+    .trim()
+    .replace(/[²]/g, "2")
+    .replace(/[³]/g, "3")
+    .replace(/\s+/g, " ");
   return ALIASES[cleaned.toLowerCase()] || cleaned;
 }
 
@@ -363,6 +375,26 @@ export function rolloverIntoNewWeek(lastWeek = LAST_WEEK_CLOSED, teamWeeklyGoal 
 
 export const WEEK_OPENING = rolloverIntoNewWeek(LAST_WEEK_CLOSED, DEFAULT_TEAM_WEEKLY_GOAL);
 
+export const SATURDAY_BOARD_TEXT = `
+╔══════════════════════════════════════╗
+║    🪖 G-UNIT SALES BOARD 🫡💰      ║
+║  📊 DG:6/12 |26 NL LEFT |  SATDI ║
+╚══════════════════════════════════════╝
+
+🏆 LEADERBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🥇	Matthew Grant      8 App  | 4 CX
+🥈 Gigi Smith			7 Apps | 3 CX
+🥉Steveo Ramos  	7 App | 4 CX
+4. Ky.  Tisdale             6 App  | 3 CX
+5. Jordan #23	 		4 App|  2 CX
+6 Cam 					2 App | 2 CX
+7. Shaad Hypolite 		2 App | 2 CX
+8. Matthew ² 			1 App | 1 CX
+9. Steve Nash 			1 App  | 1 CX
+10. Leo Chowdury 		1 App  | 1 CX
+`;
+
 export const MONDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║    :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag:      ║
@@ -466,7 +498,17 @@ export function parseBoardText(text, previous = OFFICIAL_SNAPSHOT) {
   return next;
 }
 
-export const OFFICIAL_SNAPSHOT = parseBoardText(MONDAY_BOARD_TEXT, WEEK_OPENING);
+export const OFFICIAL_SNAPSHOT = summarizeBoard({
+  ...parseBoardText(SATURDAY_BOARD_TEXT, WEEK_OPENING),
+  weekLabel: "Week of Aug 24",
+  sourceLabel: "Saturday Slack board",
+  dataAsOf: "Updated from Saturday scoreboard paste",
+  notes: [
+    "Saturday standings from Slack. 39 apps / 23 CX, 26 NL left.",
+    "A lot of leaders are in the red and yellow. Finish strong.",
+    "Last week (56 apps / 25 CX) stays archived.",
+  ],
+});
 
 export function applyLastWeekFinal(text, previous = OFFICIAL_SNAPSHOT) {
   const { banner, reps } = parseRows(String(text || ""));

@@ -4,6 +4,7 @@ import {
   estimatedEarned,
   formatSignedPercent,
   MONDAY_BOARD_TEXT,
+  SATURDAY_BOARD_TEXT,
   normalizeName,
   OFFICIAL_SNAPSHOT,
   parseBoardText,
@@ -21,6 +22,8 @@ describe("salesboard scoring", () => {
     expect(normalizeName("jordan")).toBe("Jordan Aguirre");
     expect(normalizeName("Jordan #23")).toBe("Jordan Aguirre");
     expect(normalizeName("Gigi Smith")).toBe("Gianna Smith");
+    expect(normalizeName("Cam")).toBe("Cam Winfield");
+    expect(normalizeName("Matthew ²")).toBe("Matthew 2");
     expect(normalizeName("Jordan Reeces")).toBe("Jordan Reeces");
   });
 
@@ -50,24 +53,33 @@ describe("salesboard scoring", () => {
     expect(formatSignedPercent(null)).toBe("new");
   });
 
-  test("loads the Monday Slack board as the official snapshot", () => {
+  test("loads the Saturday Slack board as the official snapshot", () => {
     const board = summarizeBoard(OFFICIAL_SNAPSHOT);
-    expect(board.day).toBe("Monday");
-    expect(board.dgNum).toBe(9);
+    expect(board.day).toBe("Saturday");
+    expect(board.dgNum).toBe(6);
     expect(board.dgDen).toBe(12);
-    expect(board.totals.apps).toBe(9);
-    expect(board.totals.cx).toBe(7);
-    expect(board.weeklyGoal.nlLeft).toBe(50);
-    expect(board.weeklyGoal.goal).toBe(57);
-    expect(board.reps[0].name).toBe("Gianna Smith");
-    expect(board.reps[0].apps).toBe(6);
-    expect(board.reps[0].lastWeekApps).toBe(5);
+    expect(board.totals.apps).toBe(39);
+    expect(board.totals.cx).toBe(23);
+    expect(board.weeklyGoal.nlLeft).toBe(26);
+    expect(board.weeklyGoal.goal).toBe(49);
+    expect(board.reps[0].name).toBe("Matthew Grant");
+    expect(board.reps[0].apps).toBe(8);
+    expect(board.reps[0].lastWeekApps).toBe(6);
     expect(board.reps.find((rep) => rep.name === "Cam Winfield").apps).toBe(2);
-    expect(
-      board.reps.find((rep) => rep.name === "Jordan Aguirre").flags.some((flag) =>
-        flag.includes("DATA ERROR")
-      )
-    ).toBe(true);
+    expect(board.reps.find((rep) => rep.name === "Matthew 2").apps).toBe(1);
+    expect(board.reps.find((rep) => rep.name === "Leo Chowdury").apps).toBe(1);
+    expect(board.reps.find((rep) => rep.name === "Ismael Ramos").cx).toBe(4);
+  });
+
+  test("parses Saturday SATDI paste including Cam and Matthew 2", () => {
+    const board = parseBoardText(SATURDAY_BOARD_TEXT, WEEK_OPENING);
+    expect(board.day).toBe("Saturday");
+    expect(board.reps).toHaveLength(10);
+    expect(board.reps.find((rep) => rep.displayName === "Cam").name).toBe(
+      "Cam Winfield"
+    );
+    expect(board.reps.find((rep) => rep.name === "Matthew 2").apps).toBe(1);
+    expect(board.reps.find((rep) => rep.name === "Leo Chowdury").cx).toBe(1);
   });
 
   test("parses Slack medal shortcodes and Jordan #23", () => {

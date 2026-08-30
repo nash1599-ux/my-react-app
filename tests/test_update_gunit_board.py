@@ -31,6 +31,26 @@ MONDAY_SLACK_BOARD = """
 8. Steve Nash             0 App  | 0 CX
 """
 
+SATURDAY_SLACK_BOARD = """
+╔══════════════════════════════════════╗
+║    🪖 G-UNIT SALES BOARD 🫡💰      ║
+║  📊 DG:6/12 |26 NL LEFT |  SATDI ║
+╚══════════════════════════════════════╝
+
+🏆 LEADERBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🥇	Matthew Grant      8 App  | 4 CX
+🥈 Gigi Smith			7 Apps | 3 CX
+🥉Steveo Ramos  	7 App | 4 CX
+4. Ky.  Tisdale             6 App  | 3 CX
+5. Jordan #23	 		4 App|  2 CX
+6 Cam 					2 App | 2 CX
+7. Shaad Hypolite 		2 App | 2 CX
+8. Matthew ² 			1 App | 1 CX
+9. Steve Nash 			1 App  | 1 CX
+10. Leo Chowdury 		1 App  | 1 CX
+"""
+
 
 SAMPLE_BOARD = """
 G-UNIT SALES BOARD
@@ -56,6 +76,8 @@ class NormalizeNameTests(unittest.TestCase):
         self.assertEqual(normalize_name("Gigi Smith"), "Gianna Smith")
         self.assertEqual(normalize_name("Jordan #23"), "Jordan Aguirre")
         self.assertEqual(normalize_name("Ky.  Tisdale"), "Kyron Tisdale")
+        self.assertEqual(normalize_name("Cam"), "Cam Winfield")
+        self.assertEqual(normalize_name("Matthew ²"), "Matthew 2")
 
     def test_unknown_name_is_preserved(self):
         self.assertEqual(normalize_name("Jordan Reeces"), "Jordan Reeces")
@@ -173,6 +195,27 @@ class SlackMondayBoardTests(unittest.TestCase):
         self.assertTrue(any("DATA ERROR" in flag for flag in by_name["Jordan Aguirre"]["flags"]))
         self.assertTrue(any("DATA ERROR" in flag for flag in by_name["Ismael Ramos"]["flags"]))
         self.assertTrue(any("DATA ERROR" in flag for flag in by_name["Kyron Tisdale"]["flags"]))
+
+    def test_parses_saturday_satdi_paste(self):
+        banner, rows = parse_board(SATURDAY_SLACK_BOARD)
+        self.assertEqual(banner["day"], "Saturday")
+        self.assertEqual(banner["dg_num"], 6)
+        self.assertEqual(banner["nl_left"], 26)
+        self.assertEqual(len(rows), 10)
+        by_name = {row["name"]: row for row in rows}
+        self.assertEqual(by_name["Matthew Grant"]["apps"], 8)
+        self.assertEqual(by_name["Cam Winfield"]["apps"], 2)
+        self.assertEqual(by_name["Matthew 2"]["apps"], 1)
+        self.assertEqual(by_name["Leo Chowdury"]["cx"], 1)
+
+    def test_saturday_process_ranks_matthew_first(self):
+        banner, rows, _notes = process_board(SATURDAY_SLACK_BOARD)
+        ranked = rank_rows(rows)
+        self.assertEqual(banner["day"], "Saturday")
+        self.assertEqual(ranked[0]["name"], "Matthew Grant")
+        self.assertEqual(ranked[0]["apps"], 8)
+        self.assertEqual(sum(row["apps"] for row in ranked), 39)
+        self.assertEqual(sum(row["cx"] for row in ranked), 23)
 
     def test_monday_process_ranks_gigi_first(self):
         banner, rows, notes = process_board(MONDAY_SLACK_BOARD)

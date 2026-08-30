@@ -6,14 +6,14 @@ beforeEach(() => {
   window.localStorage.removeItem(STORAGE_KEY);
 });
 
-test('renders last week production and the Monday board', () => {
+test('renders last week production and the Saturday board', () => {
   render(<App />);
   expect(screen.getByText(/G-UNIT SALES BOARD/i)).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: /this week team goal/i })).toBeInTheDocument();
   expect(screen.getByText(/Last week apps/i)).toBeInTheDocument();
   expect(screen.getByText("56")).toBeInTheDocument();
-  expect(screen.getAllByText(/Gigi Smith|Gianna Smith/i).length).toBeGreaterThan(0);
-  expect(screen.getByLabelText(/set nl target/i)).toHaveValue(57);
+  expect(screen.getAllByText(/Matthew Grant/i).length).toBeGreaterThan(0);
+  expect(screen.getByLabelText(/set nl target/i)).toHaveValue(49);
 });
 
 test('updates this week from pasted scoreboard text', () => {
@@ -47,5 +47,5 @@ test('saves a pasted board as last week final without changing this week', () =>
     screen.getByText(/Last week final updated from Saturday\/Sunday paste/i)
   ).toBeInTheDocument();
   expect(screen.getAllByText("20").length).toBeGreaterThan(0);
-  expect(screen.getByText(/This week apps/i).closest("article")).toHaveTextContent("9");
+  expect(screen.getByText(/This week apps/i).closest("article")).toHaveTextContent("39");
 });

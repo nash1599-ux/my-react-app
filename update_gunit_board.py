@@ -67,6 +67,10 @@ ALIASES = {
     "jordan 23": "Jordan Aguirre",
     "gigi": "Gianna Smith",
     "gigi smith": "Gianna Smith",
+    "cam": "Cam Winfield",
+    "cam winfield": "Cam Winfield",
+    "matthew 2": "Matthew 2",
+    "matthew²": "Matthew 2",
 }
 
 CX_TIERS = [(9, 100), (7, 75), (5, 50), (4, 30)]
@@ -83,7 +87,7 @@ SHEETS_SCOPES = (
 # ============================================================
 LINE_RE = re.compile(
     r"(?:(?P<rank>\d+)\.?\s*)?(?:[\U0001F947\U0001F948\U0001F949])?\s*"
-    r"(?P<name>[A-Za-z][A-Za-z0-9.#'\-\s]*?)\s+"
+    r"(?P<name>[A-Za-z][A-Za-z0-9.#'\-\s\u00B2\u00B3]*?)\s+"
     r"(?P<apps>\d+)\s*App[s]?\s*\|\s*(?P<cx>\d+)\s*CX"
     r"(?P<tail>.*)",
     re.IGNORECASE,
@@ -124,6 +128,7 @@ DAY_ALIASES = {
     "thurs": "Thursday",
     "fri": "Friday",
     "sat": "Saturday",
+    "satdi": "Saturday",
     "sun": "Sunday",
 }
 
@@ -133,7 +138,8 @@ def preprocess_slack_board(text: str) -> str:
     out = text or ""
     for token, replacement in SLACK_MEDAL_REPLACEMENTS:
         out = re.sub(re.escape(token), replacement, out, flags=re.IGNORECASE)
-    return SLACK_EMOJI_RE.sub("", out)
+    out = SLACK_EMOJI_RE.sub("", out)
+    return out.replace("²", "2").replace("³", "3")
 
 
 def normalize_day(raw_day: str) -> str:
@@ -144,6 +150,7 @@ def normalize_day(raw_day: str) -> str:
 
 def normalize_name(raw_name: str) -> str:
     cleaned = re.sub(r"\s+", " ", (raw_name or "").strip())
+    cleaned = cleaned.replace("²", "2").replace("³", "3")
     return ALIASES.get(cleaned.lower(), cleaned)
 
 
