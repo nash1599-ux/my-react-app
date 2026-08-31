@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Road to 75 · G-Unit</title>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #101826;
+      --text: #f4f7fb;
+      --muted: #93a0b5;
+      --gold: #f5c14a;
+      --blue: #4cc3ff;
+      --green: #3ee08f;
+      --warn: #ffb020;
+      --hot: #ff5d6c;
+      --line: rgba(255, 255, 255, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, "Segoe UI", system-ui, sans-serif;
+    }
+    .deck { height: 100%; position: relative; overflow: hidden; }
+    .slide {
+      display: none;
+      height: 100%;
+      padding: 56px 72px 88px;
+      background:
+        radial-gradient(900px 400px at 90% -10%, rgba(76, 195, 255, 0.12), transparent 55%),
+        radial-gradient(700px 360px at 0% 100%, rgba(245, 193, 74, 0.08), transparent 50%),
+        var(--bg);
+    }
+    .slide.active { display: flex; flex-direction: column; justify-content: center; }
+    .eyebrow {
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    h1 { font-size: clamp(36px, 4.6vw, 64px); line-height: 1.05; margin-bottom: 14px; }
+    h1 span { color: var(--gold); }
+    .sub { color: var(--muted); font-size: 22px; max-width: 820px; }
+    .talk {
+      margin-top: 28px;
+      padding: 18px 22px;
+      border-left: 4px solid var(--gold);
+      background: rgba(16, 24, 38, 0.8);
+      color: #d7e0ee;
+      font-size: 20px;
+      max-width: 900px;
+    }
+    .row { display: grid; gap: 18px; margin-top: 28px; }
+    .row.three { grid-template-columns: repeat(3, 1fr); }
+    .row.two { grid-template-columns: 1.1fr 1fr; }
+    .card {
+      background: linear-gradient(180deg, #101826, #162033);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px 24px;
+    }
+    .card .label { color: var(--muted); font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .card .num { font-size: 48px; font-weight: 800; margin: 8px 0 4px; }
+    .card.gold .num { color: var(--gold); }
+    .card.green .num { color: var(--green); }
+    .card.hot .num { color: var(--hot); }
+    .card.blue .num { color: var(--blue); }
+    .people { color: var(--muted); margin-top: 10px; font-size: 16px; }
+    ul.actions { list-style: none; margin-top: 22px; }
+    ul.actions li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 22px;
+    }
+    ul.actions li strong { color: var(--green); }
+    .names { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 14px;
+      color: var(--text);
+      background: rgba(255,255,255,0.03);
+    }
+    .shout {
+      margin-top: 22px;
+      background: rgba(62, 224, 143, 0.1);
+      border: 1px solid rgba(62, 224, 143, 0.35);
+      color: var(--green);
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-size: 22px;
+    }
+    .nav {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      background: rgba(7, 11, 18, 0.88);
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .dots { display: flex; gap: 8px; }
+    .dots button {
+      width: 10px; height: 10px; border-radius: 50%;
+      border: 0; background: #334155; cursor: pointer;
+    }
+    .dots button.on { background: var(--gold); }
+    .nav button.ctrl {
+      background: transparent; color: var(--text); border: 1px solid var(--line);
+      border-radius: 8px; padding: 8px 12px; cursor: pointer;
+    }
+    @media (max-width: 900px) {
+      .slide { padding: 28px 22px 84px; }
+      .row.three, .row.two { grid-template-columns: 1fr; }
+      h1 { font-size: 32px; }
+      .card .num { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck" id="deck">
+    <section class="slide active" data-title="Title">
+      <div class="eyebrow">G-Unit · Team Meeting · Today</div>
+      <h1>The Road to <span>75</span></h1>
+      <p class="sub">Scaling our team production. Building a self-sustaining, high-impact sales floor.</p>
+      <p class="talk">Today is about leveling up as a unit. We are setting a new standard that does not rely on just one person to carry the board.</p>
+    </section>
+
+    <section class="slide" data-title="Baseline">
+      <div class="eyebrow">Slide 2 · Baseline</div>
+      <h1>Where we are vs where we are going</h1>
+      <div class="row three">
+        <article class="card">
+          <div class="label">Current without Matt</div>
+          <div class="num">45.7</div>
+          <div class="people">3-week average, lines / week</div>
+        </article>
+        <article class="card gold">
+          <div class="label">The target</div>
+          <div class="num">75</div>
+          <div class="people">Lines / week, independent of Matt</div>
+        </article>
+        <article class="card hot">
+          <div class="label">The gap</div>
+          <div class="num">+29.3</div>
+          <div class="people">+64% growth required</div>
+        </article>
+      </div>
+      <p class="talk">Last week we hit 56 lines without Matt. We have the talent in this room to close this gap. We just need consistency.</p>
+    </section>
+
+    <section class="slide" data-title="Math">
+      <div class="eyebrow">Slide 3 · The blueprint</div>
+      <h1>The math behind 75 lines</h1>
+      <div class="row two">
+        <article class="card green">
+          <div class="label">5 leaders × 11</div>
+          <div class="num">55</div>
+          <div class="people">Nash · Steveo · Ky · Shaad · Jordan</div>
+        </article>
+        <article class="card blue">
+          <div class="label">4 developing reps × 5</div>
+          <div class="num">20</div>
+          <div class="people">Gianna · Cameron · Matthew J · Leo</div>
+        </article>
+      </div>
+      <p class="talk">75 sounds like a big jump. Broken down per rep, it is highly achievable. It is a slight bump in individual averages, not a miracle week.</p>
+    </section>
+
+    <section class="slide" data-title="Leaders">
+      <div class="eyebrow">Slide 4 · The core</div>
+      <h1>Stabilizing the top</h1>
+      <div class="row two">
+        <article class="card gold">
+          <div class="label">Weekly target</div>
+          <div class="num">11</div>
+          <div class="people">Average lines per leader</div>
+        </article>
+        <article class="card green">
+          <div class="label">New weekly floor</div>
+          <div class="num">8</div>
+          <div class="people">Minimum. Green light starts here.</div>
+        </article>
+      </div>
+      <div class="names">
+        <span class="chip">Jordan</span>
+        <span class="chip">Steveo</span>
+        <span class="chip">Nash</span>
+        <span class="chip">Ky</span>
+        <span class="chip">Shaad</span>
+      </div>
+      <p class="talk">Eliminate rollercoaster weeks. We cannot have leaders at 14 one week and 1 the next. Consistency is how we scale.</p>
+    </section>
+
+    <section class="slide" data-title="Developing">
+      <div class="eyebrow">Slide 5 · The future</div>
+      <h1>Ramping to 5</h1>
+      <article class="card blue" style="margin-top:22px; max-width: 640px;">
+        <div class="label">Developing rep target</div>
+        <div class="num">5</div>
+        <div class="people">Lines / week · Gianna · Cameron · Matthew J · Leo</div>
+      </article>
+      <div class="shout">Shoutout Gianna Smith — 7 apps this week. Already pacing ahead of the goal.</div>
+      <p class="talk">Master the basics. Raise daily activity. Lean on leaders for mentorship. Get to one app per day.</p>
+    </section>
+
+    <section class="slide" data-title="Action">
+      <div class="eyebrow">Slide 6 · Execution</div>
+      <h1>Winning the week, day by day</h1>
+      <div class="row two">
+        <article class="card gold">
+          <div class="label">Daily team target</div>
+          <div class="num">12.5</div>
+          <div class="people">Lines / day, Monday through Saturday</div>
+        </article>
+        <article class="card hot">
+          <div class="label">Push days</div>
+          <div class="num">Wed + Fri</div>
+          <div class="people">Those are the slump days. Those are the attack days.</div>
+        </article>
+      </div>
+      <ul class="actions">
+        <li><strong>Leaders:</strong> protect the 8-line floor early in the week.</li>
+        <li><strong>Developing reps:</strong> lock in the 1-a-day pace.</li>
+        <li><strong>Whole floor:</strong> treat Wednesday and Friday like Saturday. Show up, then show out.</li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="nav">
+    <button class="ctrl" id="prev" type="button">← Prev</button>
+    <div class="dots" id="dots"></div>
+    <div>Arrow keys · Space · Click dots</div>
+    <button class="ctrl" id="next" type="button">Next →</button>
+  </div>
+
+  <script>
+    const slides = [...document.querySelectorAll(".slide")];
+    const dots = document.getElementById("dots");
+    let i = 0;
+    slides.forEach((_, idx) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.addEventListener("click", () => show(idx));
+      dots.appendChild(b);
+    });
+    function show(n) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, idx) => s.classList.toggle("active", idx === i));
+      [...dots.children].forEach((d, idx) => d.classList.toggle("on", idx === i));
+    }
+    document.getElementById("prev").onclick = () => show(i - 1);
+    document.getElementById("next").onclick = () => show(i + 1);
+    document.addEventListener("keydown", (e) => {
+      if (["ArrowRight", "ArrowDown", " ", "PageDown"].includes(e.key)) { e.preventDefault(); show(i + 1); }
+      if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    });
+    show(0);
+  </script>
+</body>
+</html>
