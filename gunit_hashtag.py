@@ -14,10 +14,11 @@ from update_gunit_board import ALIASES, normalize_name
 
 HASHTAG_RE = re.compile(r"#g[-_]?unit\b", re.IGNORECASE)
 PHONE_RE = re.compile(r"\b(\d+)\s*(?:phones?|phns?|handsets?)\b", re.IGNORECASE)
-APP_RE = re.compile(r"\b(\d+)\s*(?:apps?|lines?|nls?)\b", re.IGNORECASE)
-CX_RE = re.compile(r"\b(\d+)\s*cx\b", re.IGNORECASE)
-NL_TOKEN_RE = re.compile(r"\bNL\s*[:#-]?\s*(\d+)\b", re.IGNORECASE)
-CX_TOKEN_RE = re.compile(r"\bCX\s*[:#-]?\s*(\d+)\b", re.IGNORECASE)
+APP_RE = re.compile(r"\b(\d+)[ \t]+(?:apps?|lines?)\b", re.IGNORECASE)
+CX_RE = re.compile(r"\b(\d+)[ \t]+cx\b", re.IGNORECASE)
+NL_TOKEN_RE = re.compile(r"\bNL[ \t]*[:#-]?[ \t]*(\d+)\b", re.IGNORECASE)
+CX_TOKEN_RE = re.compile(r"\bCX[ \t]*[:#-]?[ \t]*(\d+)\b", re.IGNORECASE)
+SO_LINE_RE = re.compile(r"^\s*(?:s/o|shout\s*out)\b.*$", re.IGNORECASE | re.MULTILINE)
 SOLD_RE = re.compile(r"\b(?:sold|closed|got|did)\s+(\d+)\b", re.IGNORECASE)
 HASH_NUM_RE = re.compile(r"#g[-_]?unit\b[^\d]{0,12}(\d+)", re.IGNORECASE)
 NUM_HASH_RE = re.compile(r"\b(\d+)\s*#g[-_]?unit\b", re.IGNORECASE)
@@ -111,7 +112,7 @@ def extract_phone_count(text: str) -> int:
 
 
 def find_mentioned_name(text: str, fallback: str = "") -> str:
-    haystack = text or ""
+    haystack = SO_LINE_RE.sub("", text or "")
     for name in KNOWN_NAMES:
         pattern = re.compile(rf"\b{re.escape(name)}\b", re.IGNORECASE)
         if pattern.search(haystack):

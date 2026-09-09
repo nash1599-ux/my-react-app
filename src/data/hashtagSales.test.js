@@ -38,6 +38,25 @@ describe("g-unit hashtag parser", () => {
     expect(parsed.name).toBe("Jordan Aguirre");
   });
 
+  test("counts Nate's live D2D #G-unit shout-out and ignores S/O names", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O @Drew Tepper For the business opportunity
+S/O @Matthew Grant for the porting assist
+S/O
+Devin Kenzie, Matt, Ashunte
+Cx 1
+NL 1
+NL 2 iPhone 17 pro 2x
+#G-unit`,
+      { author: "Nate" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Nate");
+  });
+
   test("maps nicknames and optional CX", () => {
     const parsed = parseHashtagSale("Gigi sold 2 phones 1 CX #g-unit", {
       author: "Someone Else",

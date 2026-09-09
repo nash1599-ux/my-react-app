@@ -8,10 +8,11 @@ export const DEST_CHANNEL_ID = "C0BS4E8LH42";
 export const SALES_LOG_LIMIT = 100;
 
 const PHONE_RE = /\b(\d+)\s*(?:phones?|phns?|handsets?)\b/i;
-const APP_RE = /\b(\d+)\s*(?:apps?|lines?|nls?)\b/i;
-const CX_RE = /\b(\d+)\s*cx\b/i;
-const NL_TOKEN_RE = /\bNL\s*[:#-]?\s*(\d+)\b/gi;
-const CX_TOKEN_RE = /\bCX\s*[:#-]?\s*(\d+)\b/gi;
+const APP_RE = /\b(\d+)[ \t]+(?:apps?|lines?)\b/i;
+const CX_RE = /\b(\d+)[ \t]+cx\b/i;
+const NL_TOKEN_RE = /\bNL[ \t]*[:#-]?[ \t]*(\d+)\b/gi;
+const CX_TOKEN_RE = /\bCX[ \t]*[:#-]?[ \t]*(\d+)\b/gi;
+const SO_LINE_RE = /^\s*(?:s\/o|shout\s*out)\b.*$/gim;
 const SOLD_RE = /\b(?:sold|closed|got|did)\s+(\d+)\b/i;
 const HASH_NUM_RE = /#g[-_]?unit\b[^\d]{0,12}(\d+)/i;
 const NUM_HASH_RE = /\b(\d+)\s*#g[-_]?unit\b/i;
@@ -100,7 +101,7 @@ export function extractPhoneCount(text) {
 }
 
 function findMentionedName(text, fallback) {
-  const haystack = String(text || "").toLowerCase();
+  const haystack = String(text || "").replace(SO_LINE_RE, "").toLowerCase();
   const ranked = [...KNOWN_NAMES].sort((a, b) => b.length - a.length);
   for (const name of ranked) {
     const pattern = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");

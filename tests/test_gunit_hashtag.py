@@ -40,6 +40,24 @@ class HashtagParserTests(unittest.TestCase):
         self.assertEqual(event["cx"], 1)
         self.assertEqual(event["name"], "Jordan Aguirre")
 
+    def test_nate_d2d_shoutout_ignores_so_names(self):
+        event = parse_hashtag_sale(
+            """D2D
+S/O @Drew Tepper For the business opportunity
+S/O @Matthew Grant for the porting assist
+S/O
+Devin Kenzie, Matt, Ashunte
+Cx 1
+NL 1
+NL 2 iPhone 17 pro 2x
+#G-unit""",
+            {"author": "Nate"},
+        )
+        self.assertTrue(event["matched"])
+        self.assertEqual(event["phones"], 2)
+        self.assertEqual(event["cx"], 1)
+        self.assertEqual(event["name"], "Nate")
+
     def test_nickname_and_cx(self):
         event = parse_hashtag_sale("Gigi sold 2 phones 1 CX #g-unit", {"author": "Other"})
         self.assertTrue(event["matched"])
