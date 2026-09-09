@@ -19,6 +19,8 @@ describe("salesboard scoring", () => {
   test("maps known nicknames", () => {
     expect(normalizeName("steve nash")).toBe("Nashly Paul");
     expect(normalizeName("steveo")).toBe("Ismael Ramos");
+    expect(normalizeName("Ismael")).toBe("Ismael Ramos");
+    expect(normalizeName("Shaad Hyppolite")).toBe("Rashaad Hypolite");
     expect(normalizeName("Ky. Tisdale")).toBe("Kyron Tisdale");
     expect(normalizeName("jordan")).toBe("Jordan Aguirre");
     expect(normalizeName("Jordan #23")).toBe("Jordan Aguirre");

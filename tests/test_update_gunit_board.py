@@ -2,6 +2,7 @@ import unittest
 
 from update_gunit_board import (
     apply_departures_and_folds,
+    board_sync_key,
     build_authorization_url,
     credential_kind,
     extract_oauth_code,
@@ -72,6 +73,9 @@ class NormalizeNameTests(unittest.TestCase):
         self.assertEqual(normalize_name("quay"), "Jaquay Tyler")
         self.assertEqual(normalize_name("Ky. Tisdale"), "Kyron Tisdale")
         self.assertEqual(normalize_name("steve nash"), "Nashly Paul")
+        self.assertEqual(normalize_name("Ismael"), "Ismael Ramos")
+        self.assertEqual(normalize_name("ismael"), "Ismael Ramos")
+        self.assertEqual(normalize_name("Shaad Hyppolite"), "Rashaad Hypolite")
         self.assertEqual(normalize_name("jordan"), "Jordan Aguirre")
         self.assertEqual(normalize_name("Gigi Smith"), "Gianna Smith")
         self.assertEqual(normalize_name("Jordan #23"), "Jordan Aguirre")
@@ -96,10 +100,12 @@ class ParseBoardTests(unittest.TestCase):
         self.assertEqual(rows[2]["name"], "Nashly Paul")
         self.assertEqual(rows[3]["name"], "Jayden Dale")
 
-    def test_flags_cx_exceeding_apps(self):
+    def test_allows_cx_exceeding_apps(self):
         _, rows = parse_board(SAMPLE_BOARD)
         pat = next(row for row in rows if row["name"] == "Pat Lee")
-        self.assertTrue(any("DATA ERROR" in flag for flag in pat["flags"]))
+        self.assertEqual(pat["apps"], 3)
+        self.assertEqual(pat["cx"], 4)
+        self.assertFalse(any("DATA ERROR" in flag for flag in pat["flags"]))
 
     def test_detects_departure_and_fold_target(self):
         _, rows = parse_board(SAMPLE_BOARD)
@@ -145,7 +151,6 @@ class ProcessBoardTests(unittest.TestCase):
         self.assertEqual(ranked[0]["name"], "Jaquay Tyler")
         self.assertEqual(ranked[0]["apps"], 14)
         self.assertEqual(ranked[0]["tier_bonus"], 100)
-        self.assertTrue(any("Pat Lee" in note for note in notes))
         self.assertTrue(any("Folded Alex Rivera" in note for note in notes))
 
 
@@ -192,9 +197,9 @@ class SlackMondayBoardTests(unittest.TestCase):
         self.assertEqual(by_name["Jordan Aguirre"]["apps"], 0)
         self.assertEqual(by_name["Jordan Aguirre"]["cx"], 1)
         self.assertEqual(by_name["Cam Winfield"]["apps"], 2)
-        self.assertTrue(any("DATA ERROR" in flag for flag in by_name["Jordan Aguirre"]["flags"]))
-        self.assertTrue(any("DATA ERROR" in flag for flag in by_name["Ismael Ramos"]["flags"]))
-        self.assertTrue(any("DATA ERROR" in flag for flag in by_name["Kyron Tisdale"]["flags"]))
+        self.assertEqual(by_name["Jordan Aguirre"]["flags"], [])
+        self.assertEqual(by_name["Ismael Ramos"]["flags"], [])
+        self.assertEqual(by_name["Kyron Tisdale"]["flags"], [])
 
     def test_parses_saturday_satdi_paste(self):
         banner, rows = parse_board(SATURDAY_SLACK_BOARD)
@@ -214,6 +219,9 @@ class SlackMondayBoardTests(unittest.TestCase):
         self.assertEqual(banner["day"], "Saturday")
         self.assertEqual(ranked[0]["name"], "Matthew Grant")
         self.assertEqual(ranked[0]["apps"], 8)
+        self.assertEqual(ranked[1]["name"], "Ismael Ramos")
+        self.assertEqual(ranked[1]["cx"], 4)
+        self.assertEqual(ranked[2]["name"], "Gianna Smith")
         self.assertEqual(sum(row["apps"] for row in ranked), 39)
         self.assertEqual(sum(row["cx"] for row in ranked), 23)
 
@@ -224,7 +232,7 @@ class SlackMondayBoardTests(unittest.TestCase):
         self.assertEqual(ranked[0]["name"], "Gianna Smith")
         self.assertEqual(ranked[0]["apps"], 6)
         self.assertEqual(ranked[1]["name"], "Cam Winfield")
-        self.assertTrue(any("Jordan" in note or "DATA ERROR" in note for note in notes))
+        self.assertEqual(notes, [])
 
 
 class CredentialKindTests(unittest.TestCase):
@@ -297,6 +305,61 @@ class FullTsvBoardTests(unittest.TestCase):
         self.assertEqual(ranked[0]["display_name"], "Jordan Aguirre")
         self.assertEqual(ranked[0]["rank"], 1)
         self.assertEqual(ranked[1]["display_name"], "Steveo Ramos")
+
+
+WRONG_WEDNESDAY_BOARD = """
+G-UNIT SALES BOARD
+DG:9/12 | 58 NL LEFT | WEDNESDAY
+1. Nate 3 Apps | 4 CX
+2. Guy Lesperance 2 Apps | 4 CX
+3. Mackenzie Faith 2 Apps | 1 CX
+4. Ashunte Reyes 1 App | 1 CX
+5. Kyron Tisdale 1 App | 1 CX
+6. Matthew Grant 1 App | 1 CX
+7. Jordan #23 1 App | 1 CX
+8. Ismael 1 App | 1 CX
+9. Steveo Ramos 0 App | 0 CX
+10. Shaad Hyppolite 0 Apps | 0 CX
+11. Steve Nash 0 App | 0 CX
+12. Judah Rodgers 0 App | 0 CX
+13. Matthew ² 0 App | 0 CX
+"""
+
+
+class RankingAndAliasFixTests(unittest.TestCase):
+    def test_ranks_cx_when_apps_are_tied(self):
+        text = """
+        DG:6/12 | 61 NL LEFT | WEDNESDAY
+        1. Guy Lesperance 2 Apps | 4 CX
+        2. Mackenzie Faith 2 Apps | 1 CX
+        3. Nate 2 Apps | 2 CX
+        """
+        _banner, rows, _notes = process_board(text)
+        ranked = rank_rows(rows)
+        self.assertEqual([row["display_name"] for row in ranked[:3]], [
+            "Guy Lesperance",
+            "Nate",
+            "Mackenzie Faith",
+        ])
+
+    def test_merges_ismael_into_steveo_ramos(self):
+        _banner, rows, notes = process_board(WRONG_WEDNESDAY_BOARD)
+        names = [row["name"] for row in rows]
+        self.assertEqual(names.count("Ismael Ramos"), 1)
+        self.assertNotIn("Ismael", names)
+        steveo = next(row for row in rows if row["name"] == "Ismael Ramos")
+        self.assertEqual(steveo["apps"], 1)
+        self.assertEqual(steveo["cx"], 1)
+        self.assertEqual(steveo["display_name"], "Steveo Ramos")
+        self.assertTrue(any("Merged duplicate" in note for note in notes))
+        self.assertEqual(len(rows), 12)
+
+    def test_duplicate_key_uses_dg_nl_day_and_today(self):
+        banner = {"dg_num": 7, "dg_den": 12, "nl_left": 60, "day": "Wednesday"}
+        key = board_sync_key(banner)
+        self.assertEqual(key[0], 7)
+        self.assertEqual(key[2], 60)
+        self.assertEqual(key[3], "wednesday")
 
 
 if __name__ == "__main__":

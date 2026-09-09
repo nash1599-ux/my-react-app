@@ -58,11 +58,18 @@ ALIASES = {
     "ky. tisdale": "Kyron Tisdale",
     "ky tisdale": "Kyron Tisdale",
     "steve nash": "Nashly Paul",
+    "nash": "Nashly Paul",
     "steveo": "Ismael Ramos",
     "steveo ramos": "Ismael Ramos",
     "steve ramos": "Ismael Ramos",
+    "ismael": "Ismael Ramos",
+    "ish": "Ismael Ramos",
     "shaad": "Rashaad Hypolite",
     "shaad hypolite": "Rashaad Hypolite",
+    "shaad hyppolite": "Rashaad Hypolite",
+    "rashaad": "Rashaad Hypolite",
+    "rashaad hypolite": "Rashaad Hypolite",
+    "rashaad hyppolite": "Rashaad Hypolite",
     "jayden": "Jayden Dale",
     "jordan": "Jordan Aguirre",  # confirmed distinct from "Jordan Reeces" - do not merge
     "jordan #23": "Jordan Aguirre",
@@ -77,6 +84,16 @@ ALIASES = {
 
 CX_TIERS = [(9, 100), (7, 75), (5, 50), (4, 30)]
 MEDALS = {1: "🥇", 2: "🥈", 3: "🥉"}
+
+# Slack board shows nicknames; the sheet uses the canonical name above.
+PREFERRED_DISPLAY_NAMES = {
+    "Ismael Ramos": "Steveo Ramos",
+    "Nashly Paul": "Steve Nash",
+    "Rashaad Hypolite": "Shaad Hyppolite",
+    "Jordan Aguirre": "Jordan #23",
+    "Kyron Tisdale": "Ky. Tisdale",
+    "Matthew 2": "Matthew ²",
+}
 
 SHEETS_SCOPES = (
     "https://www.googleapis.com/auth/spreadsheets",
@@ -261,10 +278,7 @@ def parse_text_board(text: str):
                 "flags": [],
             }
         )
-        if cx > apps:
-            row["flags"].append(
-                f"DATA ERROR: CX ({cx}) exceeds Apps ({apps}) - needs correction at source"
-            )
+        # CX can exceed Apps (one customer, multiple lines). Do not flag it.
         rows.append(row)
 
     return banner, rows
@@ -395,10 +409,7 @@ def parse_tsv_board(text: str):
                 "flags": [],
             }
         )
-        if cx > apps:
-            row["flags"].append(
-                f"DATA ERROR: CX ({cx}) exceeds Apps ({apps}) - needs correction at source"
-            )
+        # CX can exceed Apps (one customer, multiple lines). Do not flag it.
         rows.append(row)
 
     return banner, rows
@@ -514,18 +525,62 @@ def apply_departures_and_folds(rows):
     return final_rows, log_entries
 
 
+def merge_alias_duplicates(rows):
+    """Collapse Ismael + Steveo Ramos (and other aliases) into one roster row.
+
+    Snapshot boards are cumulative, so when two labels are the same person we
+    keep the higher Apps/CX rather than summing (that would double-count).
+    """
+    merged = {}
+    notes = []
+    order = []
+    for row in rows:
+        key = row["name"]
+        if key not in merged:
+            merged[key] = row
+            order.append(key)
+            preferred = PREFERRED_DISPLAY_NAMES.get(key)
+            current = (row.get("display_name") or "").strip()
+            if preferred and current.lower() in ALIASES:
+                row["display_name"] = preferred
+            continue
+        existing = merged[key]
+        incoming_label = row.get("display_name") or key
+        kept_label = existing.get("display_name") or key
+        notes.append(
+            f"Merged duplicate roster row '{incoming_label}' into '{kept_label}' "
+            f"({key})."
+        )
+        existing["apps"] = max(existing["apps"], row["apps"])
+        existing["cx"] = max(existing["cx"], row["cx"])
+        preferred = PREFERRED_DISPLAY_NAMES.get(key)
+        if preferred:
+            existing["display_name"] = preferred
+        elif len(incoming_label) > len(kept_label):
+            existing["display_name"] = incoming_label
+        if row.get("flags"):
+            existing["flags"].extend(row["flags"])
+    return [merged[key] for key in order], notes
+
+
+def rank_key(row):
+    return (
+        -(row.get("apps") or 0),
+        -(row.get("cx") or 0),
+        -(row.get("last_week_apps") or 0),
+        row.get("name") or "",
+    )
+
+
 def rank_rows(rows, blended_rate=BLENDED_RATE_DEFAULT):
-    if rows and all(row.get("rank") for row in rows):
-        ranked = sorted(rows, key=lambda row: (row["rank"], -(row["apps"]), row["name"]))
-        use_existing_rank = True
-    else:
-        ranked = sorted(rows, key=lambda row: (-row["apps"], row["name"]))
-        use_existing_rank = False
+    # Always recompute place from Apps, then CX. Pasted medal numbers can be
+    # stale (Ismael added as a 13th row, or CX ties left in roster order).
+    ranked = sorted(rows, key=rank_key)
 
     table = []
     for index, row in enumerate(ranked, start=1):
         enrich_row(row, blended_rate)
-        rank = row["rank"] if use_existing_rank else index
+        rank = index
         table.append(
             {
                 "rank": rank,
@@ -999,12 +1054,71 @@ def load_board_text(args) -> str:
     raise SystemExit("Provide --board-text, --board-file, or pipe board text on stdin.")
 
 
+def board_sync_key(banner):
+    """Identity used to skip an already-processed DG/NL Left/day paste today."""
+    day = normalize_day(str(banner.get("day") or "")).strip().lower()
+    return (
+        banner.get("dg_num"),
+        banner.get("dg_den"),
+        banner.get("nl_left"),
+        day,
+        str(date.today()),
+    )
+
+
+def read_last_sync_key(ws):
+    """Read the last processed DG/NL Left/day/date from either sheet layout."""
+    try:
+        values = ws.get_all_values()
+    except Exception:
+        return None
+    if not values:
+        return None
+
+    today = str(date.today())
+    synced_today = any(today in str(cell) for row in values for cell in row)
+
+    # Simple layout writes DG / NL Left / day / date to I1:L1.
+    try:
+        meta = ws.get("I1:L1")
+    except Exception:
+        meta = []
+    if meta and meta[0]:
+        cells = list(meta[0]) + [""] * 4
+        dg_match = re.search(r"(\d+)\s*/\s*(\d+)", str(cells[0]))
+        nl_match = re.search(r"(\d+)", str(cells[1]))
+        if dg_match and nl_match:
+            day = normalize_day(str(cells[2])).strip().lower()
+            synced = str(cells[3]).strip() or (today if synced_today else "")
+            if synced == today:
+                return (
+                    int(dg_match.group(1)),
+                    int(dg_match.group(2)),
+                    int(nl_match.group(1)),
+                    day,
+                    today,
+                )
+
+    for row in values[:6]:
+        banner_match = BANNER_RE.search(" ".join(str(cell) for cell in row))
+        if banner_match and synced_today:
+            return (
+                int(banner_match.group("dg_num")),
+                int(banner_match.group("dg_den")),
+                int(banner_match.group("nl")),
+                normalize_day(banner_match.group("day")).strip().lower(),
+                today,
+            )
+    return None
+
+
 def process_board(text, previous_by_name=None):
     banner, rows = parse_board(text)
     if not rows:
         return banner, [], ["No leaderboard rows parsed - check the board format."]
 
     previous_by_name = previous_by_name or {}
+    rows, merge_notes = merge_alias_duplicates(rows)
     correction_flags = validate_against_previous(rows, previous_by_name)
     # Full TSV exports are already the standing board; do not re-fold notes.
     if banner.get("layout") == "full":
@@ -1012,7 +1126,7 @@ def process_board(text, previous_by_name=None):
     else:
         final_rows, fold_log = apply_departures_and_folds(rows)
 
-    all_notes = correction_flags + fold_log
+    all_notes = merge_notes + correction_flags + fold_log
     for row in final_rows:
         if row["flags"]:
             all_notes.extend(
@@ -1056,6 +1170,12 @@ def main(argv=None):
     if not args.dry_run:
         ws = get_worksheet(oauth_code=args.oauth_code)
         previous = read_previous_state(ws)
+        last_key = read_last_sync_key(ws)
+        if last_key and last_key == board_sync_key(banner):
+            print(
+                "DUPLICATE: same DG/NL Left/day combination was already processed today."
+            )
+            return 0
 
     banner, final_rows, all_notes = process_board(text, previous)
     table = rank_rows(final_rows, banner.get("blended_rate", BLENDED_RATE_DEFAULT))
