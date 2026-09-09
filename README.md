@@ -4,7 +4,7 @@ Live tracker for G-Unit phone sales. When someone posts in `#precisionmanagement
 
 ## Slack flow
 
-1. A rep posts in `#precisionmanagement-att-sales`, for example `2 phones #g-unit` or `Gigi sold 1 #g-unit`.
+1. A rep posts in `#precisionmanagement-att-sales`, for example `2 phones #g-unit`, `Gigi sold 1 #g-unit`, or a shout-out with `NL1` / `NL2` / `CX1` plus `#g-unit`.
 2. The parser reads the phone count (phones count as apps on the board). Optional `1 CX` is recorded too.
 3. A live update is posted to `#g-unit-saleschannel`.
 4. The same sale is appended to the **G-Unit Sales Log** tab in the G-Unit Google Sheet.
