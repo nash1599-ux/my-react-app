@@ -10,6 +10,11 @@ import {
   saveBoard,
   setTeamWeeklyGoal,
 } from "./data/board";
+import {
+  applyHashtagSale,
+  phonesToday,
+  SOURCE_CHANNEL,
+} from "./data/hashtagSales";
 
 const DAY_LABELS = [
   ["mon", "Mon"],
@@ -70,6 +75,9 @@ export default function Salesboard() {
   const [editorOpen, setEditorOpen] = useState(false);
   const [notice, setNotice] = useState("");
   const [goalDraft, setGoalDraft] = useState(String(board.teamWeeklyGoal));
+  const [saleDraft, setSaleDraft] = useState("");
+  const [saleAuthor, setSaleAuthor] = useState("");
+  const todayPhones = phonesToday(board);
 
   const lastWeek = board.lastWeek;
   const weekly = board.weeklyGoal;
@@ -122,6 +130,26 @@ export default function Salesboard() {
       setTeamWeeklyGoal(board, goalDraft),
       `This week's team goal set to ${Number(goalDraft) || 0} NL.`
     );
+  }
+
+  function handleHashtagSale(event) {
+    event.preventDefault();
+    try {
+      const result = applyHashtagSale(board, {
+        text: saleDraft,
+        author: saleAuthor,
+        ts: `local-${Date.now()}`,
+      });
+      applyBoard(
+        result.board,
+        `${result.event.displayName} +${result.event.phones} phone${
+          result.event.phones === 1 ? "" : "s"
+        } from #g-unit.`
+      );
+      setSaleDraft("");
+    } catch (error) {
+      setNotice(error.message);
+    }
   }
 
   return (
@@ -213,6 +241,49 @@ export default function Salesboard() {
           <p>Est. team $</p>
           <strong>{formatMoney(board.totals.earned)}</strong>
         </article>
+      </section>
+
+      <section className="sales-log" aria-label="Live g-unit sales">
+        <div className="section-head">
+          <h2>Live #g-unit sales</h2>
+          <p>
+            Watching #{SOURCE_CHANNEL} · {todayPhones} phone{todayPhones === 1 ? "" : "s"} today
+          </p>
+        </div>
+        <form className="sale-form" onSubmit={handleHashtagSale}>
+          <label htmlFor="sale-author">Rep or Slack name</label>
+          <input
+            id="sale-author"
+            value={saleAuthor}
+            onChange={(event) => setSaleAuthor(event.target.value)}
+            placeholder="Gigi"
+          />
+          <label htmlFor="sale-text">#g-unit post</label>
+          <input
+            id="sale-text"
+            value={saleDraft}
+            onChange={(event) => setSaleDraft(event.target.value)}
+            placeholder="2 phones #g-unit"
+          />
+          <button type="submit">Log sale</button>
+        </form>
+        {board.salesLog?.length ? (
+          <ul className="sale-list">
+            {board.salesLog.slice(0, 12).map((sale) => (
+              <li key={sale.id || `${sale.ts}-${sale.name}`}>
+                <strong>
+                  {sale.displayName} +{sale.phones}
+                </strong>
+                <span>{sale.text}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="notice">
+            No live #g-unit posts yet. When someone sells in #{SOURCE_CHANNEL},
+            the phone count lands here and in #g-unit-saleschannel.
+          </p>
+        )}
       </section>
 
       <section className="leaderboard" aria-label="This week leaderboard">

@@ -49,3 +49,19 @@ test('saves a pasted board as last week final without changing this week', () =>
   expect(screen.getAllByText("20").length).toBeGreaterThan(0);
   expect(screen.getByText(/This week apps/i).closest("article")).toHaveTextContent("39");
 });
+
+test('logs a #g-unit phone sale onto the live board', () => {
+  render(<App />);
+
+  fireEvent.change(screen.getByLabelText(/rep or slack name/i), {
+    target: { value: "Gigi" },
+  });
+  fireEvent.change(screen.getByLabelText(/#g-unit post/i), {
+    target: { value: "2 phones #g-unit" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: /log sale/i }));
+
+  expect(screen.getByText(/Gianna Smith \+2 phones from #g-unit/i)).toBeInTheDocument();
+  expect(screen.getByText(/Live #g-unit sales/i)).toBeInTheDocument();
+  expect(screen.getByText(/2 phones #g-unit/i)).toBeInTheDocument();
+});

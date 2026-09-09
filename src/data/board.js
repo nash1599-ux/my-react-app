@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v4";
+export const STORAGE_KEY = "gunit-salesboard-v5";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -15,8 +15,10 @@ export const ALIASES = {
   "ky. tisdale": "Kyron Tisdale",
   "ky tisdale": "Kyron Tisdale",
   "steve nash": "Nashly Paul",
+  steveo: "Ismael Ramos",
   "steveo ramos": "Ismael Ramos",
   "steve ramos": "Ismael Ramos",
+  shaad: "Rashaad Hypolite",
   "shaad hypolite": "Rashaad Hypolite",
   jayden: "Jayden Dale",
   jordan: "Jordan Aguirre",

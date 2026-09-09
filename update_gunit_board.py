@@ -58,8 +58,10 @@ ALIASES = {
     "ky. tisdale": "Kyron Tisdale",
     "ky tisdale": "Kyron Tisdale",
     "steve nash": "Nashly Paul",
+    "steveo": "Ismael Ramos",
     "steveo ramos": "Ismael Ramos",
     "steve ramos": "Ismael Ramos",
+    "shaad": "Rashaad Hypolite",
     "shaad hypolite": "Rashaad Hypolite",
     "jayden": "Jayden Dale",
     "jordan": "Jordan Aguirre",  # confirmed distinct from "Jordan Reeces" - do not merge
