@@ -361,6 +361,25 @@ class RankingAndAliasFixTests(unittest.TestCase):
         self.assertEqual(key[2], 60)
         self.assertEqual(key[3], "wednesday")
 
+    def test_corrected_wednesday_counts_jordan_and_steveo_two_phones(self):
+        text = """
+        DG:7/12 | 60 NL LEFT | WEDNESDAY
+        1. Nate 3 Apps | 3 CX
+        2. Guy Lesperance 2 Apps | 4 CX
+        3. Jordan #23 2 Apps | 1 CX
+        4. Steveo Ramos 2 Apps | 1 CX
+        5. Mackenzie Faith 2 Apps | 1 CX
+        """
+        _banner, rows, _notes = process_board(text)
+        ranked = rank_rows(rows)
+        jordan = next(row for row in ranked if row["name"] == "Jordan Aguirre")
+        steveo = next(row for row in ranked if row["name"] == "Ismael Ramos")
+        self.assertEqual(jordan["apps"], 2)
+        self.assertEqual(jordan["cx"], 1)
+        self.assertEqual(steveo["apps"], 2)
+        self.assertEqual(steveo["cx"], 1)
+        self.assertEqual(steveo["display_name"], "Steveo Ramos")
+
 
 if __name__ == "__main__":
     unittest.main()

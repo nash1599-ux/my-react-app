@@ -1,4 +1,4 @@
-import { OFFICIAL_SNAPSHOT, summarizeBoard } from "./board";
+import { SATURDAY_SNAPSHOT, summarizeBoard } from "./board";
 import {
   applyHashtagSale,
   extractPhoneCount,
@@ -75,7 +75,7 @@ NL 2 iPhone 17 pro 2x
   });
 
   test("adds phones onto the running board and formats a channel update", () => {
-    const before = summarizeBoard(OFFICIAL_SNAPSHOT);
+    const before = summarizeBoard(SATURDAY_SNAPSHOT);
     const gigiBefore = before.reps.find((rep) => rep.name === "Gianna Smith");
     const { board, event, slackMessage } = applyHashtagSale(
       before,
@@ -93,8 +93,55 @@ NL 2 iPhone 17 pro 2x
     expect(slackMessage).toMatch(/\+2 phones/);
   });
 
+  test("counts Jordan's and Steveo's Wednesday D2D posts as 2 phones each", () => {
+    const jordanSale = parseHashtagSale(
+      `D2D
+CX1
+NL1 17 Pro Max EXTRA
+NL2 S16+ EXTRA
+#G-Unit`,
+      { author: "Jordan #23" }
+    );
+    const steveoSale = parseHashtagSale(
+      `D2D
+Cx1
+NL 1 iPhone 17e/512 Extra
+NL 2 iPhone 17e/512 Extra
+#G-UNIT`,
+      { author: "Ismael" }
+    );
+
+    expect(jordanSale.phones).toBe(2);
+    expect(jordanSale.cx).toBe(1);
+    expect(jordanSale.name).toBe("Jordan Aguirre");
+    expect(steveoSale.phones).toBe(2);
+    expect(steveoSale.cx).toBe(1);
+    expect(steveoSale.name).toBe("Ismael Ramos");
+
+    const emptyWeek = summarizeBoard({
+      ...SATURDAY_SNAPSHOT,
+      reps: SATURDAY_SNAPSHOT.reps.map((rep) => ({ ...rep, apps: 0, cx: 0 })),
+    });
+    const afterJordan = applyHashtagSale(emptyWeek, {
+      text: jordanSale.text,
+      author: "Jordan #23",
+      ts: "jordan-wed",
+    });
+    const afterSteveo = applyHashtagSale(afterJordan.board, {
+      text: steveoSale.text,
+      author: "Ismael",
+      ts: "steveo-wed",
+    });
+    expect(
+      afterSteveo.board.reps.find((rep) => rep.name === "Jordan Aguirre").apps
+    ).toBe(2);
+    expect(
+      afterSteveo.board.reps.find((rep) => rep.name === "Ismael Ramos").apps
+    ).toBe(2);
+  });
+
   test("skips duplicate Slack timestamps", () => {
-    const first = applyHashtagSale(OFFICIAL_SNAPSHOT, {
+    const first = applyHashtagSale(SATURDAY_SNAPSHOT, {
       text: "1 phone #g-unit",
       author: "Cam",
       ts: "dup-1",

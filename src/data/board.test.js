@@ -5,6 +5,9 @@ import {
   formatSignedPercent,
   MONDAY_BOARD_TEXT,
   SATURDAY_BOARD_TEXT,
+  SATURDAY_SNAPSHOT,
+  WEDNESDAY_BOARD_TEXT,
+  formatSlackBoard,
   normalizeName,
   OFFICIAL_SNAPSHOT,
   parseBoardText,
@@ -56,8 +59,8 @@ describe("salesboard scoring", () => {
     expect(formatSignedPercent(null)).toBe("new");
   });
 
-  test("loads the Saturday Slack board as the official snapshot", () => {
-    const board = summarizeBoard(OFFICIAL_SNAPSHOT);
+  test("loads the Saturday Slack board snapshot", () => {
+    const board = summarizeBoard(SATURDAY_SNAPSHOT);
     expect(board.day).toBe("Saturday");
     expect(board.dgNum).toBe(6);
     expect(board.dgDen).toBe(12);
@@ -72,6 +75,37 @@ describe("salesboard scoring", () => {
     expect(board.reps.find((rep) => rep.name === "Matthew 2").apps).toBe(1);
     expect(board.reps.find((rep) => rep.name === "Leo Chowdury").apps).toBe(1);
     expect(board.reps.find((rep) => rep.name === "Ismael Ramos").cx).toBe(4);
+  });
+
+  test("corrects Wednesday so Jordan and Steveo each have 2 phones", () => {
+    const board = summarizeBoard(OFFICIAL_SNAPSHOT);
+    const jordan = board.reps.find((rep) => rep.name === "Jordan Aguirre");
+    const steveo = board.reps.find((rep) => rep.name === "Ismael Ramos");
+    expect(board.day).toBe("Wednesday");
+    expect(board.dgNum).toBe(7);
+    expect(board.weeklyGoal.nlLeft).toBe(60);
+    expect(jordan.apps).toBe(2);
+    expect(jordan.cx).toBe(1);
+    expect(jordan.displayName).toBe("Jordan #23");
+    expect(steveo.apps).toBe(2);
+    expect(steveo.cx).toBe(1);
+    expect(steveo.displayName).toBe("Steveo Ramos");
+    expect(jordan.rank).toBeLessThan(steveo.rank);
+    expect(steveo.rank).toBeLessThan(
+      board.reps.find((rep) => rep.name === "Mackenzie Faith").rank
+    );
+    const posted = formatSlackBoard(board);
+    expect(posted).toMatch(/Jordan #23 2 Apps \| 1 CX/);
+    expect(posted).toMatch(/Steveo Ramos 2 Apps \| 1 CX/);
+  });
+
+  test("parses the corrected Wednesday Slack board", () => {
+    const board = parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING);
+    expect(board.reps.find((rep) => rep.name === "Jordan Aguirre").apps).toBe(2);
+    expect(board.reps.find((rep) => rep.name === "Ismael Ramos").apps).toBe(2);
+    expect(board.reps.find((rep) => rep.name === "Ismael Ramos").displayName).toBe(
+      "Steveo Ramos"
+    );
   });
 
   test("parses Saturday SATDI paste including Cam and Matthew 2", () => {

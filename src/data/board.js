@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v5";
+export const STORAGE_KEY = "gunit-salesboard-v6";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -49,17 +49,25 @@ const SLACK_MEDAL_REPLACEMENTS = [
 ];
 const DAY_ALIASES = {
   mondi: "Monday",
+  monday: "Monday",
   mon: "Monday",
   tue: "Tuesday",
   tues: "Tuesday",
+  tuesday: "Tuesday",
+  tuesdi: "Tuesday",
   wed: "Wednesday",
+  wednesday: "Wednesday",
   thu: "Thursday",
   thur: "Thursday",
   thurs: "Thursday",
+  thursday: "Thursday",
   fri: "Friday",
+  friday: "Friday",
   sat: "Saturday",
+  saturday: "Saturday",
   satdi: "Saturday",
   sun: "Sunday",
+  sunday: "Sunday",
 };
 
 export function preprocessSlackBoard(text) {
@@ -421,6 +429,53 @@ export const MONDAY_BOARD_TEXT = `
 8. Steve Nash             0 App  | 0 CX
 `;
 
+// Live Wednesday board. Jordan and Steveo each sold 2 phones (NL1 + NL2).
+// Phones count as apps, so both are 2 Apps | 1 CX, not 1 App.
+export const WEDNESDAY_BOARD_TEXT = `
+╔══════════════════════════════════════╗
+║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
+║ :bar_chart: DG:7/12 |60 NL LEFT | WEDNESDAY ║
+╚══════════════════════════════════════╝
+:trophy: LEADERBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+:first_place_medal: Nate 3 Apps | 3 CX
+:second_place_medal: Guy Lesperance 2 Apps | 4 CX
+:third_place_medal: Jordan #23 2 Apps | 1 CX
+4. Steveo Ramos 2 Apps | 1 CX
+5. Mackenzie Faith 2 Apps | 1 CX
+6. Ashunte Reyes 1 App | 1 CX
+7. Kyron Tisdale 1 App | 1 CX
+8. Matthew Grant 1 App | 1 CX
+9. Judah Rodgers 0 App | 0 CX
+10. Matthew ² 0 App | 0 CX
+11. Steve Nash 0 App | 0 CX
+12. Shaad Hyppolite 0 Apps | 0 CX
+`;
+
+export function formatSlackBoard(board) {
+  const medal = (rank) =>
+    ({
+      1: ":first_place_medal:",
+      2: ":second_place_medal:",
+      3: ":third_place_medal:",
+    }[rank] || `${rank}.`);
+  const rows = (board.reps || []).map((rep) => {
+    const appLabel = Number(rep.apps) === 1 ? "App" : "Apps";
+    return `${medal(rep.rank)} ${rep.displayName} ${rep.apps} ${appLabel} | ${rep.cx} CX`;
+  });
+  const nlLeft = board.weeklyGoal?.nlLeft ?? board.nlLeft ?? "";
+  const day = String(board.day || "").toUpperCase();
+  return [
+    "╔══════════════════════════════════════╗",
+    "║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║",
+    `║ :bar_chart: DG:${board.dgNum}/${board.dgDen} |${nlLeft} NL LEFT | ${day} ║`,
+    "╚══════════════════════════════════════╝",
+    ":trophy: LEADERBOARD",
+    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    ...rows,
+  ].join("\n");
+}
+
 function parseRows(source) {
   const text = preprocessSlackBoard(source);
   const bannerMatch = text.match(BANNER_RE);
@@ -507,7 +562,7 @@ export function parseBoardText(text, previous = OFFICIAL_SNAPSHOT) {
   return next;
 }
 
-export const OFFICIAL_SNAPSHOT = summarizeBoard({
+export const SATURDAY_SNAPSHOT = summarizeBoard({
   ...parseBoardText(SATURDAY_BOARD_TEXT, WEEK_OPENING),
   weekLabel: "Week of Aug 24",
   sourceLabel: "Saturday Slack board",
@@ -515,6 +570,20 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   notes: [
     "Saturday standings from Slack. 39 apps / 23 CX, 26 NL left.",
     "A lot of leaders are in the red and yellow. Finish strong.",
+    "Last week (56 apps / 25 CX) stays archived.",
+  ],
+});
+
+export const OFFICIAL_SNAPSHOT = summarizeBoard({
+  ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
+  weekLabel: "Week of Sep 8",
+  sourceLabel: "Wednesday live board",
+  dataAsOf: "Jordan and Steveo Ramos corrected to 2 phones each",
+  dailyTotals: { mon: 0, tue: 0, wed: 7, thu: 0, fri: 0, sat: 0, sun: 0 },
+  notes: [
+    "Wednesday live board. Phones count as apps.",
+    "Jordan #23 sold 2 phones (NL1 17 Pro Max EXTRA + NL2 S16+ EXTRA).",
+    "Steveo Ramos (Ismael) sold 2 phones (two iPhone 17e/512 Extra).",
     "Last week (56 apps / 25 CX) stays archived.",
   ],
 });
