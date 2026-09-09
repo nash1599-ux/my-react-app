@@ -27,6 +27,18 @@ class HashtagParserTests(unittest.TestCase):
         self.assertEqual(extract_phone_count("#g-unit 1"), 1)
         self.assertEqual(extract_phone_count("closed 4 phones #g-unit"), 4)
         self.assertEqual(extract_phone_count("#g-unit let's go"), 1)
+        self.assertEqual(extract_phone_count("CX1\nNL1\n#g-unit"), 1)
+        self.assertEqual(extract_phone_count("CX1\nNL1\nNL2\nNL3\nNL4\n#g-unit"), 4)
+
+    def test_nl_cx_shoutout(self):
+        event = parse_hashtag_sale(
+            "D2D\nCX1\nNL1\nNL2\n#g-unit\n#certifiedcloser",
+            {"author": "Jordan Aguirre"},
+        )
+        self.assertTrue(event["matched"])
+        self.assertEqual(event["phones"], 2)
+        self.assertEqual(event["cx"], 1)
+        self.assertEqual(event["name"], "Jordan Aguirre")
 
     def test_nickname_and_cx(self):
         event = parse_hashtag_sale("Gigi sold 2 phones 1 CX #g-unit", {"author": "Other"})

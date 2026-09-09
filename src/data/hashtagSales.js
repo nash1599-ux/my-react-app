@@ -10,6 +10,8 @@ export const SALES_LOG_LIMIT = 100;
 const PHONE_RE = /\b(\d+)\s*(?:phones?|phns?|handsets?)\b/i;
 const APP_RE = /\b(\d+)\s*(?:apps?|lines?|nls?)\b/i;
 const CX_RE = /\b(\d+)\s*cx\b/i;
+const NL_TOKEN_RE = /\bNL\s*[:#-]?\s*(\d+)\b/gi;
+const CX_TOKEN_RE = /\bCX\s*[:#-]?\s*(\d+)\b/gi;
 const SOLD_RE = /\b(?:sold|closed|got|did)\s+(\d+)\b/i;
 const HASH_NUM_RE = /#g[-_]?unit\b[^\d]{0,12}(\d+)/i;
 const NUM_HASH_RE = /\b(\d+)\s*#g[-_]?unit\b/i;
@@ -57,12 +59,31 @@ function firstNumber(regex, text) {
   return match ? Number(match[1]) : null;
 }
 
+function tokenMax(regex, text) {
+  regex.lastIndex = 0;
+  const values = [...String(text || "").matchAll(regex)]
+    .map((match) => Number(match[1]))
+    .filter((value) => value >= 1 && value <= 20);
+  regex.lastIndex = 0;
+  if (!values.length) return null;
+  return Math.max(values.length, ...values);
+}
+
+export function extractCxCount(text) {
+  const raw = String(text || "");
+  const token = tokenMax(CX_TOKEN_RE, raw);
+  if (token != null) return token;
+  return firstNumber(CX_RE, raw) || 0;
+}
+
 export function extractPhoneCount(text) {
   const raw = String(text || "");
   const phones = firstNumber(PHONE_RE, raw);
   if (phones != null) return phones;
   const apps = firstNumber(APP_RE, raw);
   if (apps != null) return apps;
+  const newLines = tokenMax(NL_TOKEN_RE, raw);
+  if (newLines != null) return newLines;
   const sold = firstNumber(SOLD_RE, raw);
   if (sold != null) return sold;
   const afterHash = firstNumber(HASH_NUM_RE, raw);
@@ -70,7 +91,7 @@ export function extractPhoneCount(text) {
   const beforeHash = firstNumber(NUM_HASH_RE, raw);
   if (beforeHash != null) return beforeHash;
 
-  const cx = firstNumber(CX_RE, raw);
+  const cx = extractCxCount(raw) || null;
   const numbers = [...raw.matchAll(/\b(\d+)\b/g)]
     .map((match) => Number(match[1]))
     .filter((value) => value >= 1 && value <= 20 && value !== cx);
@@ -102,7 +123,7 @@ export function parseHashtagSale(text, meta = {}) {
   }
 
   const phones = extractPhoneCount(raw);
-  const cx = firstNumber(CX_RE, raw) || 0;
+  const cx = extractCxCount(raw);
   const author = String(meta.author || "").trim();
   const name = findMentionedName(raw, author);
 

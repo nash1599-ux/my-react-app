@@ -23,6 +23,19 @@ describe("g-unit hashtag parser", () => {
     expect(extractPhoneCount("closed 4 phones #g-unit")).toBe(4);
     expect(extractPhoneCount("1 app #g-unit")).toBe(1);
     expect(extractPhoneCount("#g-unit let's go")).toBe(1);
+    expect(extractPhoneCount("CX1\nNL1\n#g-unit")).toBe(1);
+    expect(extractPhoneCount("CX1\nNL1\nNL2\nNL3\nNL4\n#g-unit")).toBe(4);
+  });
+
+  test("reads CX1 / NL shout-out format", () => {
+    const parsed = parseHashtagSale(
+      "D2D\nCX1\nNL1\nNL2\n#g-unit\n#certifiedcloser",
+      { author: "Jordan Aguirre" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Jordan Aguirre");
   });
 
   test("maps nicknames and optional CX", () => {

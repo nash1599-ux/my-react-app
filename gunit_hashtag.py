@@ -16,6 +16,8 @@ HASHTAG_RE = re.compile(r"#g[-_]?unit\b", re.IGNORECASE)
 PHONE_RE = re.compile(r"\b(\d+)\s*(?:phones?|phns?|handsets?)\b", re.IGNORECASE)
 APP_RE = re.compile(r"\b(\d+)\s*(?:apps?|lines?|nls?)\b", re.IGNORECASE)
 CX_RE = re.compile(r"\b(\d+)\s*cx\b", re.IGNORECASE)
+NL_TOKEN_RE = re.compile(r"\bNL\s*[:#-]?\s*(\d+)\b", re.IGNORECASE)
+CX_TOKEN_RE = re.compile(r"\bCX\s*[:#-]?\s*(\d+)\b", re.IGNORECASE)
 SOLD_RE = re.compile(r"\b(?:sold|closed|got|did)\s+(\d+)\b", re.IGNORECASE)
 HASH_NUM_RE = re.compile(r"#g[-_]?unit\b[^\d]{0,12}(\d+)", re.IGNORECASE)
 NUM_HASH_RE = re.compile(r"\b(\d+)\s*#g[-_]?unit\b", re.IGNORECASE)
@@ -64,13 +66,40 @@ def _first_number(pattern: re.Pattern, text: str):
     return int(match.group(1)) if match else None
 
 
+def _token_max(pattern: re.Pattern, text: str):
+    values = [
+        int(match.group(1))
+        for match in pattern.finditer(text or "")
+        if 1 <= int(match.group(1)) <= 20
+    ]
+    if not values:
+        return None
+    return max(len(values), max(values))
+
+
+def extract_cx_count(text: str) -> int:
+    token = _token_max(CX_TOKEN_RE, text or "")
+    if token is not None:
+        return token
+    return _first_number(CX_RE, text or "") or 0
+
+
 def extract_phone_count(text: str) -> int:
     raw = text or ""
-    for pattern in (PHONE_RE, APP_RE, SOLD_RE, HASH_NUM_RE, NUM_HASH_RE):
+    for pattern in (PHONE_RE, APP_RE):
         value = _first_number(pattern, raw)
         if value is not None:
             return value
-    cx = _first_number(CX_RE, raw)
+    new_lines = _token_max(NL_TOKEN_RE, raw)
+    if new_lines is not None:
+        return new_lines
+    for pattern in (SOLD_RE, HASH_NUM_RE, NUM_HASH_RE):
+        value = _first_number(pattern, raw)
+        if value is not None:
+            return value
+    cx = extract_cx_count(raw) or None
+    if cx == 0:
+        cx = None
     numbers = [
         int(match.group(1))
         for match in re.finditer(r"\b(\d+)\b", raw)
@@ -103,7 +132,7 @@ def parse_hashtag_sale(text: str, meta: Optional[dict] = None) -> dict:
         }
 
     phones = extract_phone_count(raw)
-    cx = _first_number(CX_RE, raw) or 0
+    cx = extract_cx_count(raw)
     author = str(meta.get("author") or "").strip()
     name = find_mentioned_name(raw, author)
     return {
