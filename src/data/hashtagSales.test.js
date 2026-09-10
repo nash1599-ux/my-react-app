@@ -58,6 +58,26 @@ NL 2 iPhone 17 pro 2x
     expect(parsed.name).toBe("Nate");
   });
 
+  test("counts Nate's Thursday CX1 NL1-NL4 #G-Unit close as 4 phones", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O Drew Tepper For the business opportunity
+S/O Matthew Grant For the training
+S/O G-Unit
+Cx 1
+NL1
+NL2
+NL3
+NL4
+#G-Unit`,
+      { author: "Nate" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(4);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Nate");
+  });
+
   test("maps nicknames and optional CX", () => {
     const parsed = parseHashtagSale("Gigi sold 2 phones 1 CX #g-unit", {
       author: "Someone Else",
