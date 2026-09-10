@@ -147,6 +147,9 @@ td {
   width: 220px;
   background: #070707;
   border-right: 3px solid #1f1f1f;
+  position: sticky;
+  left: 0;
+  z-index: 5;
 }
 
 .brand {
@@ -197,6 +200,9 @@ td {
   background: #0b0b0b;
   color: #d6d3d1;
   font-weight: 800;
+  position: sticky;
+  left: 0;
+  z-index: 3;
 }
 
 .name {
@@ -206,6 +212,10 @@ td {
   font-style: italic;
   min-width: 160px;
   background: #1a1a1a;
+  position: sticky;
+  left: 36px;
+  z-index: 3;
+  box-shadow: 8px 0 10px rgba(0, 0, 0, 0.35);
 }
 
 .name span {
