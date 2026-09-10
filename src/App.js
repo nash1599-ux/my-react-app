@@ -101,7 +101,7 @@ export default function App() {
   }
 
   function resetBoard() {
-    const ok = window.confirm("Reset the board back to the Wednesday G-Unit snapshot?");
+    const ok = window.confirm("Reset the board back to the Thursday G-Unit snapshot?");
     if (!ok) return;
     window.localStorage.removeItem(STORAGE_KEY);
     setBoard(cloneSeed());
@@ -377,8 +377,8 @@ export default function App() {
               {board.notes}
             </p>
             <p className="hint">
-              This board stays live in your browser. Log apps as they close and
-              hit Start new week on Monday to roll last week / prev week.
+              This board stays live in your browser all week. Log apps as they
+              close and hit Start new week on Monday to roll last week / prev week.
             </p>
           </aside>
         </section>

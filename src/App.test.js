@@ -7,7 +7,7 @@ beforeEach(() => {
   window.localStorage.clear();
 });
 
-test("renders the Wednesday G-Unit roster and keeps returning-rep history", () => {
+test("renders the Thursday G-Unit sheet with Wed close plus live Thu sales", () => {
   render(<App />);
 
   expect(screen.getByText("G-UNIT")).toBeInTheDocument();
@@ -17,6 +17,8 @@ test("renders the Wednesday G-Unit roster and keeps returning-rep history", () =
   expect(screen.getByText(/Guy Lesperance/i)).toBeInTheDocument();
   expect(screen.getByText(/Jordan #23/i)).toBeInTheDocument();
   expect(screen.getByText(/Steveo Ramos/i)).toBeInTheDocument();
+  expect(screen.getByText(/Ismael Ramos/i)).toBeInTheDocument();
+  expect(screen.getAllByText(/^Neika$/i).length).toBeGreaterThan(0);
   expect(screen.getByText(/Kyron Tisdale/i)).toBeInTheDocument();
   expect(screen.getByText(/Matthew Grant/i)).toBeInTheDocument();
   expect(screen.getByText(/Steve Nash/i)).toBeInTheDocument();
@@ -24,27 +26,31 @@ test("renders the Wednesday G-Unit roster and keeps returning-rep history", () =
   expect(screen.queryByTestId("apps-gianna-smith")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-cameron-winfield")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-leo-chowdhury")).not.toBeInTheDocument();
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("19.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("30.0");
+  expect(screen.getByTestId("apps-steve-nash")).toHaveTextContent("4.0");
+  expect(screen.getByTestId("apps-neika")).toHaveTextContent("4.0");
+  expect(screen.getByTestId("apps-ismael-ramos")).toHaveTextContent("2.0");
+  expect(screen.getByTestId("apps-steven-ramos")).toHaveTextContent("2.0");
   expect(screen.getByTestId("avg-ky-tisdale")).toHaveTextContent("7.3");
   expect(screen.getByTestId("avg-mackenzie-faith")).toHaveTextContent("4.0");
   expect(screen.getByTestId("avg-steven-ramos")).toHaveTextContent("5.0");
   expect(screen.getByTestId("avg-matthew-grant")).toHaveTextContent("4.0");
-  expect(screen.getByTestId("avg-steve-nash")).toHaveTextContent("4.7");
+  expect(screen.getByTestId("avg-steve-nash")).toHaveTextContent("6.0");
   expect(screen.getAllByText(/1st week/i).length).toBeGreaterThan(0);
   expect(screen.getAllByText(/Daily goal HIT/i).length).toBeGreaterThan(0);
-  expect(screen.getByText("12/12")).toBeInTheDocument();
+  expect(screen.getByText("11/12")).toBeInTheDocument();
 });
 
 test("clicking a day cell logs an app and re-ranks live", () => {
   render(<App />);
 
   fireEvent.click(
-    screen.getByTitle("Steve Nash SUN: click to add an app, shift-click to remove.")
+    screen.getByTitle("Judah Rodgers SUN: click to add an app, shift-click to remove.")
   );
 
-  expect(screen.getByTestId("apps-steve-nash")).toHaveTextContent("1.0");
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("20.0");
-  expect(window.localStorage.getItem(STORAGE_KEY)).toContain("steve-nash");
+  expect(screen.getByTestId("apps-judah-rodgers")).toHaveTextContent("1.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("31.0");
+  expect(window.localStorage.getItem(STORAGE_KEY)).toContain("judah-rodgers");
 });
 
 test("ranks G-Unit reps by week apps then CX", () => {
