@@ -1,4 +1,4 @@
-export const STORAGE_KEY = "gunit-board-v2";
+export const STORAGE_KEY = "gunit-board-v3";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -7,8 +7,9 @@ function wed(apps) {
 }
 
 // Week of Mon Sep 7 – Sun Sep 13, 2026, as of Wednesday.
-// Current week numbers from the G-Unit Slack board. Last/prev week kept
-// for reps who were on the Sunday sheet; Gianna, Cameron, and Leo dropped.
+// This week = Wednesday live board. Last week = Sunday close (Ky 15, Steveo 10...).
+// Prev week = the last-week column from the prior board.
+// Mackenzie, Nate, Guy, and Ashunte are first week.
 export const SEED_BOARD = {
   teamName: "G-UNIT",
   tagline: "Results get Rewarded",
@@ -19,7 +20,7 @@ export const SEED_BOARD = {
   liveCall:
     "LIVE: Matthew J (Matthew ²) +3 phones (Cx1 / three Samsung S26 Ultra). Daily goal HIT.",
   notes:
-    "Week of Mon 9/7. Wednesday board: DG 12/12, 55 NL left. Last/prev week kept for returning reps from the Sunday sheet.",
+    "Week of Mon 9/7. Last week = Sunday close (DG 5/12, 27 NL). Prev week = the week before that. Mackenzie, Nate, Guy, and Ashunte: first week.",
   reps: [
     {
       id: "mackenzie-faith",
@@ -27,10 +28,12 @@ export const SEED_BOARD = {
       shortName: "Mackenzie",
       accent: "gold",
       listOrder: 1,
+      firstWeek: true,
       lastWeekApps: 0,
       prevWeekApps: 0,
       days: wed(4),
       cx: 2,
+      badge: "1st week",
     },
     {
       id: "nate",
@@ -38,10 +41,12 @@ export const SEED_BOARD = {
       shortName: "Nate",
       accent: "green",
       listOrder: 2,
+      firstWeek: true,
       lastWeekApps: 0,
       prevWeekApps: 0,
       days: wed(3),
       cx: 3,
+      badge: "1st week",
     },
     {
       id: "matthew-johnson",
@@ -49,8 +54,8 @@ export const SEED_BOARD = {
       shortName: "Matt²",
       accent: "blue",
       listOrder: 3,
-      lastWeekApps: 1,
-      prevWeekApps: 0,
+      lastWeekApps: 4,
+      prevWeekApps: 1,
       days: wed(3),
       cx: 1,
       badge: "Daily goal HIT",
@@ -61,10 +66,12 @@ export const SEED_BOARD = {
       shortName: "Guy",
       accent: "teal",
       listOrder: 4,
+      firstWeek: true,
       lastWeekApps: 0,
       prevWeekApps: 0,
       days: wed(2),
       cx: 4,
+      badge: "1st week",
     },
     {
       id: "jordan-aguirre",
@@ -72,8 +79,8 @@ export const SEED_BOARD = {
       shortName: "Jordan",
       accent: "green",
       listOrder: 5,
-      lastWeekApps: 5,
-      prevWeekApps: 23,
+      lastWeekApps: 9,
+      prevWeekApps: 5,
       days: wed(2),
       cx: 1,
     },
@@ -83,8 +90,8 @@ export const SEED_BOARD = {
       shortName: "Steveo",
       accent: "green",
       listOrder: 6,
-      lastWeekApps: 7,
-      prevWeekApps: 9,
+      lastWeekApps: 10,
+      prevWeekApps: 7,
       days: wed(2),
       cx: 1,
     },
@@ -94,10 +101,12 @@ export const SEED_BOARD = {
       shortName: "Ashunte",
       accent: "purple",
       listOrder: 7,
+      firstWeek: true,
       lastWeekApps: 0,
       prevWeekApps: 0,
       days: wed(1),
       cx: 1,
+      badge: "1st week",
     },
     {
       id: "ky-tisdale",
@@ -105,7 +114,7 @@ export const SEED_BOARD = {
       shortName: "Kyron",
       accent: "blue",
       listOrder: 8,
-      lastWeekApps: 6,
+      lastWeekApps: 15,
       prevWeekApps: 6,
       days: wed(1),
       cx: 1,
@@ -116,8 +125,8 @@ export const SEED_BOARD = {
       shortName: "Grant",
       accent: "gold",
       listOrder: 9,
-      lastWeekApps: 6,
-      prevWeekApps: 7,
+      lastWeekApps: 3,
+      prevWeekApps: 6,
       days: wed(1),
       cx: 1,
     },
@@ -127,7 +136,7 @@ export const SEED_BOARD = {
       shortName: "Judah",
       accent: "slate",
       listOrder: 10,
-      lastWeekApps: 0,
+      lastWeekApps: 1,
       prevWeekApps: 0,
       days: wed(0),
       cx: 0,
@@ -138,8 +147,8 @@ export const SEED_BOARD = {
       shortName: "Nash",
       accent: "slate",
       listOrder: 11,
-      lastWeekApps: 1,
-      prevWeekApps: 7,
+      lastWeekApps: 5,
+      prevWeekApps: 1,
       days: wed(0),
       cx: 0,
     },
@@ -149,8 +158,8 @@ export const SEED_BOARD = {
       shortName: "Shaad",
       accent: "purple",
       listOrder: 12,
-      lastWeekApps: 2,
-      prevWeekApps: 6,
+      lastWeekApps: 0,
+      prevWeekApps: 2,
       days: wed(0),
       cx: 0,
     },

@@ -14,6 +14,7 @@
   --money: #0b1f4d;
   --last: #16324f;
   --prev: #c9a227;
+  --avg: #134e4a;
   --mon: #d4a017;
   --tue: #1a9b9b;
   --wed: #3b6fd4;
@@ -276,6 +277,7 @@ td {
 .grp-run { background: #111; }
 .grp-last { background: var(--last); color: #dbeafe; font-weight: 700; }
 .grp-prev { background: var(--prev); color: #1c1403; font-weight: 800; }
+.grp-avg { background: var(--avg); color: #99f6e4; font-weight: 800; }
 .day-0, .grp-day.day-0 { background: var(--mon); color: #1c1403; font-weight: 800; }
 .day-1, .grp-day.day-1 { background: var(--tue); color: #041111; font-weight: 800; }
 .day-2, .grp-day.day-2 { background: var(--wed); color: #fff; font-weight: 800; }

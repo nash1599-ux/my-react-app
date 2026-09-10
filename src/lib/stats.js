@@ -25,7 +25,8 @@ export function wowPct(current, last) {
   return ((current - last) / last) * 100;
 }
 
-export function formatWow(value, last) {
+export function formatWow(value, last, firstWeek = false) {
+  if (firstWeek) return "NEW";
   if (!last && !value) return "—";
   if (!last && value) return "NEW";
   const rounded = Math.round(value);
@@ -41,7 +42,8 @@ export function formatMoney(value) {
   return `$${Number(value || 0).toLocaleString("en-US")}`;
 }
 
-export function rollingAvg(current, last, prev) {
+export function rollingAvg(current, last, prev, firstWeek = false) {
+  if (firstWeek) return current;
   return (current + last + prev) / 3;
 }
 
@@ -95,7 +97,12 @@ export function decorateRep(rep) {
     cxPct: cxPct(cx, apps),
     wow: wowPct(apps, rep.lastWeekApps),
     earned: earned(apps),
-    rolling: rollingAvg(apps, rep.lastWeekApps, rep.prevWeekApps),
+    rolling: rollingAvg(
+      apps,
+      rep.lastWeekApps,
+      rep.prevWeekApps,
+      Boolean(rep.firstWeek)
+    ),
   };
 }
 

@@ -25,6 +25,9 @@ test("renders the Wednesday G-Unit roster and keeps returning-rep history", () =
   expect(screen.queryByTestId("apps-cameron-winfield")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-leo-chowdhury")).not.toBeInTheDocument();
   expect(screen.getByTestId("team-apps")).toHaveTextContent("19.0");
+  expect(screen.getByTestId("avg-ky-tisdale")).toHaveTextContent("7.3");
+  expect(screen.getByTestId("avg-mackenzie-faith")).toHaveTextContent("4.0");
+  expect(screen.getAllByText(/1st week/i).length).toBeGreaterThan(0);
   expect(screen.getAllByText(/Daily goal HIT/i).length).toBeGreaterThan(0);
   expect(screen.getByText("12/12")).toBeInTheDocument();
 });

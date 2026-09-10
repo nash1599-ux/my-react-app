@@ -92,6 +92,8 @@ export default function App() {
         ...rep,
         prevWeekApps: rep.lastWeekApps,
         lastWeekApps: rep.days.reduce((sum, value) => sum + value, 0),
+        firstWeek: false,
+        badge: undefined,
         days: [0, 0, 0, 0, 0, 0, 0],
         cx: 0,
       })),
@@ -184,6 +186,7 @@ export default function App() {
                 </th>
                 <th className="grp grp-last">Last Week</th>
                 <th className="grp grp-prev">Prev. Week</th>
+                <th className="grp grp-avg">3-Wk Avg</th>
                 {WEEK_DAYS.map((day, index) => (
                   <th
                     key={day}
@@ -201,6 +204,7 @@ export default function App() {
                 <th className="money">Est. $</th>
                 <th className="grp-last">Apps</th>
                 <th className="grp-prev">Apps</th>
+                <th className="grp-avg">Apps</th>
                 {WEEK_DAYS.map((day, index) => (
                   <th
                     key={`h-${day}`}
@@ -250,11 +254,14 @@ export default function App() {
                     {formatPct(rep.cxPct)}
                   </td>
                   <td className={`wow ${rep.wow >= 0 ? "up" : "down"}`}>
-                    {formatWow(rep.wow, rep.lastWeekApps)}
+                    {formatWow(rep.wow, rep.lastWeekApps, rep.firstWeek)}
                   </td>
                   <td className="money">{formatMoney(rep.earned)}</td>
                   <td className="grp-last">{rep.lastWeekApps.toFixed(1)}</td>
                   <td className="grp-prev">{rep.prevWeekApps.toFixed(1)}</td>
+                  <td className="grp-avg" data-testid={`avg-${rep.id}`}>
+                    {formatAvg(rep.rolling)}
+                  </td>
                   {rep.days.map((value, dayIndex) => (
                     <td
                       key={`${rep.id}-${dayIndex}`}
@@ -289,6 +296,7 @@ export default function App() {
                 <td className="money">{formatMoney(totals.earned)}</td>
                 <td className="grp-last">{totals.lastWeekApps.toFixed(1)}</td>
                 <td className="grp-prev">{totals.prevWeekApps.toFixed(1)}</td>
+                <td className="grp-avg">{formatAvg(totals.rolling)}</td>
                 {totals.days.map((value, dayIndex) => (
                   <td
                     key={`t-${dayIndex}`}

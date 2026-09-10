@@ -1,4 +1,4 @@
-import { rankedReps, teamTotals, wowPct, cxPct } from "./stats";
+import { rankedReps, teamTotals, wowPct, cxPct, rollingAvg } from "./stats";
 
 test("wow percent handles a zero last week", () => {
   expect(wowPct(0, 0)).toBe(0);
@@ -9,6 +9,12 @@ test("wow percent handles a zero last week", () => {
 test("cx percent is zero without apps", () => {
   expect(cxPct(0, 0)).toBe(0);
   expect(cxPct(3, 6)).toBe(50);
+});
+
+test("rolling average uses this week only for first-week reps", () => {
+  expect(rollingAvg(4, 0, 0, true)).toBe(4);
+  expect(rollingAvg(1, 15, 6)).toBeCloseTo(7.333, 2);
+  expect(rollingAvg(2, 10, 7)).toBeCloseTo(6.333, 2);
 });
 
 test("team totals roll up daily apps", () => {
