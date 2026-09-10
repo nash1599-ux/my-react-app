@@ -86,8 +86,8 @@ describe("salesboard scoring", () => {
     const steveo = board.reps.find((rep) => rep.name === "Ismael Ramos");
     const mackenzie = board.reps.find((rep) => rep.name === "Mackenzie Faith");
     expect(board.day).toBe("Thursday");
-    expect(board.dgNum).toBe(15);
-    expect(board.weeklyGoal.nlLeft).toBe(40);
+    expect(board.dgNum).toBe(18);
+    expect(board.weeklyGoal.nlLeft).toBe(37);
     expect(jordan.apps).toBe(2);
     expect(jordan.cx).toBe(1);
     expect(jordan.displayName).toBe("Jordan #23");
@@ -97,15 +97,19 @@ describe("salesboard scoring", () => {
     expect(steveo.rank).toBe(2);
     expect(mackenzie.apps).toBe(4);
     expect(mackenzie.cx).toBe(2);
-    expect(mackenzie.rank).toBe(4);
+    expect(mackenzie.rank).toBe(5);
     const matthew2 = board.reps.find((rep) => rep.name === "Matthew 2");
     expect(matthew2.apps).toBe(4);
     expect(matthew2.cx).toBe(2);
-    expect(matthew2.rank).toBe(5);
+    expect(matthew2.rank).toBe(6);
+    const matthewGrant = board.reps.find((rep) => rep.name === "Matthew Grant");
+    expect(matthewGrant.apps).toBe(4);
+    expect(matthewGrant.cx).toBe(2);
+    expect(matthewGrant.rank).toBe(4);
     const neika = board.reps.find((rep) => rep.name === "Neika");
     expect(neika.apps).toBe(4);
     expect(neika.cx).toBe(2);
-    expect(neika.rank).toBe(6);
+    expect(neika.rank).toBe(7);
     const nash = board.reps.find((rep) => rep.name === "Nashly Paul");
     expect(nash.apps).toBe(4);
     expect(nash.cx).toBe(2);
@@ -123,6 +127,7 @@ describe("salesboard scoring", () => {
     expect(posted).toMatch(/Steve Nash 4 Apps \| 2 CX/);
     expect(posted).toMatch(/Neika 4 Apps \| 2 CX/);
     expect(posted).toMatch(/Nate 7 Apps \| 4 CX/);
+    expect(posted).toMatch(/Matthew Grant 4 Apps \| 2 CX/);
   });
 
   test("parses the corrected Wednesday Slack board", () => {
@@ -142,6 +147,8 @@ describe("salesboard scoring", () => {
     expect(board.reps.find((rep) => rep.name === "Nashly Paul").cx).toBe(2);
     expect(board.reps.find((rep) => rep.name === "Nate").apps).toBe(7);
     expect(board.reps.find((rep) => rep.name === "Nate").cx).toBe(4);
+    expect(board.reps.find((rep) => rep.name === "Matthew Grant").apps).toBe(4);
+    expect(board.reps.find((rep) => rep.name === "Matthew Grant").cx).toBe(2);
   });
 
   test("parses Saturday SATDI paste including Cam and Matthew 2", () => {

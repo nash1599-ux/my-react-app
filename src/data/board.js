@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v15";
+export const STORAGE_KEY = "gunit-salesboard-v16";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -443,21 +443,21 @@ export const MONDAY_BOARD_TEXT = `
 export const WEDNESDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:15/12 |40 NL LEFT | THURSDAY ║
+║ :bar_chart: DG:18/12 |37 NL LEFT | THURSDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 :first_place_medal: Nate 7 Apps | 4 CX
 :second_place_medal: Steveo Ramos 4 Apps | 2 CX
 :third_place_medal: Steve Nash 4 Apps | 2 CX
-4. Mackenzie Faith 4 Apps | 2 CX
-5. Matthew ² 4 Apps | 2 CX
-6. Neika 4 Apps | 2 CX
-7. Guy Lesperance 2 Apps | 4 CX
-8. Jordan #23 2 Apps | 1 CX
-9. Ashunte Reyes 1 App | 1 CX
-10. Kyron Tisdale 1 App | 1 CX
-11. Matthew Grant 1 App | 1 CX
+4. Matthew Grant 4 Apps | 2 CX
+5. Mackenzie Faith 4 Apps | 2 CX
+6. Matthew ² 4 Apps | 2 CX
+7. Neika 4 Apps | 2 CX
+8. Guy Lesperance 2 Apps | 4 CX
+9. Jordan #23 2 Apps | 1 CX
+10. Ashunte Reyes 1 App | 1 CX
+11. Kyron Tisdale 1 App | 1 CX
 12. Judah Rodgers 0 App | 0 CX
 13. Shaad Hyppolite 0 Apps | 0 CX
 `;
@@ -588,12 +588,12 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
   weekLabel: "Week of Sep 8",
   sourceLabel: "Thursday live board",
-    dataAsOf: "Nate Thursday CX1 close (NL1-NL4)",
-  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 15, fri: 0, sat: 0, sun: 0 },
+    dataAsOf: "Matthew Grant Thursday CX1 close (NL1-NL3)",
+  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 18, fri: 0, sat: 0, sun: 0 },
   notes: [
     "Thursday live board. Phones count as apps. Daily goal resets each day.",
-    "Nate CX1 / NL1-NL4 #G-Unit (4 phones).",
-    "Earlier Thursday: Nash 4 phones / 2 CX, Neika 4 phones / 2 CX, Steveo 2 phones, Matthew J 1 phone.",
+    "Matthew Grant CX1 / NL1-NL3 #G-Unit (3 phones). Not Matthew J.",
+    "Earlier Thursday: Nate 4 phones, Nash 4 phones / 2 CX, Neika 4 phones / 2 CX, Steveo 2 phones, Matthew J 1 phone.",
     "Last week (56 apps / 25 CX) stays archived.",
   ],
 });

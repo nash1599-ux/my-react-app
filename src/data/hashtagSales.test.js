@@ -78,6 +78,24 @@ NL4
     expect(parsed.name).toBe("Nate");
   });
 
+  test("credits Matthew Grant CX1 NL1-NL3 to him, not Matthew J", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O JAIRO RUIZ Drew Tepper Colten Wright for the business opportunity
+S/O the squad today
+Cx1
+NL1
+NL2
+NL3
+#G-Unit`,
+      { author: "Matthew Grant" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(3);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Matthew Grant");
+  });
+
   test("maps nicknames and optional CX", () => {
     const parsed = parseHashtagSale("Gigi sold 2 phones 1 CX #g-unit", {
       author: "Someone Else",
