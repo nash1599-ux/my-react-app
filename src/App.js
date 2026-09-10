@@ -69,19 +69,14 @@ export default function App() {
     updateRep(id, (rep) => {
       const days = [...rep.days];
       days[dayIndex] = bump(days[dayIndex], delta);
-      const apps = days.reduce((sum, value) => sum + value, 0);
-      return { ...rep, days, cx: Math.min(rep.cx, apps) };
+      return { ...rep, days };
     });
   }
 
   function changeCx(id, event) {
     event.preventDefault();
     const delta = deltaFromEvent(event);
-    updateRep(id, (rep) => {
-      const apps = rep.days.reduce((sum, value) => sum + value, 0);
-      const next = bump(rep.cx, delta);
-      return { ...rep, cx: Math.min(next, apps) };
-    });
+    updateRep(id, (rep) => ({ ...rep, cx: bump(rep.cx, delta) }));
   }
 
   function startNewWeek() {
@@ -104,7 +99,7 @@ export default function App() {
   }
 
   function resetBoard() {
-    const ok = window.confirm("Reset the board back to the Sunday G-Unit snapshot?");
+    const ok = window.confirm("Reset the board back to the Wednesday G-Unit snapshot?");
     if (!ok) return;
     window.localStorage.removeItem(STORAGE_KEY);
     setBoard(cloneSeed());
@@ -127,6 +122,7 @@ export default function App() {
           prevWeekApps: 0,
           days: [0, 0, 0, 0, 0, 0, 0],
           cx: 0,
+          listOrder: 999,
         },
       ],
     }));
@@ -151,6 +147,7 @@ export default function App() {
               Week of {weekLabel} · {board.asOfLabel}. Click a day cell to log an
               app, click CX to log a close. Shift-click to subtract.
             </p>
+            {board.liveCall && <p className="live-call">{board.liveCall}</p>}
           </div>
           <div className="toolbar-actions">
             <button type="button" onClick={startNewWeek}>
@@ -220,6 +217,7 @@ export default function App() {
                   <td className="rank">{rep.rank}</td>
                   <td className={`name accent-${rep.accent}`}>
                     <span>{rep.name}</span>
+                    {rep.badge && <span className="rep-badge">{rep.badge}</span>}
                     {editRoster && (
                       <button
                         type="button"
@@ -334,7 +332,7 @@ export default function App() {
                       style={{ height: `${(rep.apps / maxApps) * 100}%` }}
                     />
                   </div>
-                  <div className="bar-label">{rep.name.split(" ")[0]}</div>
+                  <div className="bar-label">{rep.shortName || rep.name.split(" ")[0]}</div>
                 </div>
               ))}
             </div>
@@ -348,7 +346,7 @@ export default function App() {
               </div>
               <div>
                 <dt>DG</dt>
-                <dd>
+                <dd className={board.dg.current >= board.dg.goal ? "goal-hit" : ""}>
                   {board.dg.current}/{board.dg.goal}
                 </dd>
               </div>

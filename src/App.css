@@ -222,6 +222,31 @@ td {
   display: inline-block;
 }
 
+.rep-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #14532d;
+  color: #bbf7d0;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.live-call {
+  margin: 10px 0 0;
+  color: #86efac;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.goal-hit {
+  color: #39ff14;
+}
+
 .accent-gold { background: #8a6a12; color: #fff8dc; }
 .accent-green { background: #3f6b32; color: #f4ffe8; }
 .accent-blue { background: #3d5a73; color: #e8f4ff; }

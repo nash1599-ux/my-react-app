@@ -105,8 +105,7 @@ export function rankedReps(reps) {
     .sort((a, b) => {
       if (b.apps !== a.apps) return b.apps - a.apps;
       if (b.cx !== a.cx) return b.cx - a.cx;
-      if (b.earned !== a.earned) return b.earned - a.earned;
-      return a.name.localeCompare(b.name);
+      return (a.listOrder ?? 999) - (b.listOrder ?? 999);
     })
     .map((rep, index) => ({ ...rep, rank: index + 1 }));
 }

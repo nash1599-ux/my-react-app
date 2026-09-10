@@ -7,17 +7,26 @@ beforeEach(() => {
   window.localStorage.clear();
 });
 
-test("renders the G-Unit sales board with snapshot reps and totals", () => {
+test("renders the Wednesday G-Unit roster and keeps returning-rep history", () => {
   render(<App />);
 
   expect(screen.getByText("G-UNIT")).toBeInTheDocument();
-  expect(screen.getByText("SALES CHANNEL")).toBeInTheDocument();
+  expect(screen.getByText(/Mackenzie Faith/i)).toBeInTheDocument();
+  expect(screen.getAllByText(/^Nate$/i).length).toBeGreaterThan(0);
+  expect(screen.getAllByText(/Matthew ²/).length).toBeGreaterThan(0);
+  expect(screen.getByText(/Guy Lesperance/i)).toBeInTheDocument();
+  expect(screen.getByText(/Jordan #23/i)).toBeInTheDocument();
+  expect(screen.getByText(/Steveo Ramos/i)).toBeInTheDocument();
+  expect(screen.getByText(/Kyron Tisdale/i)).toBeInTheDocument();
   expect(screen.getByText(/Matthew Grant/i)).toBeInTheDocument();
-  expect(screen.getByText(/Steven Ramos/i)).toBeInTheDocument();
   expect(screen.getByText(/Steve Nash/i)).toBeInTheDocument();
-  expect(screen.getByText(/TEAM HAS EARNED/i)).toBeInTheDocument();
-  expect(screen.getByText("TOTALS")).toBeInTheDocument();
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("38.0");
+  expect(screen.getByText(/Shaad Hyppolite/i)).toBeInTheDocument();
+  expect(screen.queryByTestId("apps-gianna-smith")).not.toBeInTheDocument();
+  expect(screen.queryByTestId("apps-cameron-winfield")).not.toBeInTheDocument();
+  expect(screen.queryByTestId("apps-leo-chowdhury")).not.toBeInTheDocument();
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("19.0");
+  expect(screen.getAllByText(/Daily goal HIT/i).length).toBeGreaterThan(0);
+  expect(screen.getByText("12/12")).toBeInTheDocument();
 });
 
 test("clicking a day cell logs an app and re-ranks live", () => {
@@ -27,8 +36,8 @@ test("clicking a day cell logs an app and re-ranks live", () => {
     screen.getByTitle("Steve Nash SUN: click to add an app, shift-click to remove.")
   );
 
-  expect(screen.getByTestId("apps-steve-nash")).toHaveTextContent("2.0");
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("39.0");
+  expect(screen.getByTestId("apps-steve-nash")).toHaveTextContent("1.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("20.0");
   expect(window.localStorage.getItem(STORAGE_KEY)).toContain("steve-nash");
 });
 
