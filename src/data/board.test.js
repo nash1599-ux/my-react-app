@@ -20,7 +20,7 @@ import {
 
 describe("salesboard scoring", () => {
   test("maps known nicknames", () => {
-    expect(normalizeName("steve nash")).toBe("Nashly Paul");
+    expect(normalizeName("Nash-Sama")).toBe("Nashly Paul");
     expect(normalizeName("steveo")).toBe("Ismael Ramos");
     expect(normalizeName("Ismael")).toBe("Ismael Ramos");
     expect(normalizeName("Shaad Hyppolite")).toBe("Rashaad Hypolite");
@@ -86,8 +86,8 @@ describe("salesboard scoring", () => {
     const steveo = board.reps.find((rep) => rep.name === "Ismael Ramos");
     const mackenzie = board.reps.find((rep) => rep.name === "Mackenzie Faith");
     expect(board.day).toBe("Thursday");
-    expect(board.dgNum).toBe(5);
-    expect(board.weeklyGoal.nlLeft).toBe(50);
+    expect(board.dgNum).toBe(7);
+    expect(board.weeklyGoal.nlLeft).toBe(48);
     expect(jordan.apps).toBe(2);
     expect(jordan.cx).toBe(1);
     expect(jordan.displayName).toBe("Jordan #23");
@@ -105,6 +105,10 @@ describe("salesboard scoring", () => {
     const neika = board.reps.find((rep) => rep.name === "Neika");
     expect(neika.apps).toBe(2);
     expect(neika.cx).toBe(1);
+    const nash = board.reps.find((rep) => rep.name === "Nashly Paul");
+    expect(nash.apps).toBe(2);
+    expect(nash.cx).toBe(1);
+    expect(nash.displayName).toBe("Steve Nash");
     expect(jordan.rank).toBeGreaterThan(steveo.rank);
     const posted = formatSlackBoard(board);
     expect(posted).toMatch(/Mackenzie Faith 4 Apps \| 2 CX/);
@@ -124,6 +128,7 @@ describe("salesboard scoring", () => {
     expect(board.reps.find((rep) => rep.name === "Matthew 2").apps).toBe(4);
     expect(board.reps.find((rep) => rep.name === "Matthew 2").cx).toBe(2);
     expect(board.reps.find((rep) => rep.name === "Neika").apps).toBe(2);
+    expect(board.reps.find((rep) => rep.name === "Nashly Paul").apps).toBe(2);
   });
 
   test("parses Saturday SATDI paste including Cam and Matthew 2", () => {

@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v11";
+export const STORAGE_KEY = "gunit-salesboard-v12";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -16,6 +16,8 @@ export const ALIASES = {
   "ky tisdale": "Kyron Tisdale",
   "steve nash": "Nashly Paul",
   nash: "Nashly Paul",
+  "nash-sama": "Nashly Paul",
+  "nash sama": "Nashly Paul",
   steveo: "Ismael Ramos",
   "steveo ramos": "Ismael Ramos",
   "steve ramos": "Ismael Ramos",
@@ -441,7 +443,7 @@ export const MONDAY_BOARD_TEXT = `
 export const WEDNESDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:5/12 |50 NL LEFT | THURSDAY ║
+║ :bar_chart: DG:7/12 |48 NL LEFT | THURSDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -451,12 +453,12 @@ export const WEDNESDAY_BOARD_TEXT = `
 4. Nate 3 Apps | 3 CX
 5. Guy Lesperance 2 Apps | 4 CX
 6. Jordan #23 2 Apps | 1 CX
-7. Neika 2 Apps | 1 CX
-8. Ashunte Reyes 1 App | 1 CX
-9. Kyron Tisdale 1 App | 1 CX
-10. Matthew Grant 1 App | 1 CX
-11. Judah Rodgers 0 App | 0 CX
-12. Steve Nash 0 App | 0 CX
+7. Steve Nash 2 Apps | 1 CX
+8. Neika 2 Apps | 1 CX
+9. Ashunte Reyes 1 App | 1 CX
+10. Kyron Tisdale 1 App | 1 CX
+11. Matthew Grant 1 App | 1 CX
+12. Judah Rodgers 0 App | 0 CX
 13. Shaad Hyppolite 0 Apps | 0 CX
 `;
 
@@ -586,12 +588,13 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
   weekLabel: "Week of Sep 8",
   sourceLabel: "Thursday live board",
-    dataAsOf: "Neika first #G-Unit close",
-  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 5, fri: 0, sat: 0, sun: 0 },
+    dataAsOf: "Steve Nash Thursday close (Moto G + iPhone 16)",
+  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 7, fri: 0, sat: 0, sun: 0 },
   notes: [
     "Thursday live board. Phones count as apps. Daily goal resets each day.",
+    "Steve Nash Cx1 / Moto G 2026 + iPhone 16 #G-Unit.",
     "Neika first #G-Unit close (Pixel 11 Pro + iPhone 17 PM).",
-    "Steveo Ramos (Ismael) +2 phones Thursday. Matthew J +1 phone Thursday.",
+    "Steveo Ramos and Matthew J also sold Thursday.",
     "Last week (56 apps / 25 CX) stays archived.",
   ],
 });

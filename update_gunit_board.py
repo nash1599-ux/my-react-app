@@ -59,6 +59,8 @@ ALIASES = {
     "ky tisdale": "Kyron Tisdale",
     "steve nash": "Nashly Paul",
     "nash": "Nashly Paul",
+    "nash-sama": "Nashly Paul",
+    "nash sama": "Nashly Paul",
     "steveo": "Ismael Ramos",
     "steveo ramos": "Ismael Ramos",
     "steve ramos": "Ismael Ramos",

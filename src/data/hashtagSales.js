@@ -36,6 +36,7 @@ const KNOWN_NAMES = [
   "leo chowdury",
   "gigi smith",
   "steve nash",
+  "nash-sama",
   "steveo ramos",
   "steveo",
   "shaad hypolite",

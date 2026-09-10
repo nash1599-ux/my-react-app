@@ -210,6 +210,22 @@ NL 2: iPhone 17 PM
     expect(parsed.name).toBe("Neika");
   });
 
+  test("maps Nash-Sama author to Steve Nash on a #G-Unit close", () => {
+    const parsed = parseHashtagSale(
+      `S/O Drew Tepper
+S/O The UNIT
+CX 1
+NL 1: Moto G 2026
+NL 2: IPhone 16
+#G-Unit`,
+      { author: "Nash-Sama" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Nashly Paul");
+  });
+
   test("skips duplicate Slack timestamps", () => {
     const first = applyHashtagSale(SATURDAY_SNAPSHOT, {
       text: "1 phone #g-unit",
