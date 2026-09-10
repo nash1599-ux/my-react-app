@@ -1,4 +1,4 @@
-export const STORAGE_KEY = "gunit-board-v5";
+export const STORAGE_KEY = "gunit-board-v6";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -8,7 +8,8 @@ function days({ wed = 0, thu = 0 } = {}) {
 
 // Week of Mon Sep 7 – Sun Sep 13, 2026, as of Thursday.
 // Wednesday = official G-Unit close. Thursday = live #G-Unit sales
-// (Matthew ² +1, Nash +4, Neika +4, Ismael +2). Ismael is not Steveo.
+// (Matthew ² +1, Nash +4, Neika +4, Ismael +2, Nate +4, Grant +3).
+// Ismael is not Steveo. Shaad CC #3 was not counted.
 // Last week = Sunday G-Unit close. Prev week = PM board with trainee
 // lines given back to the closer: Gianna + Leo -> Nashly, Cameron -> Steveo.
 export const SEED_BOARD = {
@@ -16,10 +17,10 @@ export const SEED_BOARD = {
   tagline: "Results get Rewarded",
   weekStart: "2026-09-07",
   asOfLabel: "as of Thursday",
-  dg: { current: 11, goal: 12 },
-  nlLeft: 44,
+  dg: { current: 18, goal: 12 },
+  nlLeft: 37,
   liveCall:
-    "LIVE: Neika CX2 / NL3 Galaxy S25 + NL4 iPhone 17 PM. DG 11/12.",
+    "LIVE: Nate +4 phones (Cx1 / NL1–4) and Matthew Grant +3 phones (Cx1 / NL1–3). DG 18/12.",
   notes:
     "Week of Mon 9/7. Wed close + Thu #G-Unit live log. Last week = Sunday G-Unit close. Prev week = PM board (Grant 8, Ky 6, Jordan 5, Shaad 2, Matt² 1). Nashly 9 includes Gianna 7 + Leo 1 + his 1. Steveo 3 is Cameron's lines. Ismael is not Steveo. Mackenzie, Nate, Guy, Ashunte, Neika, Ismael: first week on this board.",
   reps: [
@@ -77,12 +78,12 @@ export const SEED_BOARD = {
       name: "Nate",
       shortName: "Nate",
       accent: "green",
-      listOrder: 5,
+      listOrder: 0,
       firstWeek: true,
       lastWeekApps: 0,
       prevWeekApps: 0,
-      days: days({ wed: 3 }),
-      cx: 3,
+      days: days({ wed: 3, thu: 4 }),
+      cx: 4,
       badge: "1st week",
     },
     {
@@ -162,11 +163,11 @@ export const SEED_BOARD = {
       name: "Matthew Grant",
       shortName: "Grant",
       accent: "gold",
-      listOrder: 12,
+      listOrder: 5,
       lastWeekApps: 3,
       prevWeekApps: 8,
-      days: days({ wed: 1 }),
-      cx: 1,
+      days: days({ wed: 1, thu: 3 }),
+      cx: 2,
     },
     {
       id: "judah-rodgers",

@@ -4,9 +4,9 @@ import { formatFullSheet } from "./slackSheet";
 test("full Thursday sheet includes every excel column and live totals", () => {
   const sheet = formatFullSheet(SEED_BOARD);
 
-  expect(sheet.banner).toBe("DG: 11/12 | 44 NL LEFT | THURSDAY");
-  expect(sheet.teamApps).toBe(30);
-  expect(sheet.teamCx).toBe(21);
+  expect(sheet.banner).toBe("DG: 18/12 | 37 NL LEFT | THURSDAY");
+  expect(sheet.teamApps).toBe(37);
+  expect(sheet.teamCx).toBe(23);
   expect(sheet.header).toEqual([
     "Rk",
     "Name",
@@ -27,25 +27,26 @@ test("full Thursday sheet includes every excel column and live totals", () => {
     "SUN",
   ]);
   expect(sheet.rows.map((row) => row[1])).toEqual([
+    "Nate",
     "Mackenzie Faith",
     "Matthew ²",
     "Steve Nash",
     "Neika",
-    "Nate",
+    "Matthew Grant",
     "Guy Lesperance",
     "Steveo Ramos",
     "Jordan #23",
     "Ismael Ramos",
     "Ashunte Reyes",
     "Kyron Tisdale",
-    "Matthew Grant",
     "Judah Rodgers",
     "Shaad Hyppolite",
   ]);
-  expect(sheet.rows[2][2]).toBe("4.0");
-  expect(sheet.rows[2][13]).toBe("4.0");
-  expect(sheet.rows[6][1]).toBe("Steveo Ramos");
-  expect(sheet.rows[6][2]).toBe("2.0");
-  expect(sheet.rows[8][1]).toBe("Ismael Ramos");
-  expect(sheet.rows[8][2]).toBe("2.0");
+  expect(sheet.rows[0][2]).toBe("7.0");
+  expect(sheet.rows[5][1]).toBe("Matthew Grant");
+  expect(sheet.rows[5][2]).toBe("4.0");
+  expect(sheet.rows[7][1]).toBe("Steveo Ramos");
+  expect(sheet.rows[7][2]).toBe("2.0");
+  expect(sheet.rows[9][1]).toBe("Ismael Ramos");
+  expect(sheet.rows[9][2]).toBe("2.0");
 });
