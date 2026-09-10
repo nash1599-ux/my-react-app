@@ -81,6 +81,24 @@ def _token_max(pattern: re.Pattern, text: str):
     return max(len(values), max(values))
 
 
+def _token_span(pattern: re.Pattern, text: str):
+    values = [
+        int(match.group(1))
+        for match in pattern.finditer(text or "")
+        if 1 <= int(match.group(1)) <= 20
+    ]
+    if not values:
+        return None
+    unique = sorted(set(values))
+    consecutive = all(
+        index == 0 or value == unique[index - 1] + 1
+        for index, value in enumerate(unique)
+    )
+    if consecutive:
+        return len(unique)
+    return max(len(unique), max(unique))
+
+
 def extract_cx_count(text: str) -> int:
     token = _token_max(CX_TOKEN_RE, text or "")
     if token is not None:
@@ -94,7 +112,7 @@ def extract_phone_count(text: str) -> int:
         value = _first_number(pattern, raw)
         if value is not None:
             return value
-    new_lines = _token_max(NL_TOKEN_RE, raw)
+    new_lines = _token_span(NL_TOKEN_RE, raw)
     if new_lines is not None:
         return new_lines
     for pattern in (SOLD_RE, HASH_NUM_RE, NUM_HASH_RE):

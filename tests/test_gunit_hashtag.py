@@ -29,6 +29,10 @@ class HashtagParserTests(unittest.TestCase):
         self.assertEqual(extract_phone_count("#g-unit let's go"), 1)
         self.assertEqual(extract_phone_count("CX1\nNL1\n#g-unit"), 1)
         self.assertEqual(extract_phone_count("CX1\nNL1\nNL2\nNL3\nNL4\n#g-unit"), 4)
+        self.assertEqual(
+            extract_phone_count("CX 2\nNL 3: Galaxy S25\nNL 4: iPhone 17 PM\n#g-unit"),
+            2,
+        )
 
     def test_nl_cx_shoutout(self):
         event = parse_hashtag_sale(

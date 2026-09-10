@@ -78,6 +78,21 @@ function tokenMax(regex, text) {
   return Math.max(values.length, ...values);
 }
 
+function tokenSpan(regex, text) {
+  regex.lastIndex = 0;
+  const values = [...String(text || "").matchAll(regex)]
+    .map((match) => Number(match[1]))
+    .filter((value) => value >= 1 && value <= 20);
+  regex.lastIndex = 0;
+  if (!values.length) return null;
+  const unique = [...new Set(values)].sort((a, b) => a - b);
+  const consecutive = unique.every(
+    (value, index) => index === 0 || value === unique[index - 1] + 1
+  );
+  if (consecutive) return unique.length;
+  return Math.max(unique.length, ...unique);
+}
+
 export function extractCxCount(text) {
   const raw = String(text || "");
   const token = tokenMax(CX_TOKEN_RE, raw);
@@ -91,7 +106,7 @@ export function extractPhoneCount(text) {
   if (phones != null) return phones;
   const apps = firstNumber(APP_RE, raw);
   if (apps != null) return apps;
-  const newLines = tokenMax(NL_TOKEN_RE, raw);
+  const newLines = tokenSpan(NL_TOKEN_RE, raw);
   if (newLines != null) return newLines;
   const sold = firstNumber(SOLD_RE, raw);
   if (sold != null) return sold;

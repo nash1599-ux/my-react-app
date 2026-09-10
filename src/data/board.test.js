@@ -86,8 +86,8 @@ describe("salesboard scoring", () => {
     const steveo = board.reps.find((rep) => rep.name === "Ismael Ramos");
     const mackenzie = board.reps.find((rep) => rep.name === "Mackenzie Faith");
     expect(board.day).toBe("Thursday");
-    expect(board.dgNum).toBe(9);
-    expect(board.weeklyGoal.nlLeft).toBe(46);
+    expect(board.dgNum).toBe(11);
+    expect(board.weeklyGoal.nlLeft).toBe(44);
     expect(jordan.apps).toBe(2);
     expect(jordan.cx).toBe(1);
     expect(jordan.displayName).toBe("Jordan #23");
@@ -103,8 +103,9 @@ describe("salesboard scoring", () => {
     expect(matthew2.cx).toBe(2);
     expect(matthew2.rank).toBe(4);
     const neika = board.reps.find((rep) => rep.name === "Neika");
-    expect(neika.apps).toBe(2);
-    expect(neika.cx).toBe(1);
+    expect(neika.apps).toBe(4);
+    expect(neika.cx).toBe(2);
+    expect(neika.rank).toBe(5);
     const nash = board.reps.find((rep) => rep.name === "Nashly Paul");
     expect(nash.apps).toBe(4);
     expect(nash.cx).toBe(2);
@@ -116,6 +117,7 @@ describe("salesboard scoring", () => {
     expect(posted).toMatch(/Jordan #23 2 Apps \| 1 CX/);
     expect(posted).toMatch(/Steveo Ramos 4 Apps \| 2 CX/);
     expect(posted).toMatch(/Steve Nash 4 Apps \| 2 CX/);
+    expect(posted).toMatch(/Neika 4 Apps \| 2 CX/);
   });
 
   test("parses the corrected Wednesday Slack board", () => {
@@ -129,7 +131,8 @@ describe("salesboard scoring", () => {
     expect(board.reps.find((rep) => rep.name === "Mackenzie Faith").cx).toBe(2);
     expect(board.reps.find((rep) => rep.name === "Matthew 2").apps).toBe(4);
     expect(board.reps.find((rep) => rep.name === "Matthew 2").cx).toBe(2);
-    expect(board.reps.find((rep) => rep.name === "Neika").apps).toBe(2);
+    expect(board.reps.find((rep) => rep.name === "Neika").apps).toBe(4);
+    expect(board.reps.find((rep) => rep.name === "Neika").cx).toBe(2);
     expect(board.reps.find((rep) => rep.name === "Nashly Paul").apps).toBe(4);
     expect(board.reps.find((rep) => rep.name === "Nashly Paul").cx).toBe(2);
   });

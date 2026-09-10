@@ -25,6 +25,7 @@ describe("g-unit hashtag parser", () => {
     expect(extractPhoneCount("#g-unit let's go")).toBe(1);
     expect(extractPhoneCount("CX1\nNL1\n#g-unit")).toBe(1);
     expect(extractPhoneCount("CX1\nNL1\nNL2\nNL3\nNL4\n#g-unit")).toBe(4);
+    expect(extractPhoneCount("CX 2\nNL 3: Galaxy S25\nNL 4: iPhone 17 PM\n#g-unit")).toBe(2);
   });
 
   test("reads CX1 / NL shout-out format", () => {
@@ -207,6 +208,20 @@ NL 2: iPhone 17 PM
     expect(parsed.matched).toBe(true);
     expect(parsed.phones).toBe(2);
     expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Neika");
+  });
+
+  test("counts Neika CX2 NL3/NL4 as two more phones, not four", () => {
+    const parsed = parseHashtagSale(
+      `CX 2
+NL 3: Galaxy S25
+NL 4: iPhone 17 PM
+#G-Unit`,
+      { author: "Neika" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(2);
     expect(parsed.name).toBe("Neika");
   });
 

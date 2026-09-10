@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v13";
+export const STORAGE_KEY = "gunit-salesboard-v14";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -443,7 +443,7 @@ export const MONDAY_BOARD_TEXT = `
 export const WEDNESDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:9/12 |46 NL LEFT | THURSDAY ║
+║ :bar_chart: DG:11/12 |44 NL LEFT | THURSDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -451,10 +451,10 @@ export const WEDNESDAY_BOARD_TEXT = `
 :second_place_medal: Steve Nash 4 Apps | 2 CX
 :third_place_medal: Mackenzie Faith 4 Apps | 2 CX
 4. Matthew ² 4 Apps | 2 CX
-5. Nate 3 Apps | 3 CX
-6. Guy Lesperance 2 Apps | 4 CX
-7. Jordan #23 2 Apps | 1 CX
-8. Neika 2 Apps | 1 CX
+5. Neika 4 Apps | 2 CX
+6. Nate 3 Apps | 3 CX
+7. Guy Lesperance 2 Apps | 4 CX
+8. Jordan #23 2 Apps | 1 CX
 9. Ashunte Reyes 1 App | 1 CX
 10. Kyron Tisdale 1 App | 1 CX
 11. Matthew Grant 1 App | 1 CX
@@ -588,12 +588,12 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
   weekLabel: "Week of Sep 8",
   sourceLabel: "Thursday live board",
-    dataAsOf: "Steve Nash Thursday CX2 close (2 iPhone 17s)",
-  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 9, fri: 0, sat: 0, sun: 0 },
+    dataAsOf: "Neika Thursday CX2 close (Galaxy S25 + iPhone 17 PM)",
+  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 11, fri: 0, sat: 0, sun: 0 },
   notes: [
     "Thursday live board. Phones count as apps. Daily goal resets each day.",
-    "Steve Nash CX2 / two iPhone 17s #G-Unit (second Thursday close).",
-    "Earlier Thursday: Nash CX1 Moto G + iPhone 16, Neika 2 phones, Steveo 2 phones, Matthew J 1 phone.",
+    "Neika CX2 / Galaxy S25 + iPhone 17 PM #G-Unit (second Thursday close).",
+    "Earlier Thursday: Nash 4 phones / 2 CX, Steveo 2 phones, Matthew J 1 phone, Neika first 2 phones.",
     "Last week (56 apps / 25 CX) stays archived.",
   ],
 });
