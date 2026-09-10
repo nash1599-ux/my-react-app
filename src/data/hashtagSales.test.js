@@ -226,6 +226,20 @@ NL 2: IPhone 16
     expect(parsed.name).toBe("Nashly Paul");
   });
 
+  test("reads Nash-Sama CX2 two-iPhone #G-Unit close", () => {
+    const parsed = parseHashtagSale(
+      `CX 2
+NL 1: iPhone 17
+NL 2: iPhone 17
+#G-Unit`,
+      { author: "Nash-Sama" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(2);
+    expect(parsed.name).toBe("Nashly Paul");
+  });
+
   test("skips duplicate Slack timestamps", () => {
     const first = applyHashtagSale(SATURDAY_SNAPSHOT, {
       text: "1 phone #g-unit",

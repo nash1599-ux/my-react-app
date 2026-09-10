@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v12";
+export const STORAGE_KEY = "gunit-salesboard-v13";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -443,17 +443,17 @@ export const MONDAY_BOARD_TEXT = `
 export const WEDNESDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:7/12 |48 NL LEFT | THURSDAY ║
+║ :bar_chart: DG:9/12 |46 NL LEFT | THURSDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 :first_place_medal: Steveo Ramos 4 Apps | 2 CX
-:second_place_medal: Mackenzie Faith 4 Apps | 2 CX
-:third_place_medal: Matthew ² 4 Apps | 2 CX
-4. Nate 3 Apps | 3 CX
-5. Guy Lesperance 2 Apps | 4 CX
-6. Jordan #23 2 Apps | 1 CX
-7. Steve Nash 2 Apps | 1 CX
+:second_place_medal: Steve Nash 4 Apps | 2 CX
+:third_place_medal: Mackenzie Faith 4 Apps | 2 CX
+4. Matthew ² 4 Apps | 2 CX
+5. Nate 3 Apps | 3 CX
+6. Guy Lesperance 2 Apps | 4 CX
+7. Jordan #23 2 Apps | 1 CX
 8. Neika 2 Apps | 1 CX
 9. Ashunte Reyes 1 App | 1 CX
 10. Kyron Tisdale 1 App | 1 CX
@@ -588,13 +588,12 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
   weekLabel: "Week of Sep 8",
   sourceLabel: "Thursday live board",
-    dataAsOf: "Steve Nash Thursday close (Moto G + iPhone 16)",
-  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 7, fri: 0, sat: 0, sun: 0 },
+    dataAsOf: "Steve Nash Thursday CX2 close (2 iPhone 17s)",
+  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 9, fri: 0, sat: 0, sun: 0 },
   notes: [
     "Thursday live board. Phones count as apps. Daily goal resets each day.",
-    "Steve Nash Cx1 / Moto G 2026 + iPhone 16 #G-Unit.",
-    "Neika first #G-Unit close (Pixel 11 Pro + iPhone 17 PM).",
-    "Steveo Ramos and Matthew J also sold Thursday.",
+    "Steve Nash CX2 / two iPhone 17s #G-Unit (second Thursday close).",
+    "Earlier Thursday: Nash CX1 Moto G + iPhone 16, Neika 2 phones, Steveo 2 phones, Matthew J 1 phone.",
     "Last week (56 apps / 25 CX) stays archived.",
   ],
 });
