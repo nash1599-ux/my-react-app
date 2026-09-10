@@ -18,7 +18,9 @@ APP_RE = re.compile(r"\b(\d+)[ \t]+(?:apps?|lines?)\b", re.IGNORECASE)
 CX_RE = re.compile(r"\b(\d+)[ \t]+cx\b", re.IGNORECASE)
 NL_TOKEN_RE = re.compile(r"\bNL[ \t]*[:#-]?[ \t]*(\d+)\b", re.IGNORECASE)
 CX_TOKEN_RE = re.compile(r"\bCX[ \t]*[:#-]?[ \t]*(\d+)\b", re.IGNORECASE)
-SO_LINE_RE = re.compile(r"^\s*(?:s/o|shout\s*out)\b.*$", re.IGNORECASE | re.MULTILINE)
+SO_LINE_RE = re.compile(
+    r"^\s*[*_]*\s*(?:s/o|shout\s*out)\b.*$", re.IGNORECASE | re.MULTILINE
+)
 SOLD_RE = re.compile(r"\b(?:sold|closed|got|did)\s+(\d+)\b", re.IGNORECASE)
 HASH_NUM_RE = re.compile(r"#g[-_]?unit\b[^\d]{0,12}(\d+)", re.IGNORECASE)
 NUM_HASH_RE = re.compile(r"\b(\d+)\s*#g[-_]?unit\b", re.IGNORECASE)

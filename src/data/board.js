@@ -18,6 +18,7 @@ export const ALIASES = {
   steveo: "Ismael Ramos",
   "steveo ramos": "Ismael Ramos",
   "steve ramos": "Ismael Ramos",
+  ismael: "Ismael Ramos",
   shaad: "Rashaad Hypolite",
   "shaad hypolite": "Rashaad Hypolite",
   jayden: "Jayden Dale",

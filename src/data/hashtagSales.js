@@ -12,7 +12,7 @@ const APP_RE = /\b(\d+)[ \t]+(?:apps?|lines?)\b/i;
 const CX_RE = /\b(\d+)[ \t]+cx\b/i;
 const NL_TOKEN_RE = /\bNL[ \t]*[:#-]?[ \t]*(\d+)\b/gi;
 const CX_TOKEN_RE = /\bCX[ \t]*[:#-]?[ \t]*(\d+)\b/gi;
-const SO_LINE_RE = /^\s*(?:s\/o|shout\s*out)\b.*$/gim;
+const SO_LINE_RE = /^\s*[*_]*\s*(?:s\/o|shout\s*out)\b.*$/gim;
 const SOLD_RE = /\b(?:sold|closed|got|did)\s+(\d+)\b/i;
 const HASH_NUM_RE = /#g[-_]?unit\b[^\d]{0,12}(\d+)/i;
 const NUM_HASH_RE = /\b(\d+)\s*#g[-_]?unit\b/i;
@@ -23,6 +23,7 @@ const KNOWN_NAMES = [
   "kyron tisdale",
   "nashly paul",
   "ismael ramos",
+  "ismael",
   "rashaad hypolite",
   "jayden dale",
   "jordan aguirre",

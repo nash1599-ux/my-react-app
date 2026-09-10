@@ -72,6 +72,7 @@ class NormalizeNameTests(unittest.TestCase):
         self.assertEqual(normalize_name("quay"), "Jaquay Tyler")
         self.assertEqual(normalize_name("Ky. Tisdale"), "Kyron Tisdale")
         self.assertEqual(normalize_name("steve nash"), "Nashly Paul")
+        self.assertEqual(normalize_name("ismael"), "Ismael Ramos")
         self.assertEqual(normalize_name("jordan"), "Jordan Aguirre")
         self.assertEqual(normalize_name("Gigi Smith"), "Gianna Smith")
         self.assertEqual(normalize_name("Jordan #23"), "Jordan Aguirre")

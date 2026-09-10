@@ -58,6 +58,29 @@ NL 2 iPhone 17 pro 2x
         self.assertEqual(event["cx"], 1)
         self.assertEqual(event["name"], "Nate")
 
+    def test_markdown_so_d2d_credits_author(self):
+        event = parse_hashtag_sale(
+            """*D2D*:door:
+
+*S/O Drew Tepper*
+*S/O Matthew Grant*:military_helmet::saluting_face:
+*S/O G-UNIT Nash-Sama Rashaad Hyppolite@Kyron MY DAWG!@Jordan@MattJ@Judah*
+*@GEE@Kenziee@Nate@Shaunte*
+
+*Cx1*
+
+*NL 1 iPhone 17Pro/Extra*
+
+*NL 2 A17*
+
+*precisionmanagement-att-sales #G-UNIT*:saluting_face::military_helmet: *#IAM back*:money_with_wings: *#1More*:100:""",
+            {"author": "Ismael"},
+        )
+        self.assertTrue(event["matched"])
+        self.assertEqual(event["phones"], 2)
+        self.assertEqual(event["cx"], 1)
+        self.assertEqual(event["name"], "Ismael Ramos")
+
     def test_nickname_and_cx(self):
         event = parse_hashtag_sale("Gigi sold 2 phones 1 CX #g-unit", {"author": "Other"})
         self.assertTrue(event["matched"])

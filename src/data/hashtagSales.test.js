@@ -57,6 +57,30 @@ NL 2 iPhone 17 pro 2x
     expect(parsed.name).toBe("Nate");
   });
 
+  test("credits the Slack author on markdown S/O D2D posts", () => {
+    const parsed = parseHashtagSale(
+      `*D2D*:door:
+
+*S/O Drew Tepper*
+*S/O Matthew Grant*:military_helmet::saluting_face:
+*S/O G-UNIT Nash-Sama Rashaad Hyppolite@Kyron MY DAWG!@Jordan@MattJ@Judah*
+*@GEE@Kenziee@Nate@Shaunte*
+
+*Cx1*
+
+*NL 1 iPhone 17Pro/Extra*
+
+*NL 2 A17*
+
+*precisionmanagement-att-sales #G-UNIT*:saluting_face::military_helmet: *#IAM back*:money_with_wings: *#1More*:100:`,
+      { author: "Ismael" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Ismael Ramos");
+  });
+
   test("maps nicknames and optional CX", () => {
     const parsed = parseHashtagSale("Gigi sold 2 phones 1 CX #g-unit", {
       author: "Someone Else",
