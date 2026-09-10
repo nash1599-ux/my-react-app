@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v10";
+export const STORAGE_KEY = "gunit-salesboard-v11";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -441,7 +441,7 @@ export const MONDAY_BOARD_TEXT = `
 export const WEDNESDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:3/12 |52 NL LEFT | THURSDAY ║
+║ :bar_chart: DG:5/12 |50 NL LEFT | THURSDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -451,12 +451,13 @@ export const WEDNESDAY_BOARD_TEXT = `
 4. Nate 3 Apps | 3 CX
 5. Guy Lesperance 2 Apps | 4 CX
 6. Jordan #23 2 Apps | 1 CX
-7. Ashunte Reyes 1 App | 1 CX
-8. Kyron Tisdale 1 App | 1 CX
-9. Matthew Grant 1 App | 1 CX
-10. Judah Rodgers 0 App | 0 CX
-11. Steve Nash 0 App | 0 CX
-12. Shaad Hyppolite 0 Apps | 0 CX
+7. Neika 2 Apps | 1 CX
+8. Ashunte Reyes 1 App | 1 CX
+9. Kyron Tisdale 1 App | 1 CX
+10. Matthew Grant 1 App | 1 CX
+11. Judah Rodgers 0 App | 0 CX
+12. Steve Nash 0 App | 0 CX
+13. Shaad Hyppolite 0 Apps | 0 CX
 `;
 
 export function formatSlackBoard(board) {
@@ -585,13 +586,12 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
   weekLabel: "Week of Sep 8",
   sourceLabel: "Thursday live board",
-  dataAsOf: "Matthew J +1 phone Thursday · Steveo +2",
-  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 3, fri: 0, sat: 0, sun: 0 },
+    dataAsOf: "Neika first #G-Unit close",
+  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 5, fri: 0, sat: 0, sun: 0 },
   notes: [
     "Thursday live board. Phones count as apps. Daily goal resets each day.",
-    "Steveo Ramos (Ismael) +2 phones Thursday (Cx1 / iPhone 17Pro Extra + A17) #G-UNIT.",
-    "Matthew J (Matthew ²) +1 phone Thursday (Cx1 / NL1).",
-    "Mackenzie Faith 4 Apps | 2 CX. Jordan #23 2 Apps | 1 CX.",
+    "Neika first #G-Unit close (Pixel 11 Pro + iPhone 17 PM).",
+    "Steveo Ramos (Ismael) +2 phones Thursday. Matthew J +1 phone Thursday.",
     "Last week (56 apps / 25 CX) stays archived.",
   ],
 });

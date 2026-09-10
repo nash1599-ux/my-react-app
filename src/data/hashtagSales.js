@@ -43,6 +43,7 @@ const KNOWN_NAMES = [
   "mackenzie faith",
   "mackenzie",
   "big sister general",
+  "neika",
   "quay tyler",
   "quay",
   "gigi",

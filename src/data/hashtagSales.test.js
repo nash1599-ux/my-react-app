@@ -194,6 +194,22 @@ NL 2 A17
     expect(parsed.name).toBe("Ismael Ramos");
   });
 
+  test("counts Neika's #G-Unit post as 2 phones", () => {
+    const parsed = parseHashtagSale(
+      `S/O Drew Tepper
+S/O The UNIT Jordan Ismael Kyron
+CX 1
+NL 1: Pixel 11 pro
+NL 2: iPhone 17 PM
+#G-Unit`,
+      { author: "Neika" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Neika");
+  });
+
   test("skips duplicate Slack timestamps", () => {
     const first = applyHashtagSale(SATURDAY_SNAPSHOT, {
       text: "1 phone #g-unit",
