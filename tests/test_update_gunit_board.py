@@ -82,6 +82,8 @@ class NormalizeNameTests(unittest.TestCase):
         self.assertEqual(normalize_name("Ky.  Tisdale"), "Kyron Tisdale")
         self.assertEqual(normalize_name("Cam"), "Cam Winfield")
         self.assertEqual(normalize_name("Matthew ²"), "Matthew 2")
+        self.assertEqual(normalize_name("Kenziee"), "Mackenzie Faith")
+        self.assertEqual(normalize_name("Big Sister General"), "Mackenzie Faith")
 
     def test_unknown_name_is_preserved(self):
         self.assertEqual(normalize_name("Jordan Reeces"), "Jordan Reeces")
@@ -363,22 +365,26 @@ class RankingAndAliasFixTests(unittest.TestCase):
 
     def test_corrected_wednesday_counts_jordan_and_steveo_two_phones(self):
         text = """
-        DG:7/12 | 60 NL LEFT | WEDNESDAY
-        1. Nate 3 Apps | 3 CX
-        2. Guy Lesperance 2 Apps | 4 CX
-        3. Jordan #23 2 Apps | 1 CX
-        4. Steveo Ramos 2 Apps | 1 CX
-        5. Mackenzie Faith 2 Apps | 1 CX
+        DG:9/12 | 58 NL LEFT | WEDNESDAY
+        1. Mackenzie Faith 4 Apps | 2 CX
+        2. Nate 3 Apps | 3 CX
+        3. Guy Lesperance 2 Apps | 4 CX
+        4. Jordan #23 2 Apps | 1 CX
+        5. Steveo Ramos 2 Apps | 1 CX
         """
         _banner, rows, _notes = process_board(text)
         ranked = rank_rows(rows)
         jordan = next(row for row in ranked if row["name"] == "Jordan Aguirre")
         steveo = next(row for row in ranked if row["name"] == "Ismael Ramos")
+        mackenzie = next(row for row in ranked if row["name"] == "Mackenzie Faith")
         self.assertEqual(jordan["apps"], 2)
         self.assertEqual(jordan["cx"], 1)
         self.assertEqual(steveo["apps"], 2)
         self.assertEqual(steveo["cx"], 1)
         self.assertEqual(steveo["display_name"], "Steveo Ramos")
+        self.assertEqual(mackenzie["apps"], 4)
+        self.assertEqual(mackenzie["cx"], 2)
+        self.assertEqual(mackenzie["rank"], 1)
 
 
 if __name__ == "__main__":

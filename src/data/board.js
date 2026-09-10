@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v6";
+export const STORAGE_KEY = "gunit-salesboard-v7";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -37,6 +37,11 @@ export const ALIASES = {
   "cam winfield": "Cam Winfield",
   "matthew 2": "Matthew 2",
   "matthew²": "Matthew 2",
+  mackenzie: "Mackenzie Faith",
+  "mackenzie faith": "Mackenzie Faith",
+  kenzie: "Mackenzie Faith",
+  kenziee: "Mackenzie Faith",
+  "big sister general": "Mackenzie Faith",
 };
 
 const LINE_RE =
@@ -429,20 +434,20 @@ export const MONDAY_BOARD_TEXT = `
 8. Steve Nash             0 App  | 0 CX
 `;
 
-// Live Wednesday board. Jordan and Steveo each sold 2 phones (NL1 + NL2).
-// Phones count as apps, so both are 2 Apps | 1 CX, not 1 App.
+// Live Wednesday board. Phones count as apps.
+// Mackenzie’s #G-unit FM post (Cx1 / NL1 / NL2) was missed and is now on her row.
 export const WEDNESDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:7/12 |60 NL LEFT | WEDNESDAY ║
+║ :bar_chart: DG:9/12 |58 NL LEFT | WEDNESDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-:first_place_medal: Nate 3 Apps | 3 CX
-:second_place_medal: Guy Lesperance 2 Apps | 4 CX
-:third_place_medal: Jordan #23 2 Apps | 1 CX
-4. Steveo Ramos 2 Apps | 1 CX
-5. Mackenzie Faith 2 Apps | 1 CX
+:first_place_medal: Mackenzie Faith 4 Apps | 2 CX
+:second_place_medal: Nate 3 Apps | 3 CX
+:third_place_medal: Guy Lesperance 2 Apps | 4 CX
+4. Jordan #23 2 Apps | 1 CX
+5. Steveo Ramos 2 Apps | 1 CX
 6. Ashunte Reyes 1 App | 1 CX
 7. Kyron Tisdale 1 App | 1 CX
 8. Matthew Grant 1 App | 1 CX
@@ -578,10 +583,11 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
   weekLabel: "Week of Sep 8",
   sourceLabel: "Wednesday live board",
-  dataAsOf: "Jordan and Steveo Ramos corrected to 2 phones each",
-  dailyTotals: { mon: 0, tue: 0, wed: 7, thu: 0, fri: 0, sat: 0, sun: 0 },
+  dataAsOf: "Mackenzie’s 2-phone sale added · Jordan and Steveo at 2 phones each",
+  dailyTotals: { mon: 0, tue: 0, wed: 9, thu: 0, fri: 0, sat: 0, sun: 0 },
   notes: [
     "Wednesday live board. Phones count as apps.",
+    "Mackenzie Faith +2 phones from her #G-unit FM post (Cx1 / NL1 / NL2). Now 4 Apps | 2 CX.",
     "Jordan #23 sold 2 phones (NL1 17 Pro Max EXTRA + NL2 S16+ EXTRA).",
     "Steveo Ramos (Ismael) sold 2 phones (two iPhone 17e/512 Extra).",
     "Last week (56 apps / 25 CX) stays archived.",

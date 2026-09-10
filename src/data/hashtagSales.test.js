@@ -140,6 +140,23 @@ NL 2 iPhone 17e/512 Extra
     ).toBe(2);
   });
 
+  test("maps Big Sister General / Kenziee #G-unit posts to Mackenzie Faith", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O @Drew Tepper For the business opportunity
+S/O @Matthew Grant For helping me close
+Cx 1
+NL 1
+NL 2
+#precisionmanagement-att-sales #G-unit FM`,
+      { author: "Big Sister General" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Mackenzie Faith");
+  });
+
   test("skips duplicate Slack timestamps", () => {
     const first = applyHashtagSale(SATURDAY_SNAPSHOT, {
       text: "1 phone #g-unit",

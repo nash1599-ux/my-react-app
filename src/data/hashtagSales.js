@@ -12,7 +12,8 @@ const APP_RE = /\b(\d+)[ \t]+(?:apps?|lines?)\b/i;
 const CX_RE = /\b(\d+)[ \t]+cx\b/i;
 const NL_TOKEN_RE = /\bNL[ \t]*[:#-]?[ \t]*(\d+)\b/gi;
 const CX_TOKEN_RE = /\bCX[ \t]*[:#-]?[ \t]*(\d+)\b/gi;
-const SO_LINE_RE = /^\s*(?:s\/o|shout\s*out)\b.*$/gim;
+const SO_LINE_RE = /^\s*(?:s\/o|shout\s*out)\b.*$/i;
+const SALE_LINE_RE = /\b(cx|nl|sold|closed|#g[-_]?unit|\d+\s*phones?)\b/i;
 const SOLD_RE = /\b(?:sold|closed|got|did)\s+(\d+)\b/i;
 const HASH_NUM_RE = /#g[-_]?unit\b[^\d]{0,12}(\d+)/i;
 const NUM_HASH_RE = /\b(\d+)\s*#g[-_]?unit\b/i;
@@ -37,6 +38,9 @@ const KNOWN_NAMES = [
   "steveo",
   "shaad hypolite",
   "jordan #23",
+  "mackenzie faith",
+  "mackenzie",
+  "big sister general",
   "quay tyler",
   "quay",
   "gigi",
@@ -100,8 +104,28 @@ export function extractPhoneCount(text) {
   return 1;
 }
 
+function stripShoutOuts(text) {
+  const kept = [];
+  let skipping = false;
+  for (const line of String(text || "").split(/\r?\n/)) {
+    if (SO_LINE_RE.test(line)) {
+      skipping = true;
+      continue;
+    }
+    if (skipping) {
+      if (SALE_LINE_RE.test(line)) {
+        skipping = false;
+        kept.push(line);
+      }
+      continue;
+    }
+    kept.push(line);
+  }
+  return kept.join("\n");
+}
+
 function findMentionedName(text, fallback) {
-  const haystack = String(text || "").replace(SO_LINE_RE, "").toLowerCase();
+  const haystack = stripShoutOuts(text).toLowerCase();
   const ranked = [...KNOWN_NAMES].sort((a, b) => b.length - a.length);
   for (const name of ranked) {
     const pattern = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");

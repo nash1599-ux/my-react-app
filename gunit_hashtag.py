@@ -19,6 +19,9 @@ CX_RE = re.compile(r"\b(\d+)[ \t]+cx\b", re.IGNORECASE)
 NL_TOKEN_RE = re.compile(r"\bNL[ \t]*[:#-]?[ \t]*(\d+)\b", re.IGNORECASE)
 CX_TOKEN_RE = re.compile(r"\bCX[ \t]*[:#-]?[ \t]*(\d+)\b", re.IGNORECASE)
 SO_LINE_RE = re.compile(r"^\s*(?:s/o|shout\s*out)\b.*$", re.IGNORECASE | re.MULTILINE)
+SALE_LINE_RE = re.compile(
+    r"\b(cx|nl|sold|closed|#g[-_]?unit|\d+\s*phones?)\b", re.IGNORECASE
+)
 SOLD_RE = re.compile(r"\b(?:sold|closed|got|did)\s+(\d+)\b", re.IGNORECASE)
 HASH_NUM_RE = re.compile(r"#g[-_]?unit\b[^\d]{0,12}(\d+)", re.IGNORECASE)
 NUM_HASH_RE = re.compile(r"\b(\d+)\s*#g[-_]?unit\b", re.IGNORECASE)
@@ -111,8 +114,25 @@ def extract_phone_count(text: str) -> int:
     return 1
 
 
+def strip_shoutouts(text: str) -> str:
+    """Drop S/O lines and the name-list lines that follow them."""
+    kept = []
+    skipping = False
+    for line in (text or "").splitlines():
+        if SO_LINE_RE.match(line):
+            skipping = True
+            continue
+        if skipping:
+            if SALE_LINE_RE.search(line):
+                skipping = False
+                kept.append(line)
+            continue
+        kept.append(line)
+    return "\n".join(kept)
+
+
 def find_mentioned_name(text: str, fallback: str = "") -> str:
-    haystack = SO_LINE_RE.sub("", text or "")
+    haystack = strip_shoutouts(text or "")
     for name in KNOWN_NAMES:
         pattern = re.compile(rf"\b{re.escape(name)}\b", re.IGNORECASE)
         if pattern.search(haystack):
