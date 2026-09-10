@@ -176,6 +176,24 @@ Next ×3`,
     expect(parsed.name).toBe("Matthew 2");
   });
 
+  test("counts Ismael's Thursday D2D #G-UNIT post as 2 phones on Steveo", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O Drew Tepper
+S/O Matthew Grant
+S/O G-UNIT Nash-Sama Rashaad Hyppolite @Kyron @Jordan @MattJ @Judah
+Cx1
+NL 1 iPhone 17Pro/Extra
+NL 2 A17
+#G-UNIT`,
+      { author: "Ismael" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Ismael Ramos");
+  });
+
   test("skips duplicate Slack timestamps", () => {
     const first = applyHashtagSale(SATURDAY_SNAPSHOT, {
       text: "1 phone #g-unit",

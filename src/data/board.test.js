@@ -80,38 +80,38 @@ describe("salesboard scoring", () => {
     expect(board.reps.find((rep) => rep.name === "Ismael Ramos").cx).toBe(4);
   });
 
-  test("corrects Wednesday so Jordan, Steveo, and Mackenzie have their phones", () => {
+  test("keeps the live Thursday board with Steveo's new 2-phone sale", () => {
     const board = summarizeBoard(OFFICIAL_SNAPSHOT);
     const jordan = board.reps.find((rep) => rep.name === "Jordan Aguirre");
     const steveo = board.reps.find((rep) => rep.name === "Ismael Ramos");
     const mackenzie = board.reps.find((rep) => rep.name === "Mackenzie Faith");
-    expect(board.day).toBe("Wednesday");
-    expect(board.dgNum).toBe(12);
-    expect(board.weeklyGoal.nlLeft).toBe(55);
+    expect(board.day).toBe("Thursday");
+    expect(board.dgNum).toBe(2);
+    expect(board.weeklyGoal.nlLeft).toBe(53);
     expect(jordan.apps).toBe(2);
     expect(jordan.cx).toBe(1);
     expect(jordan.displayName).toBe("Jordan #23");
-    expect(steveo.apps).toBe(2);
-    expect(steveo.cx).toBe(1);
+    expect(steveo.apps).toBe(4);
+    expect(steveo.cx).toBe(2);
     expect(steveo.displayName).toBe("Steveo Ramos");
+    expect(steveo.rank).toBe(1);
     expect(mackenzie.apps).toBe(4);
     expect(mackenzie.cx).toBe(2);
-    expect(mackenzie.rank).toBe(1);
+    expect(mackenzie.rank).toBe(2);
     const matthew2 = board.reps.find((rep) => rep.name === "Matthew 2");
     expect(matthew2.apps).toBe(3);
     expect(matthew2.cx).toBe(1);
-    expect(matthew2.rank).toBe(3);
-    expect(jordan.rank).toBeLessThan(steveo.rank);
+    expect(jordan.rank).toBeGreaterThan(steveo.rank);
     const posted = formatSlackBoard(board);
     expect(posted).toMatch(/Mackenzie Faith 4 Apps \| 2 CX/);
     expect(posted).toMatch(/Jordan #23 2 Apps \| 1 CX/);
-    expect(posted).toMatch(/Steveo Ramos 2 Apps \| 1 CX/);
+    expect(posted).toMatch(/Steveo Ramos 4 Apps \| 2 CX/);
   });
 
   test("parses the corrected Wednesday Slack board", () => {
     const board = parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING);
     expect(board.reps.find((rep) => rep.name === "Jordan Aguirre").apps).toBe(2);
-    expect(board.reps.find((rep) => rep.name === "Ismael Ramos").apps).toBe(2);
+    expect(board.reps.find((rep) => rep.name === "Ismael Ramos").apps).toBe(4);
     expect(board.reps.find((rep) => rep.name === "Ismael Ramos").displayName).toBe(
       "Steveo Ramos"
     );
