@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v9";
+export const STORAGE_KEY = "gunit-salesboard-v10";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -441,14 +441,14 @@ export const MONDAY_BOARD_TEXT = `
 export const WEDNESDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:2/12 |53 NL LEFT | THURSDAY ║
+║ :bar_chart: DG:3/12 |52 NL LEFT | THURSDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 :first_place_medal: Steveo Ramos 4 Apps | 2 CX
 :second_place_medal: Mackenzie Faith 4 Apps | 2 CX
-:third_place_medal: Nate 3 Apps | 3 CX
-4. Matthew ² 3 Apps | 1 CX
+:third_place_medal: Matthew ² 4 Apps | 2 CX
+4. Nate 3 Apps | 3 CX
 5. Guy Lesperance 2 Apps | 4 CX
 6. Jordan #23 2 Apps | 1 CX
 7. Ashunte Reyes 1 App | 1 CX
@@ -585,12 +585,12 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
   weekLabel: "Week of Sep 8",
   sourceLabel: "Thursday live board",
-  dataAsOf: "Steveo Ramos +2 phones Thursday",
-  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 2, fri: 0, sat: 0, sun: 0 },
+  dataAsOf: "Matthew J +1 phone Thursday · Steveo +2",
+  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 3, fri: 0, sat: 0, sun: 0 },
   notes: [
     "Thursday live board. Phones count as apps. Daily goal resets each day.",
     "Steveo Ramos (Ismael) +2 phones Thursday (Cx1 / iPhone 17Pro Extra + A17) #G-UNIT.",
-    "Matthew J (Matthew ²) +3 phones Wednesday.",
+    "Matthew J (Matthew ²) +1 phone Thursday (Cx1 / NL1).",
     "Mackenzie Faith 4 Apps | 2 CX. Jordan #23 2 Apps | 1 CX.",
     "Last week (56 apps / 25 CX) stays archived.",
   ],

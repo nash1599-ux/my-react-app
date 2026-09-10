@@ -86,8 +86,8 @@ describe("salesboard scoring", () => {
     const steveo = board.reps.find((rep) => rep.name === "Ismael Ramos");
     const mackenzie = board.reps.find((rep) => rep.name === "Mackenzie Faith");
     expect(board.day).toBe("Thursday");
-    expect(board.dgNum).toBe(2);
-    expect(board.weeklyGoal.nlLeft).toBe(53);
+    expect(board.dgNum).toBe(3);
+    expect(board.weeklyGoal.nlLeft).toBe(52);
     expect(jordan.apps).toBe(2);
     expect(jordan.cx).toBe(1);
     expect(jordan.displayName).toBe("Jordan #23");
@@ -99,8 +99,9 @@ describe("salesboard scoring", () => {
     expect(mackenzie.cx).toBe(2);
     expect(mackenzie.rank).toBe(2);
     const matthew2 = board.reps.find((rep) => rep.name === "Matthew 2");
-    expect(matthew2.apps).toBe(3);
-    expect(matthew2.cx).toBe(1);
+    expect(matthew2.apps).toBe(4);
+    expect(matthew2.cx).toBe(2);
+    expect(matthew2.rank).toBe(3);
     expect(jordan.rank).toBeGreaterThan(steveo.rank);
     const posted = formatSlackBoard(board);
     expect(posted).toMatch(/Mackenzie Faith 4 Apps \| 2 CX/);
@@ -117,7 +118,8 @@ describe("salesboard scoring", () => {
     );
     expect(board.reps.find((rep) => rep.name === "Mackenzie Faith").apps).toBe(4);
     expect(board.reps.find((rep) => rep.name === "Mackenzie Faith").cx).toBe(2);
-    expect(board.reps.find((rep) => rep.name === "Matthew 2").apps).toBe(3);
+    expect(board.reps.find((rep) => rep.name === "Matthew 2").apps).toBe(4);
+    expect(board.reps.find((rep) => rep.name === "Matthew 2").cx).toBe(2);
   });
 
   test("parses Saturday SATDI paste including Cam and Matthew 2", () => {
