@@ -1,0 +1,257 @@
+.gunit-shell {
+  padding-top: 12px;
+}
+
+.gunit-nav {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gunit-nav button {
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+  background: #101826;
+  color: #f4f7fb;
+  border-radius: 999px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.gunit-nav button.active {
+  background: #f5c14a;
+  color: #14110a;
+  border-color: #f5c14a;
+}
+
+.weather-bar {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto 14px;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #101826, #162033);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+.weather-line,
+.weather-tip {
+  margin: 0;
+}
+
+.weather-tip {
+  margin-top: 6px;
+  color: #93a0b5;
+}
+
+.weather-status {
+  position: absolute;
+  right: 18px;
+  top: 16px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #93a0b5;
+}
+
+.quote-card,
+.culture-grid,
+.playbook .notes,
+.tracker .leaderboard {
+  margin-top: 14px;
+  padding: 20px 22px 24px;
+  background: linear-gradient(180deg, #101826, #162033);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+}
+
+.quote-card blockquote {
+  margin: 8px 0 12px;
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.quote-card cite,
+.quote-card .advice {
+  display: block;
+  color: #93a0b5;
+  font-style: normal;
+}
+
+.step-list {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  margin: 12px 0 0;
+  list-style: none;
+}
+
+.step-list li {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.step-list span,
+.coe-grid p,
+.lap-row span {
+  color: #93a0b5;
+}
+
+.coe-grid,
+.lap-row,
+.lap-lists {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.coe-grid article,
+.lap-row article {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(76, 195, 255, 0.08);
+}
+
+.lap-row {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.money-lap {
+  background: rgba(245, 193, 74, 0.14) !important;
+}
+
+.see-grid article span {
+  display: block;
+  color: #93a0b5;
+  margin-top: 6px;
+}
+
+.tracker input {
+  width: 100%;
+  min-width: 72px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0b1220;
+  color: #f4f7fb;
+  padding: 7px 8px;
+}
+
+.poster {
+  display: flex;
+  justify-content: center;
+}
+
+.poster-frame {
+  width: min(720px, 100%);
+  padding: 28px 28px 32px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(245, 193, 74, 0.22), transparent 34%),
+    linear-gradient(180deg, #10131c, #070b12 58%, #111827);
+  border: 1px solid rgba(245, 193, 74, 0.28);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+.poster-kicker,
+.poster-sub,
+.poster-cycle {
+  text-align: center;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f5c14a;
+  font-weight: 800;
+}
+
+.poster-frame h1 {
+  text-align: center;
+  font-size: 84px;
+  margin: 0;
+  letter-spacing: 0.08em;
+}
+
+.poster-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 18px 0 22px;
+}
+
+.poster-stats article {
+  text-align: center;
+  padding: 12px 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.poster-stats span {
+  display: block;
+  color: #93a0b5;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.poster-stats strong {
+  font-size: 28px;
+}
+
+.poster-podium,
+.poster-rest {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+}
+
+.poster-podium li,
+.poster-rest li {
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.place-1 {
+  background: rgba(245, 193, 74, 0.12);
+  border-radius: 12px;
+}
+
+.place-2,
+.place-3 {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+}
+
+.poster-podium em,
+.poster-rest em {
+  color: #93a0b5;
+  font-style: normal;
+}
+
+.poster-podium strong,
+.poster-rest strong {
+  display: block;
+}
+
+@media (max-width: 800px) {
+  .coe-grid,
+  .lap-row,
+  .lap-lists,
+  .poster-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .weather-status {
+    position: static;
+    display: block;
+    margin-top: 8px;
+  }
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>G-Unit Leaderboard</title>
+    <style>
+      html, body { margin: 0; background: #05070c; }
+      body {
+        width: 1080px;
+        height: 1600px;
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+        color: #f7f3ea;
+        background:
+          radial-gradient(circle at 80% 0%, rgba(245, 193, 74, 0.28), transparent 36%),
+          radial-gradient(circle at 10% 100%, rgba(76, 195, 255, 0.18), transparent 30%),
+          #070b12;
+      }
+      .frame {
+        box-sizing: border-box;
+        height: 1600px;
+        padding: 56px 58px 48px;
+        display: flex;
+        flex-direction: column;
+      }
+      .kicker {
+        letter-spacing: 0.22em;
+        font-weight: 800;
+        color: #f5c14a;
+        text-transform: uppercase;
+        font-size: 22px;
+      }
+      h1 {
+        margin: 10px 0 0;
+        font-size: 132px;
+        letter-spacing: 0.08em;
+        line-height: 0.86;
+      }
+      .sub {
+        margin-top: 8px;
+        color: #93a0b5;
+        font-size: 28px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin: 36px 0 28px;
+      }
+      .stats div {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 22px;
+        padding: 18px 10px 16px;
+        text-align: center;
+      }
+      .stats span { display: block; color: #93a0b5; letter-spacing: 0.12em; text-transform: uppercase; font-size: 14px; }
+      .stats strong { font-size: 42px; }
+      ol { list-style: none; padding: 0; margin: 0; }
+      .podium li, .rest li {
+        display: grid;
+        grid-template-columns: 86px 1fr auto;
+        gap: 12px;
+        align-items: center;
+        padding: 18px 16px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+      .p1 { background: rgba(245,193,74,0.16); border-radius: 18px; margin-bottom: 8px; }
+      .p2, .p3 { background: rgba(255,255,255,0.04); border-radius: 18px; margin-bottom: 8px; }
+      .medal { font-size: 40px; }
+      .name { font-size: 32px; font-weight: 800; }
+      .meta { color: #93a0b5; font-size: 20px; }
+      .rest .name { font-size: 24px; }
+      .rest .medal { font-size: 24px; color: #f5c14a; font-weight: 800; }
+      .cycle {
+        margin-top: auto;
+        text-align: center;
+        color: #f5c14a;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-weight: 800;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame">
+      <div class="kicker">Helmet up · G-Unit · Thursday</div>
+      <h1>G-UNIT</h1>
+      <div class="sub">Week of Sep 8 · DG 12/12 · 55 NL left</div>
+      <div class="stats">
+        <div><span>Apps</span><strong>19</strong></div>
+        <div><span>CX</span><strong>15</strong></div>
+        <div><span>NL left</span><strong>55</strong></div>
+        <div><span>Daily</span><strong>12/12</strong></div>
+      </div>
+      <ol class="podium">
+        <li class="p1"><span class="medal">1</span><div><div class="name">Mackenzie Faith</div><div class="meta">4 Apps · 2 CX</div></div><div class="meta">LEAD</div></li>
+        <li class="p2"><span class="medal">2</span><div><div class="name">Nate</div><div class="meta">3 Apps · 3 CX</div></div><div class="meta">HOT</div></li>
+        <li class="p3"><span class="medal">3</span><div><div class="name">Matthew ²</div><div class="meta">3 Apps · 1 CX</div></div><div class="meta">HEAT</div></li>
+      </ol>
+      <ol class="rest">
+        <li><span class="medal">4</span><div class="name">Guy Lesperance</div><div class="meta">2 | 4</div></li>
+        <li><span class="medal">5</span><div class="name">Jordan #23</div><div class="meta">2 | 1</div></li>
+        <li><span class="medal">6</span><div class="name">Steveo Ramos</div><div class="meta">2 | 1</div></li>
+        <li><span class="medal">7</span><div class="name">Ashunte Reyes</div><div class="meta">1 | 1</div></li>
+        <li><span class="medal">8</span><div class="name">Kyron Tisdale</div><div class="meta">1 | 1</div></li>
+        <li><span class="medal">9</span><div class="name">Matthew Grant</div><div class="meta">1 | 1</div></li>
+        <li><span class="medal">10</span><div class="name">Judah Rodgers</div><div class="meta">0 | 0</div></li>
+        <li><span class="medal">11</span><div class="name">Steve Nash</div><div class="meta">0 | 0</div></li>
+        <li><span class="medal">12</span><div class="name">Shaad Hyppolite</div><div class="meta">0 | 0</div></li>
+      </ol>
+      <div class="cycle">Sale → CPR → Sale → CPR · Take control</div>
+    </div>
+  </body>
+</html>
