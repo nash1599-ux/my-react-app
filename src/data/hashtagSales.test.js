@@ -157,6 +157,25 @@ NL 2
     expect(parsed.name).toBe("Mackenzie Faith");
   });
 
+  test("counts Matthew J's 3-line #G-Unit post on Matthew 2", () => {
+    const parsed = parseHashtagSale(
+      `S/O (Drew Tepper)
+S/O (Matthew Grant)
+#G-Unit
+CX1
+NL-1 Samsung s26 ultra
+NL-2 Samsung s26 ultra
+NL-3 Samsung s26 ultra
+Extra
+Next ×3`,
+      { author: "Matthew J" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(3);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Matthew 2");
+  });
+
   test("skips duplicate Slack timestamps", () => {
     const first = applyHashtagSale(SATURDAY_SNAPSHOT, {
       text: "1 phone #g-unit",

@@ -31,6 +31,8 @@ const KNOWN_NAMES = [
   "cam winfield",
   "matthew grant",
   "matthew 2",
+  "matthew j",
+  "mattj",
   "leo chowdury",
   "gigi smith",
   "steve nash",

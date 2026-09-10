@@ -15,7 +15,7 @@ test('renders last week production and the Wednesday board', () => {
   expect(screen.getAllByText(/Jordan #23/i).length).toBeGreaterThan(0);
   expect(screen.getAllByText(/Steveo Ramos/i).length).toBeGreaterThan(0);
   expect(screen.getAllByText(/Mackenzie Faith/i).length).toBeGreaterThan(0);
-  expect(screen.getByLabelText(/set nl target/i)).toHaveValue(72);
+  expect(screen.getByLabelText(/set nl target/i)).toHaveValue(70);
 });
 
 test('updates this week from pasted scoreboard text', () => {
@@ -49,7 +49,7 @@ test('saves a pasted board as last week final without changing this week', () =>
     screen.getByText(/Last week final updated from Saturday\/Sunday paste/i)
   ).toBeInTheDocument();
   expect(screen.getAllByText("20").length).toBeGreaterThan(0);
-  expect(screen.getByText(/This week apps/i).closest("article")).toHaveTextContent("16");
+  expect(screen.getByText(/This week apps/i).closest("article")).toHaveTextContent("19");
 });
 
 test('logs a #g-unit phone sale onto the live board', () => {
