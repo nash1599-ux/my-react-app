@@ -1,4 +1,4 @@
-export const STORAGE_KEY = "gunit-board-v3";
+export const STORAGE_KEY = "gunit-board-v4";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -8,8 +8,8 @@ function wed(apps) {
 
 // Week of Mon Sep 7 – Sun Sep 13, 2026, as of Wednesday.
 // This week = Wednesday live board. Last week = Sunday close (Ky 15, Steveo 10...).
-// Prev week = the last-week column from the prior board.
-// Mackenzie, Nate, Guy, and Ashunte are first week.
+// Prev week = PM team board for that week, with trainee lines given back
+// to the closer: Gianna + Leo -> Nashly (Steve Nash), Cameron -> Steveo.
 export const SEED_BOARD = {
   teamName: "G-UNIT",
   tagline: "Results get Rewarded",
@@ -20,7 +20,7 @@ export const SEED_BOARD = {
   liveCall:
     "LIVE: Matthew J (Matthew ²) +3 phones (Cx1 / three Samsung S26 Ultra). Daily goal HIT.",
   notes:
-    "Week of Mon 9/7. Last week = Sunday close (DG 5/12, 27 NL). Prev week = the week before that. Mackenzie, Nate, Guy, and Ashunte: first week.",
+    "Week of Mon 9/7. Last week = Sunday G-Unit close. Prev week = PM board (Grant 8, Ky 6, Jordan 5, Shaad 2, Matt² 1). Nashly 9 includes Gianna 7 + Leo 1 + his 1. Steveo 3 is Cameron's lines. Mackenzie, Nate, Guy, Ashunte: first week.",
   reps: [
     {
       id: "mackenzie-faith",
@@ -91,7 +91,7 @@ export const SEED_BOARD = {
       accent: "green",
       listOrder: 6,
       lastWeekApps: 10,
-      prevWeekApps: 7,
+      prevWeekApps: 3,
       days: wed(2),
       cx: 1,
     },
@@ -126,7 +126,7 @@ export const SEED_BOARD = {
       accent: "gold",
       listOrder: 9,
       lastWeekApps: 3,
-      prevWeekApps: 6,
+      prevWeekApps: 8,
       days: wed(1),
       cx: 1,
     },
@@ -148,7 +148,7 @@ export const SEED_BOARD = {
       accent: "slate",
       listOrder: 11,
       lastWeekApps: 5,
-      prevWeekApps: 1,
+      prevWeekApps: 9,
       days: wed(0),
       cx: 0,
     },

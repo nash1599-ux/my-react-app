@@ -27,6 +27,9 @@ test("renders the Wednesday G-Unit roster and keeps returning-rep history", () =
   expect(screen.getByTestId("team-apps")).toHaveTextContent("19.0");
   expect(screen.getByTestId("avg-ky-tisdale")).toHaveTextContent("7.3");
   expect(screen.getByTestId("avg-mackenzie-faith")).toHaveTextContent("4.0");
+  expect(screen.getByTestId("avg-steven-ramos")).toHaveTextContent("5.0");
+  expect(screen.getByTestId("avg-matthew-grant")).toHaveTextContent("4.0");
+  expect(screen.getByTestId("avg-steve-nash")).toHaveTextContent("4.7");
   expect(screen.getAllByText(/1st week/i).length).toBeGreaterThan(0);
   expect(screen.getAllByText(/Daily goal HIT/i).length).toBeGreaterThan(0);
   expect(screen.getByText("12/12")).toBeInTheDocument();
