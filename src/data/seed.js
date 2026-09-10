@@ -1,0 +1,171 @@
+export const STORAGE_KEY = "gunit-board-v4";
+export const BLENDED_RATE = 97.5;
+export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+function wed(apps) {
+  return [0, 0, apps, 0, 0, 0, 0];
+}
+
+// Week of Mon Sep 7 – Sun Sep 13, 2026, as of Wednesday.
+// This week = Wednesday live board. Last week = Sunday close (Ky 15, Steveo 10...).
+// Prev week = PM team board for that week, with trainee lines given back
+// to the closer: Gianna + Leo -> Nashly (Steve Nash), Cameron -> Steveo.
+export const SEED_BOARD = {
+  teamName: "G-UNIT",
+  tagline: "Results get Rewarded",
+  weekStart: "2026-09-07",
+  asOfLabel: "as of Wednesday",
+  dg: { current: 12, goal: 12 },
+  nlLeft: 55,
+  liveCall:
+    "LIVE: Matthew J (Matthew ²) +3 phones (Cx1 / three Samsung S26 Ultra). Daily goal HIT.",
+  notes:
+    "Week of Mon 9/7. Last week = Sunday G-Unit close. Prev week = PM board (Grant 8, Ky 6, Jordan 5, Shaad 2, Matt² 1). Nashly 9 includes Gianna 7 + Leo 1 + his 1. Steveo 3 is Cameron's lines. Mackenzie, Nate, Guy, Ashunte: first week.",
+  reps: [
+    {
+      id: "mackenzie-faith",
+      name: "Mackenzie Faith",
+      shortName: "Mackenzie",
+      accent: "gold",
+      listOrder: 1,
+      firstWeek: true,
+      lastWeekApps: 0,
+      prevWeekApps: 0,
+      days: wed(4),
+      cx: 2,
+      badge: "1st week",
+    },
+    {
+      id: "nate",
+      name: "Nate",
+      shortName: "Nate",
+      accent: "green",
+      listOrder: 2,
+      firstWeek: true,
+      lastWeekApps: 0,
+      prevWeekApps: 0,
+      days: wed(3),
+      cx: 3,
+      badge: "1st week",
+    },
+    {
+      id: "matthew-johnson",
+      name: "Matthew ²",
+      shortName: "Matt²",
+      accent: "blue",
+      listOrder: 3,
+      lastWeekApps: 4,
+      prevWeekApps: 1,
+      days: wed(3),
+      cx: 1,
+      badge: "Daily goal HIT",
+    },
+    {
+      id: "guy-lesperance",
+      name: "Guy Lesperance",
+      shortName: "Guy",
+      accent: "teal",
+      listOrder: 4,
+      firstWeek: true,
+      lastWeekApps: 0,
+      prevWeekApps: 0,
+      days: wed(2),
+      cx: 4,
+      badge: "1st week",
+    },
+    {
+      id: "jordan-aguirre",
+      name: "Jordan #23",
+      shortName: "Jordan",
+      accent: "green",
+      listOrder: 5,
+      lastWeekApps: 9,
+      prevWeekApps: 5,
+      days: wed(2),
+      cx: 1,
+    },
+    {
+      id: "steven-ramos",
+      name: "Steveo Ramos",
+      shortName: "Steveo",
+      accent: "green",
+      listOrder: 6,
+      lastWeekApps: 10,
+      prevWeekApps: 3,
+      days: wed(2),
+      cx: 1,
+    },
+    {
+      id: "ashunte-reyes",
+      name: "Ashunte Reyes",
+      shortName: "Ashunte",
+      accent: "purple",
+      listOrder: 7,
+      firstWeek: true,
+      lastWeekApps: 0,
+      prevWeekApps: 0,
+      days: wed(1),
+      cx: 1,
+      badge: "1st week",
+    },
+    {
+      id: "ky-tisdale",
+      name: "Kyron Tisdale",
+      shortName: "Kyron",
+      accent: "blue",
+      listOrder: 8,
+      lastWeekApps: 15,
+      prevWeekApps: 6,
+      days: wed(1),
+      cx: 1,
+    },
+    {
+      id: "matthew-grant",
+      name: "Matthew Grant",
+      shortName: "Grant",
+      accent: "gold",
+      listOrder: 9,
+      lastWeekApps: 3,
+      prevWeekApps: 8,
+      days: wed(1),
+      cx: 1,
+    },
+    {
+      id: "judah-rodgers",
+      name: "Judah Rodgers",
+      shortName: "Judah",
+      accent: "slate",
+      listOrder: 10,
+      lastWeekApps: 1,
+      prevWeekApps: 0,
+      days: wed(0),
+      cx: 0,
+    },
+    {
+      id: "steve-nash",
+      name: "Steve Nash",
+      shortName: "Nash",
+      accent: "slate",
+      listOrder: 11,
+      lastWeekApps: 5,
+      prevWeekApps: 9,
+      days: wed(0),
+      cx: 0,
+    },
+    {
+      id: "shaad-hypolite",
+      name: "Shaad Hyppolite",
+      shortName: "Shaad",
+      accent: "purple",
+      listOrder: 12,
+      lastWeekApps: 0,
+      prevWeekApps: 2,
+      days: wed(0),
+      cx: 0,
+    },
+  ],
+};
+
+export function cloneSeed() {
+  return JSON.parse(JSON.stringify(SEED_BOARD));
+}
