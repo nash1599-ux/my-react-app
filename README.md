@@ -27,8 +27,23 @@ Spreadsheet: [G-Unit Board](https://docs.google.com/spreadsheets/d/1-a64P6SQyTg8
 | --- | --- |
 | `G-Unit Board` | Ranked leaderboard (apps / CX) |
 | `G-Unit Sales Log` | One row per `#g-unit` shout-out: time, rep, phones, CX, raw text |
+| `G-Unit Weekly Tracker` | Import `data/gunit-weekly-tracker.csv` (reps by week) |
+| `G-Unit Daily Log` | Import `data/gunit-daily-log.csv` (one row per field day) |
+
+The app **Weekly tracker** tab can snapshot the live board and download fresh CSVs. Use File → Import in Google Sheets if the live write key is not connected.
 
 The Salesboard UI has a **Live #g-unit sales** panel so you can also log a post locally while the Sheet connection is being set up.
+
+## Culture, weather, leaderboard poster
+
+The app has four tabs:
+
+- **Leaderboard** — live board from the `#g-unit` pipeline
+- **Poster** — graphic for Slack
+- **Culture** — 9 Steps, C.O.E, lap system, S.E.E, L.O.A, quotes, copy-to-Slack posts
+- **Weekly tracker** — week-to-week spreadsheet
+
+Weather defaults to Casselberry / Orlando, FL.
 
 ## Salesboard app
 

@@ -1,10 +1,10 @@
-import Salesboard from './Salesboard';
+import GUnitShell from './GUnitShell';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Salesboard />
+      <GUnitShell />
     </div>
   );
 }

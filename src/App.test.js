@@ -67,3 +67,17 @@ test('logs a #g-unit phone sale onto the live board', () => {
   expect(screen.getByText(/Live #g-unit sales/i)).toBeInTheDocument();
   expect(screen.getByText(/2 phones #g-unit/i)).toBeInTheDocument();
 });
+
+test('opens culture playbook and weekly tracker', () => {
+  render(<App />);
+
+  fireEvent.click(screen.getByRole("button", { name: /culture/i }));
+  expect(screen.getByRole("heading", { name: /g-unit codes, ethics, and steps/i })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: /9 steps for success/i })).toBeInTheDocument();
+  expect(screen.getAllByText(/Money Lap/i).length).toBeGreaterThan(0);
+
+  fireEvent.click(screen.getByRole("button", { name: /weekly tracker/i }));
+  expect(screen.getByRole("heading", { name: /g-unit spreadsheet tracker/i })).toBeInTheDocument();
+  expect(screen.getAllByDisplayValue("2026-09-07").length).toBeGreaterThan(0);
+  expect(screen.getAllByDisplayValue(/Mackenzie Faith/i).length).toBeGreaterThan(0);
+});
