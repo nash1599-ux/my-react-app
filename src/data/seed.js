@@ -9,7 +9,7 @@ function days({ wed = 0, thu = 0 } = {}) {
 // Week of Mon Sep 7 – Sun Sep 13, 2026, as of Thursday.
 // Wednesday = official G-Unit close. Thursday = live #G-Unit sales
 // (Matthew ² +1, Nash +4, Neika +4, Ismael +2, Nate +4, Grant +3).
-// Ismael is not Steveo. Shaad CC #3 was not counted.
+// Ismael is Steveo Ramos. Shaad CC #3 was not counted.
 // Last week = Sunday G-Unit close. Prev week = PM board with trainee
 // lines given back to the closer: Gianna + Leo -> Nashly, Cameron -> Steveo.
 export const SEED_BOARD = {
@@ -20,9 +20,9 @@ export const SEED_BOARD = {
   dg: { current: 18, goal: 12 },
   nlLeft: 37,
   liveCall:
-    "LIVE: Nate +4 phones (Cx1 / NL1–4) and Matthew Grant +3 phones (Cx1 / NL1–3). DG 18/12.",
+    "LIVE: Ismael is Steveo Ramos. Thursday +2 phones sit on Steveo. Nate +4 and Grant +3. DG 18/12.",
   notes:
-    "Week of Mon 9/7. Wed close + Thu #G-Unit live log. Last week = Sunday G-Unit close. Prev week = PM board (Grant 8, Ky 6, Jordan 5, Shaad 2, Matt² 1). Nashly 9 includes Gianna 7 + Leo 1 + his 1. Steveo 3 is Cameron's lines. Ismael is not Steveo. Mackenzie, Nate, Guy, Ashunte, Neika, Ismael: first week on this board.",
+    "Week of Mon 9/7. Wed close + Thu #G-Unit live log. Last week = Sunday G-Unit close. Prev week = PM board (Grant 8, Ky 6, Jordan 5, Shaad 2, Matt² 1). Nashly 9 includes Gianna 7 + Leo 1 + his 1. Steveo 3 is Cameron's lines. Ismael is Steveo Ramos, so his Thu +2 / +1 CX count on Steveo. Mackenzie, Nate, Guy, Ashunte, Neika: first week on this board.",
   reps: [
     {
       id: "mackenzie-faith",
@@ -107,8 +107,8 @@ export const SEED_BOARD = {
       listOrder: 7,
       lastWeekApps: 10,
       prevWeekApps: 3,
-      days: days({ wed: 2 }),
-      cx: 1,
+      days: days({ wed: 2, thu: 2 }),
+      cx: 2,
     },
     {
       id: "jordan-aguirre",
@@ -120,19 +120,6 @@ export const SEED_BOARD = {
       prevWeekApps: 5,
       days: days({ wed: 2 }),
       cx: 1,
-    },
-    {
-      id: "ismael-ramos",
-      name: "Ismael Ramos",
-      shortName: "Ismael",
-      accent: "purple",
-      listOrder: 9,
-      firstWeek: true,
-      lastWeekApps: 0,
-      prevWeekApps: 0,
-      days: days({ thu: 2 }),
-      cx: 1,
-      badge: "1st week",
     },
     {
       id: "ashunte-reyes",

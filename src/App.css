@@ -244,6 +244,11 @@ td {
   font-weight: 700;
 }
 
+.live-call::before {
+  content: "● ";
+  color: #39ff14;
+}
+
 .goal-hit {
   color: #39ff14;
 }
@@ -446,6 +451,14 @@ tfoot td {
   padding: 10px 12px;
   border-radius: 8px;
   min-width: 220px;
+}
+
+.roster-hint {
+  margin: 0;
+  width: 100%;
+  color: #86efac;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 @media (max-width: 800px) {

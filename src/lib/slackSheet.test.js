@@ -33,10 +33,9 @@ test("full Thursday sheet includes every excel column and live totals", () => {
     "Steve Nash",
     "Neika",
     "Matthew Grant",
-    "Guy Lesperance",
     "Steveo Ramos",
+    "Guy Lesperance",
     "Jordan #23",
-    "Ismael Ramos",
     "Ashunte Reyes",
     "Kyron Tisdale",
     "Judah Rodgers",
@@ -45,8 +44,7 @@ test("full Thursday sheet includes every excel column and live totals", () => {
   expect(sheet.rows[0][2]).toBe("7.0");
   expect(sheet.rows[5][1]).toBe("Matthew Grant");
   expect(sheet.rows[5][2]).toBe("4.0");
-  expect(sheet.rows[7][1]).toBe("Steveo Ramos");
-  expect(sheet.rows[7][2]).toBe("2.0");
-  expect(sheet.rows[9][1]).toBe("Ismael Ramos");
-  expect(sheet.rows[9][2]).toBe("2.0");
+  expect(sheet.rows[6][1]).toBe("Steveo Ramos");
+  expect(sheet.rows[6][2]).toBe("4.0");
+  expect(sheet.rows.map((row) => row[1])).not.toContain("Ismael Ramos");
 });

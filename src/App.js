@@ -5,6 +5,7 @@ import {
   WEEK_DAYS,
   cloneSeed,
 } from "./data/seed";
+import { canonicalRepId, mergeAliasedReps } from "./lib/aliases";
 import {
   addDays,
   bump,
@@ -28,7 +29,10 @@ function loadBoard() {
     if (!raw) return cloneSeed();
     const parsed = JSON.parse(raw);
     if (!parsed?.reps?.length) return cloneSeed();
-    return parsed;
+    return {
+      ...parsed,
+      reps: mergeAliasedReps(parsed.reps),
+    };
   } catch {
     return cloneSeed();
   }
@@ -43,6 +47,7 @@ export default function App() {
   const [board, setBoard] = useState(loadBoard);
   const [editRoster, setEditRoster] = useState(false);
   const [newName, setNewName] = useState("");
+  const [rosterHint, setRosterHint] = useState("");
 
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(board));
@@ -111,10 +116,27 @@ export default function App() {
     event.preventDefault();
     const name = newName.trim();
     if (!name) return;
-    const id = `${slugify(name)}-${Date.now()}`;
+    const aliasedId = canonicalRepId(name);
+    const alreadyOnBoard = board.reps.some(
+      (rep) =>
+        (aliasedId &&
+          (rep.id === aliasedId || canonicalRepId(rep.name, rep.id) === aliasedId)) ||
+        slugify(rep.name) === slugify(name)
+    );
+    if (alreadyOnBoard) {
+      setRosterHint(
+        aliasedId === "steven-ramos"
+          ? "Ismael is Steveo Ramos — already on the live board."
+          : `${name} is already on the live board.`
+      );
+      setNewName("");
+      return;
+    }
+    const id = aliasedId || `${slugify(name)}-${Date.now()}`;
+    setRosterHint("");
     setBoard((current) => ({
       ...current,
-      reps: [
+      reps: mergeAliasedReps([
         ...current.reps,
         {
           id,
@@ -126,7 +148,7 @@ export default function App() {
           cx: 0,
           listOrder: 999,
         },
-      ],
+      ]),
     }));
     setNewName("");
   }
@@ -320,6 +342,7 @@ export default function App() {
               placeholder="Full name"
             />
             <button type="submit">Add</button>
+            {rosterHint && <p className="roster-hint">{rosterHint}</p>}
           </form>
         )}
 
