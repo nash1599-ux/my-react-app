@@ -23,14 +23,16 @@ test("renders the Thursday G-Unit sheet with Wed close plus live Thu sales", () 
   expect(screen.getAllByText(/Matthew Grant/i).length).toBeGreaterThan(0);
   expect(screen.getByText(/Steve Nash/i)).toBeInTheDocument();
   expect(screen.getByText(/Shaad Hyppolite/i)).toBeInTheDocument();
+  expect(screen.getAllByText(/Shatreasure Evans/i).length).toBeGreaterThan(0);
   expect(screen.queryByTestId("apps-gianna-smith")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-cameron-winfield")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-leo-chowdhury")).not.toBeInTheDocument();
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("37.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("39.0");
   expect(screen.getByTestId("apps-nate")).toHaveTextContent("7.0");
   expect(screen.getByTestId("apps-steve-nash")).toHaveTextContent("4.0");
   expect(screen.getByTestId("apps-neika")).toHaveTextContent("4.0");
   expect(screen.getByTestId("apps-matthew-grant")).toHaveTextContent("4.0");
+  expect(screen.getByTestId("apps-shatreasure-evans")).toHaveTextContent("2.0");
   expect(screen.getByTestId("apps-ismael-ramos")).toHaveTextContent("2.0");
   expect(screen.getByTestId("apps-steven-ramos")).toHaveTextContent("2.0");
   expect(screen.getByTestId("avg-ky-tisdale")).toHaveTextContent("7.3");
@@ -41,7 +43,7 @@ test("renders the Thursday G-Unit sheet with Wed close plus live Thu sales", () 
   expect(screen.getByTestId("avg-steve-nash")).toHaveTextContent("6.0");
   expect(screen.getAllByText(/1st week/i).length).toBeGreaterThan(0);
   expect(screen.getAllByText(/Daily goal HIT/i).length).toBeGreaterThan(0);
-  expect(screen.getByText("18/12")).toBeInTheDocument();
+  expect(screen.getByText("20/12")).toBeInTheDocument();
 });
 
 test("clicking a day cell logs an app and re-ranks live", () => {
@@ -52,7 +54,7 @@ test("clicking a day cell logs an app and re-ranks live", () => {
   );
 
   expect(screen.getByTestId("apps-judah-rodgers")).toHaveTextContent("1.0");
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("38.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("40.0");
   expect(window.localStorage.getItem(STORAGE_KEY)).toContain("judah-rodgers");
 });
 
