@@ -299,6 +299,19 @@ NL 4: iPhone 17 PM
     expect(parsed.name).toBe("Neika");
   });
 
+  test("counts Neika Friday CX1 Galaxy #G-Unit as 1 phone", () => {
+    const parsed = parseHashtagSale(
+      `CX 1
+NL 1: galaxy a57
+#G-Unit`,
+      { author: "Neika" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(1);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Neika");
+  });
+
   test("maps Nash-Sama author to Steve Nash on a #G-Unit close", () => {
     const parsed = parseHashtagSale(
       `S/O Drew Tepper

@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v18";
+export const STORAGE_KEY = "gunit-salesboard-v19";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -445,17 +445,17 @@ export const MONDAY_BOARD_TEXT = `
 export const WEDNESDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:20/12 |35 NL LEFT | THURSDAY ║
+║ :bar_chart: DG:1/12 |34 NL LEFT | FRIDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 :first_place_medal: Nate 7 Apps | 4 CX
-:second_place_medal: Steveo Ramos 4 Apps | 2 CX
-:third_place_medal: Steve Nash 4 Apps | 2 CX
-4. Matthew Grant 4 Apps | 2 CX
-5. Mackenzie Faith 4 Apps | 2 CX
-6. Matthew ² 4 Apps | 2 CX
-7. Neika 4 Apps | 2 CX
+:second_place_medal: Neika 5 Apps | 3 CX
+:third_place_medal: Steveo Ramos 4 Apps | 2 CX
+4. Steve Nash 4 Apps | 2 CX
+5. Matthew Grant 4 Apps | 2 CX
+6. Mackenzie Faith 4 Apps | 2 CX
+7. Matthew ² 4 Apps | 2 CX
 8. Guy Lesperance 3 Apps | 5 CX
 9. Kyron Tisdale 2 Apps | 2 CX
 10. Jordan #23 2 Apps | 1 CX
@@ -589,13 +589,13 @@ export const SATURDAY_SNAPSHOT = summarizeBoard({
 export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
   weekLabel: "Week of Sep 8",
-  sourceLabel: "Thursday live board",
-    dataAsOf: "Kyron Thursday CX1 close (Galaxy A17)",
-  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 20, fri: 0, sat: 0, sun: 0 },
+  sourceLabel: "Friday live board",
+    dataAsOf: "Neika Friday CX1 close (Galaxy)",
+  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 20, fri: 1, sat: 0, sun: 0 },
   notes: [
-    "Thursday live board. Phones count as apps. Daily goal resets each day.",
-    "Kyron Tisdale CX1 / NL1 Galaxy A17 #G-UNIT.",
-    "Earlier Thursday: Guy A17, Nate 4 phones, Matthew Grant 3 phones, Nash 4 phones / 2 CX, Neika 4 phones / 2 CX, Steveo 2 phones, Matthew J 1 phone.",
+    "Friday live board. Phones count as apps. Daily goal resets each day.",
+    "Neika Friday CX1 / NL1 Galaxy #G-Unit.",
+    "Thursday closed at 20 phones. Campaign NL left carries over.",
     "Last week (56 apps / 25 CX) stays archived.",
   ],
 });

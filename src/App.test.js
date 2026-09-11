@@ -49,7 +49,7 @@ test('saves a pasted board as last week final without changing this week', () =>
     screen.getByText(/Last week final updated from Saturday\/Sunday paste/i)
   ).toBeInTheDocument();
   expect(screen.getAllByText("20").length).toBeGreaterThan(0);
-  expect(screen.getByText(/This week apps/i).closest("article")).toHaveTextContent("39");
+  expect(screen.getByText(/This week apps/i).closest("article")).toHaveTextContent("40");
 });
 
 test('logs a #g-unit phone sale onto the live board', () => {
