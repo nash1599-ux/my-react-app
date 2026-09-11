@@ -4,9 +4,9 @@ import { formatFullSheet } from "./slackSheet";
 test("full Thursday sheet includes every excel column and live totals", () => {
   const sheet = formatFullSheet(SEED_BOARD);
 
-  expect(sheet.banner).toBe("DG: 20/12 | 35 NL LEFT | THURSDAY");
-  expect(sheet.teamApps).toBe(39);
-  expect(sheet.teamCx).toBe(24);
+  expect(sheet.banner).toBe("DG: 21/12 | 34 NL LEFT | THURSDAY");
+  expect(sheet.teamApps).toBe(40);
+  expect(sheet.teamCx).toBe(25);
   expect(sheet.header).toEqual([
     "Rk",
     "Name",
@@ -44,8 +44,8 @@ test("full Thursday sheet includes every excel column and live totals", () => {
     "Shaad Hyppolite",
   ]);
   expect(sheet.rows[0][2]).toBe("7.0");
-  expect(sheet.rows[5][1]).toBe("Matthew Grant");
-  expect(sheet.rows[5][2]).toBe("4.0");
+  expect(sheet.rows[6][1]).toBe("Guy Lesperance");
+  expect(sheet.rows[6][2]).toBe("3.0");
   expect(sheet.rows[7][1]).toBe("Steveo Ramos");
   expect(sheet.rows[7][2]).toBe("2.0");
   expect(sheet.rows[9][1]).toBe("Ismael Ramos");

@@ -1,4 +1,4 @@
-export const STORAGE_KEY = "gunit-board-v7";
+export const STORAGE_KEY = "gunit-board-v8";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -9,7 +9,7 @@ function days({ wed = 0, thu = 0 } = {}) {
 // Week of Mon Sep 7 – Sun Sep 13, 2026, as of Thursday.
 // Wednesday = official G-Unit close. Thursday = live #G-Unit sales
 // (Matthew ² +1, Nash +4, Neika +4, Ismael +2, Nate +4, Grant +3,
-// Shatreasure +2). Ismael is not Steveo. Shaad CC #3 was not counted.
+// Shatreasure +2, Guy +1). Ismael is not Steveo. Shaad CC #3 was not counted.
 // Last week = Sunday G-Unit close. Prev week = PM board with trainee
 // lines given back to the closer: Gianna + Leo -> Nashly, Cameron -> Steveo.
 export const SEED_BOARD = {
@@ -17,10 +17,10 @@ export const SEED_BOARD = {
   tagline: "Results get Rewarded",
   weekStart: "2026-09-07",
   asOfLabel: "as of Thursday",
-  dg: { current: 20, goal: 12 },
-  nlLeft: 35,
+  dg: { current: 21, goal: 12 },
+  nlLeft: 34,
   liveCall:
-    "LIVE: Shatreasure Evans +2 phones (Cx1 / iPhone 17E + iPhone 16). DG 20/12.",
+    "LIVE: Guy Lesperance +1 phone (Cx1 / A17) #G-UNIT. DG 21/12.",
   notes:
     "Week of Mon 9/7. Wed close + Thu G-Unit live log. Last week = Sunday G-Unit close. Prev week = PM board (Grant 8, Ky 6, Jordan 5, Shaad 2, Matt² 1). Nashly 9 includes Gianna 7 + Leo 1 + his 1. Steveo 3 is Cameron's lines. Ismael is not Steveo. Mackenzie, Nate, Guy, Ashunte, Neika, Ismael, Shatreasure: first week on this board.",
   reps: [
@@ -95,8 +95,8 @@ export const SEED_BOARD = {
       firstWeek: true,
       lastWeekApps: 0,
       prevWeekApps: 0,
-      days: days({ wed: 2 }),
-      cx: 4,
+      days: days({ wed: 2, thu: 1 }),
+      cx: 5,
       badge: "1st week",
     },
     {

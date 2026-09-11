@@ -14,7 +14,7 @@ test("renders the Thursday G-Unit sheet with Wed close plus live Thu sales", () 
   expect(screen.getByText(/Mackenzie Faith/i)).toBeInTheDocument();
   expect(screen.getAllByText(/^Nate$/i).length).toBeGreaterThan(0);
   expect(screen.getAllByText(/Matthew ²/).length).toBeGreaterThan(0);
-  expect(screen.getByText(/Guy Lesperance/i)).toBeInTheDocument();
+  expect(screen.getAllByText(/Guy Lesperance/i).length).toBeGreaterThan(0);
   expect(screen.getByText(/Jordan #23/i)).toBeInTheDocument();
   expect(screen.getByText(/Steveo Ramos/i)).toBeInTheDocument();
   expect(screen.getByText(/Ismael Ramos/i)).toBeInTheDocument();
@@ -27,8 +27,9 @@ test("renders the Thursday G-Unit sheet with Wed close plus live Thu sales", () 
   expect(screen.queryByTestId("apps-gianna-smith")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-cameron-winfield")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-leo-chowdhury")).not.toBeInTheDocument();
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("39.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("40.0");
   expect(screen.getByTestId("apps-nate")).toHaveTextContent("7.0");
+  expect(screen.getByTestId("apps-guy-lesperance")).toHaveTextContent("3.0");
   expect(screen.getByTestId("apps-steve-nash")).toHaveTextContent("4.0");
   expect(screen.getByTestId("apps-neika")).toHaveTextContent("4.0");
   expect(screen.getByTestId("apps-matthew-grant")).toHaveTextContent("4.0");
@@ -43,7 +44,7 @@ test("renders the Thursday G-Unit sheet with Wed close plus live Thu sales", () 
   expect(screen.getByTestId("avg-steve-nash")).toHaveTextContent("6.0");
   expect(screen.getAllByText(/1st week/i).length).toBeGreaterThan(0);
   expect(screen.getAllByText(/Daily goal HIT/i).length).toBeGreaterThan(0);
-  expect(screen.getByText("20/12")).toBeInTheDocument();
+  expect(screen.getByText("21/12")).toBeInTheDocument();
 });
 
 test("clicking a day cell logs an app and re-ranks live", () => {
@@ -54,7 +55,7 @@ test("clicking a day cell logs an app and re-ranks live", () => {
   );
 
   expect(screen.getByTestId("apps-judah-rodgers")).toHaveTextContent("1.0");
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("40.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("41.0");
   expect(window.localStorage.getItem(STORAGE_KEY)).toContain("judah-rodgers");
 });
 
