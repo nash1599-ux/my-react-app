@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# G-Unit sales board
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Live tracker for G-Unit phone sales. When someone posts in `#precisionmanagement-att-sales` with `#g-unit`, the phone count is parsed, added to the board, posted into `#g-unit-saleschannel`, and logged on a Google Sheet tab you can monitor.
 
-## Available Scripts
+## Slack flow
 
-In the project directory, you can run:
+1. A rep posts in `#precisionmanagement-att-sales`, for example `2 phones #g-unit`, `Gigi sold 1 #g-unit`, or a shout-out with `NL1` / `NL2` / `CX1` plus `#g-unit`.
+2. The parser reads the phone count (phones count as apps on the board). Optional `1 CX` is recorded too.
+3. A live update is posted to `#g-unit-saleschannel`.
+4. The same sale is appended to the **G-Unit Sales Log** tab in the G-Unit Google Sheet.
 
-### `npm start`
+Invite Cursor into both Slack channels so it can read the source posts and write the destination board.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Parse a shout-out
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+python ingest_gunit_hashtag.py --text "2 phones #g-unit" --author "Gigi"
+```
 
-### `npm test`
+Add `--write-sheet` to append the row to Google Sheets (needs `GOOGLE_SERVICE_ACCOUNT_JSON` or OAuth, same as the existing board sync).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Google Sheet monitor
 
-### `npm run build`
+Spreadsheet: [G-Unit Board](https://docs.google.com/spreadsheets/d/1-a64P6SQyTg8Cq3d_uuYOKHCIpZh0uKizTYDi85FjEw)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Tab | What it is |
+| --- | --- |
+| `G-Unit Board` | Ranked leaderboard (apps / CX) |
+| `G-Unit Sales Log` | One row per `#g-unit` shout-out: time, rep, phones, CX, raw text |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The Salesboard UI has a **Live #g-unit sales** panel so you can also log a post locally while the Sheet connection is being set up.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Salesboard app
 
-### `npm run eject`
+```bash
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Paste a full Slack scoreboard, or log a single `#g-unit` sale. Phones increment that rep's apps.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm test
+python -m unittest tests/test_gunit_hashtag.py tests/test_update_gunit_board.py
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Board sync (full paste)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+python update_gunit_board.py --dry-run --board-text "<pasted board>"
+```
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Live writes still need a real Google service-account key in `GOOGLE_SERVICE_ACCOUNT_JSON` (not a desktop OAuth client). Share the sheet with the service account as Editor.
