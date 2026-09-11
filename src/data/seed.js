@@ -1,4 +1,4 @@
-export const STORAGE_KEY = "gunit-board-v8";
+export const STORAGE_KEY = "gunit-board-v9";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -17,10 +17,10 @@ export const SEED_BOARD = {
   tagline: "Results get Rewarded",
   weekStart: "2026-09-07",
   asOfLabel: "as of Thursday",
-  dg: { current: 21, goal: 12 },
-  nlLeft: 34,
+  dg: { current: 22, goal: 12 },
+  nlLeft: 33,
   liveCall:
-    "LIVE: Guy Lesperance +1 phone (Cx1 / A17) #G-UNIT. DG 21/12.",
+    "LIVE: Kyron Tisdale +1 phone (Cx1 / Galaxy A17) #G-UNIT. DG 22/12.",
   notes:
     "Week of Mon 9/7. Wed close + Thu G-Unit live log. Last week = Sunday G-Unit close. Prev week = PM board (Grant 8, Ky 6, Jordan 5, Shaad 2, Matt² 1). Nashly 9 includes Gianna 7 + Leo 1 + his 1. Steveo 3 is Cameron's lines. Ismael is not Steveo. Mackenzie, Nate, Guy, Ashunte, Neika, Ismael, Shatreasure: first week on this board.",
   reps: [
@@ -155,8 +155,8 @@ export const SEED_BOARD = {
       listOrder: 11,
       lastWeekApps: 15,
       prevWeekApps: 6,
-      days: days({ wed: 1 }),
-      cx: 1,
+      days: days({ wed: 1, thu: 1 }),
+      cx: 2,
     },
     {
       id: "matthew-grant",
