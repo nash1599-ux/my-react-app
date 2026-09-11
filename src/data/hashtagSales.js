@@ -45,6 +45,8 @@ const KNOWN_NAMES = [
   "mackenzie",
   "big sister general",
   "neika",
+  "guy",
+  "guy lesperance",
   "quay tyler",
   "quay",
   "gigi",

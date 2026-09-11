@@ -96,6 +96,23 @@ NL3
     expect(parsed.name).toBe("Matthew Grant");
   });
 
+  test("maps GUY author to Guy Lesperance and ignores S/O names", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O Drew Tepper
+S/O Matthew Grant
+S/O G-UNIT Nash-Sama
+Cx1
+NL 1 A17
+#G-UNIT`,
+      { author: "GUY" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(1);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Guy Lesperance");
+  });
+
   test("maps nicknames and optional CX", () => {
     const parsed = parseHashtagSale("Gigi sold 2 phones 1 CX #g-unit", {
       author: "Someone Else",

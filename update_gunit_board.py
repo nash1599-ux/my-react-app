@@ -90,6 +90,8 @@ ALIASES = {
     "kenzie": "Mackenzie Faith",
     "kenziee": "Mackenzie Faith",
     "big sister general": "Mackenzie Faith",
+    "guy": "Guy Lesperance",
+    "guy lesperance": "Guy Lesperance",
 }
 
 CX_TIERS = [(9, 100), (7, 75), (5, 50), (4, 30)]
