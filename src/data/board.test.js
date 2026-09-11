@@ -87,8 +87,8 @@ describe("salesboard scoring", () => {
     const steveo = board.reps.find((rep) => rep.name === "Ismael Ramos");
     const mackenzie = board.reps.find((rep) => rep.name === "Mackenzie Faith");
     expect(board.day).toBe("Thursday");
-    expect(board.dgNum).toBe(19);
-    expect(board.weeklyGoal.nlLeft).toBe(36);
+    expect(board.dgNum).toBe(20);
+    expect(board.weeklyGoal.nlLeft).toBe(35);
     expect(jordan.apps).toBe(2);
     expect(jordan.cx).toBe(1);
     expect(jordan.displayName).toBe("Jordan #23");
@@ -134,6 +134,12 @@ describe("salesboard scoring", () => {
     expect(guy.apps).toBe(3);
     expect(guy.cx).toBe(5);
     expect(guy.rank).toBe(8);
+    const kyron = board.reps.find((rep) => rep.name === "Kyron Tisdale");
+    expect(kyron.apps).toBe(2);
+    expect(kyron.cx).toBe(2);
+    expect(kyron.rank).toBe(9);
+    expect(jordan.rank).toBe(10);
+    expect(posted).toMatch(/Kyron Tisdale 2 Apps \| 2 CX/);
   });
 
   test("parses the corrected Wednesday Slack board", () => {
@@ -157,6 +163,8 @@ describe("salesboard scoring", () => {
     expect(board.reps.find((rep) => rep.name === "Matthew Grant").cx).toBe(2);
     expect(board.reps.find((rep) => rep.name === "Guy Lesperance").apps).toBe(3);
     expect(board.reps.find((rep) => rep.name === "Guy Lesperance").cx).toBe(5);
+    expect(board.reps.find((rep) => rep.name === "Kyron Tisdale").apps).toBe(2);
+    expect(board.reps.find((rep) => rep.name === "Kyron Tisdale").cx).toBe(2);
   });
 
   test("parses Saturday SATDI paste including Cam and Matthew 2", () => {

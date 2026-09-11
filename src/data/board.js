@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v17";
+export const STORAGE_KEY = "gunit-salesboard-v18";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -445,7 +445,7 @@ export const MONDAY_BOARD_TEXT = `
 export const WEDNESDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:19/12 |36 NL LEFT | THURSDAY ║
+║ :bar_chart: DG:20/12 |35 NL LEFT | THURSDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -457,9 +457,9 @@ export const WEDNESDAY_BOARD_TEXT = `
 6. Matthew ² 4 Apps | 2 CX
 7. Neika 4 Apps | 2 CX
 8. Guy Lesperance 3 Apps | 5 CX
-9. Jordan #23 2 Apps | 1 CX
-10. Ashunte Reyes 1 App | 1 CX
-11. Kyron Tisdale 1 App | 1 CX
+9. Kyron Tisdale 2 Apps | 2 CX
+10. Jordan #23 2 Apps | 1 CX
+11. Ashunte Reyes 1 App | 1 CX
 12. Judah Rodgers 0 App | 0 CX
 13. Shaad Hyppolite 0 Apps | 0 CX
 `;
@@ -590,12 +590,12 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
   weekLabel: "Week of Sep 8",
   sourceLabel: "Thursday live board",
-    dataAsOf: "Guy Thursday CX1 close (A17)",
-  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 19, fri: 0, sat: 0, sun: 0 },
+    dataAsOf: "Kyron Thursday CX1 close (Galaxy A17)",
+  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 20, fri: 0, sat: 0, sun: 0 },
   notes: [
     "Thursday live board. Phones count as apps. Daily goal resets each day.",
-    "Guy Lesperance CX1 / NL1 A17 #G-UNIT.",
-    "Earlier Thursday: Nate 4 phones, Matthew Grant 3 phones, Nash 4 phones / 2 CX, Neika 4 phones / 2 CX, Steveo 2 phones, Matthew J 1 phone.",
+    "Kyron Tisdale CX1 / NL1 Galaxy A17 #G-UNIT.",
+    "Earlier Thursday: Guy A17, Nate 4 phones, Matthew Grant 3 phones, Nash 4 phones / 2 CX, Neika 4 phones / 2 CX, Steveo 2 phones, Matthew J 1 phone.",
     "Last week (56 apps / 25 CX) stays archived.",
   ],
 });

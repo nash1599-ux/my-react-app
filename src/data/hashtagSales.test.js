@@ -113,6 +113,25 @@ NL 1 A17
     expect(parsed.name).toBe("Guy Lesperance");
   });
 
+  test("credits Kyron CX1 Galaxy A17 #G-UNIT to him, not S/O names", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O Drew Tepper
+S/O Matthew Grant
+S/O GUY
+S/O G-UNIT Nash-Sama
+Cx1
+NL 1
+Galaxy A17
+#G-UNIT`,
+      { author: "Kyron Tisdale" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(1);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Kyron Tisdale");
+  });
+
   test("maps nicknames and optional CX", () => {
     const parsed = parseHashtagSale("Gigi sold 2 phones 1 CX #g-unit", {
       author: "Someone Else",
