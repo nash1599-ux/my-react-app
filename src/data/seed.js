@@ -1,28 +1,29 @@
-export const STORAGE_KEY = "gunit-board-v6";
+export const STORAGE_KEY = "gunit-board-v11";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
-function days({ wed = 0, thu = 0 } = {}) {
-  return [0, 0, wed, thu, 0, 0, 0];
+function days({ wed = 0, thu = 0, fri = 0 } = {}) {
+  return [0, 0, wed, thu, fri, 0, 0];
 }
 
-// Week of Mon Sep 7 – Sun Sep 13, 2026, as of Thursday.
+// Week of Mon Sep 7 – Sun Sep 13, 2026, as of Friday.
 // Wednesday = official G-Unit close. Thursday = live #G-Unit sales
-// (Matthew ² +1, Nash +4, Neika +4, Ismael +2, Nate +4, Grant +3).
-// Ismael is Steveo Ramos. Shaad CC #3 was not counted.
+// (Matthew ² +1, Nash +4, Neika +4, Ismael +2 on Steveo, Nate +4,
+// Grant +3, Shatreasure +2, Guy +1, Kyron +1). Friday = Neika +1
+// (Galaxy A57). Ismael is Steveo Ramos. Shaad CC #3 was not counted.
 // Last week = Sunday G-Unit close. Prev week = PM board with trainee
 // lines given back to the closer: Gianna + Leo -> Nashly, Cameron -> Steveo.
 export const SEED_BOARD = {
   teamName: "G-UNIT",
   tagline: "Results get Rewarded",
   weekStart: "2026-09-07",
-  asOfLabel: "as of Thursday",
-  dg: { current: 18, goal: 12 },
-  nlLeft: 37,
+  asOfLabel: "as of Friday",
+  dg: { current: 1, goal: 12 },
+  nlLeft: 32,
   liveCall:
-    "LIVE: Ismael is Steveo Ramos. Thursday +2 phones sit on Steveo. Nate +4 and Grant +3. DG 18/12.",
+    "LIVE: Neika +1 phone (Cx1 / Galaxy A57) #G-UNIT. Ismael is Steveo Ramos. DG 1/12.",
   notes:
-    "Week of Mon 9/7. Wed close + Thu #G-Unit live log. Last week = Sunday G-Unit close. Prev week = PM board (Grant 8, Ky 6, Jordan 5, Shaad 2, Matt² 1). Nashly 9 includes Gianna 7 + Leo 1 + his 1. Steveo 3 is Cameron's lines. Ismael is Steveo Ramos, so his Thu +2 / +1 CX count on Steveo. Mackenzie, Nate, Guy, Ashunte, Neika: first week on this board.",
+    "Week of Mon 9/7. Wed close + Thu live + Fri G-Unit live log. Last week = Sunday G-Unit close. Prev week = PM board (Grant 8, Ky 6, Jordan 5, Shaad 2, Matt² 1). Nashly 9 includes Gianna 7 + Leo 1 + his 1. Steveo 3 is Cameron's lines. Ismael is Steveo Ramos, so his Thu +2 / +1 CX count on Steveo. Mackenzie, Nate, Guy, Ashunte, Neika, Shatreasure: first week on this board.",
   reps: [
     {
       id: "mackenzie-faith",
@@ -69,8 +70,8 @@ export const SEED_BOARD = {
       firstWeek: true,
       lastWeekApps: 0,
       prevWeekApps: 0,
-      days: days({ thu: 4 }),
-      cx: 2,
+      days: days({ thu: 4, fri: 1 }),
+      cx: 3,
       badge: "1st week",
     },
     {
@@ -95,8 +96,8 @@ export const SEED_BOARD = {
       firstWeek: true,
       lastWeekApps: 0,
       prevWeekApps: 0,
-      days: days({ wed: 2 }),
-      cx: 4,
+      days: days({ wed: 2, thu: 1 }),
+      cx: 5,
       badge: "1st week",
     },
     {
@@ -135,6 +136,19 @@ export const SEED_BOARD = {
       badge: "1st week",
     },
     {
+      id: "shatreasure-evans",
+      name: "Shatreasure Evans",
+      shortName: "Shatreasure",
+      accent: "gold",
+      listOrder: 9,
+      firstWeek: true,
+      lastWeekApps: 0,
+      prevWeekApps: 0,
+      days: days({ thu: 2 }),
+      cx: 1,
+      badge: "1st week",
+    },
+    {
       id: "ky-tisdale",
       name: "Kyron Tisdale",
       shortName: "Kyron",
@@ -142,8 +156,8 @@ export const SEED_BOARD = {
       listOrder: 11,
       lastWeekApps: 15,
       prevWeekApps: 6,
-      days: days({ wed: 1 }),
-      cx: 1,
+      days: days({ wed: 1, thu: 1 }),
+      cx: 2,
     },
     {
       id: "matthew-grant",

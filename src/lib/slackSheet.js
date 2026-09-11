@@ -13,6 +13,41 @@ function dash(value) {
   return Number(value) ? Number(value).toFixed(1) : "—";
 }
 
+export function bannerDay(asOfLabel) {
+  const match = String(asOfLabel || "").match(
+    /monday|tuesday|wednesday|thursday|friday|saturday|sunday/i
+  );
+  return match ? match[0].toUpperCase() : "LIVE";
+}
+
+function appLabel(apps) {
+  return Number(apps) === 1 ? "App" : "Apps";
+}
+
+export function formatCompactBoard(board) {
+  const rows = rankedReps(board.reps);
+  const medals = {
+    1: ":first_place_medal:",
+    2: ":second_place_medal:",
+    3: ":third_place_medal:",
+  };
+  const lines = [
+    "╔══════════════════════════════════════╗",
+    "║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║",
+    `║ :bar_chart: DG:${board.dg.current}/${board.dg.goal} |${board.nlLeft} NL LEFT | ${bannerDay(board.asOfLabel)} ║`,
+    "╚══════════════════════════════════════╝",
+    ":trophy: LEADERBOARD",
+    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+  ];
+  for (const rep of rows) {
+    const prefix = medals[rep.rank] || `${rep.rank}.`;
+    lines.push(
+      `${prefix} ${rep.name}  ${rep.apps} ${appLabel(rep.apps)} | ${rep.cx} CX`
+    );
+  }
+  return lines.join("\n");
+}
+
 export function formatFullSheet(board) {
   const rows = rankedReps(board.reps);
   const totals = teamTotals(board.reps);
@@ -61,7 +96,7 @@ export function formatFullSheet(board) {
     title: `${board.teamName} SALES BOARD`,
     weekLabel,
     asOfLabel: board.asOfLabel,
-    banner: `DG: ${board.dg.current}/${board.dg.goal} | ${board.nlLeft} NL LEFT | THURSDAY`,
+    banner: `DG: ${board.dg.current}/${board.dg.goal} | ${board.nlLeft} NL LEFT | ${bannerDay(board.asOfLabel)}`,
     liveCall: board.liveCall,
     rate: BLENDED_RATE,
     header,

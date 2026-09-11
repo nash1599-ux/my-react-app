@@ -1,12 +1,12 @@
 import { SEED_BOARD } from "../data/seed";
-import { formatFullSheet } from "./slackSheet";
+import { formatCompactBoard, formatFullSheet } from "./slackSheet";
 
-test("full Thursday sheet includes every excel column and live totals", () => {
+test("full Friday sheet includes every excel column and live totals", () => {
   const sheet = formatFullSheet(SEED_BOARD);
 
-  expect(sheet.banner).toBe("DG: 18/12 | 37 NL LEFT | THURSDAY");
-  expect(sheet.teamApps).toBe(37);
-  expect(sheet.teamCx).toBe(23);
+  expect(sheet.banner).toBe("DG: 1/12 | 32 NL LEFT | FRIDAY");
+  expect(sheet.teamApps).toBe(42);
+  expect(sheet.teamCx).toBe(27);
   expect(sheet.header).toEqual([
     "Rk",
     "Name",
@@ -28,23 +28,33 @@ test("full Thursday sheet includes every excel column and live totals", () => {
   ]);
   expect(sheet.rows.map((row) => row[1])).toEqual([
     "Nate",
+    "Neika",
     "Mackenzie Faith",
     "Matthew ²",
     "Steve Nash",
-    "Neika",
     "Matthew Grant",
     "Steveo Ramos",
     "Guy Lesperance",
-    "Jordan #23",
-    "Ashunte Reyes",
     "Kyron Tisdale",
+    "Jordan #23",
+    "Shatreasure Evans",
+    "Ashunte Reyes",
     "Judah Rodgers",
     "Shaad Hyppolite",
   ]);
   expect(sheet.rows[0][2]).toBe("7.0");
-  expect(sheet.rows[5][1]).toBe("Matthew Grant");
-  expect(sheet.rows[5][2]).toBe("4.0");
+  expect(sheet.rows[1][1]).toBe("Neika");
+  expect(sheet.rows[1][2]).toBe("5.0");
   expect(sheet.rows[6][1]).toBe("Steveo Ramos");
   expect(sheet.rows[6][2]).toBe("4.0");
   expect(sheet.rows.map((row) => row[1])).not.toContain("Ismael Ramos");
+});
+
+test("compact Slack board uses Friday DG and medals", () => {
+  const text = formatCompactBoard(SEED_BOARD);
+  expect(text).toContain("DG:1/12 |32 NL LEFT | FRIDAY");
+  expect(text).toContain(":first_place_medal: Nate  7 Apps | 4 CX");
+  expect(text).toContain(":second_place_medal: Neika  5 Apps | 3 CX");
+  expect(text).toContain("Steveo Ramos  4 Apps | 2 CX");
+  expect(text).not.toContain("Ismael Ramos");
 });
