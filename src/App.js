@@ -101,7 +101,7 @@ export default function App() {
   }
 
   function resetBoard() {
-    const ok = window.confirm("Reset the board back to the Thursday G-Unit snapshot?");
+    const ok = window.confirm("Reset the board back to the Friday G-Unit snapshot?");
     if (!ok) return;
     window.localStorage.removeItem(STORAGE_KEY);
     setBoard(cloneSeed());

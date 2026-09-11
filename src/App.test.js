@@ -7,7 +7,7 @@ beforeEach(() => {
   window.localStorage.clear();
 });
 
-test("renders the Thursday G-Unit sheet with Wed close plus live Thu sales", () => {
+test("renders the Friday G-Unit sheet with Wed/Thu close plus live Fri sales", () => {
   render(<App />);
 
   expect(screen.getByText("G-UNIT")).toBeInTheDocument();
@@ -27,12 +27,12 @@ test("renders the Thursday G-Unit sheet with Wed close plus live Thu sales", () 
   expect(screen.queryByTestId("apps-gianna-smith")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-cameron-winfield")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-leo-chowdhury")).not.toBeInTheDocument();
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("41.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("42.0");
   expect(screen.getByTestId("apps-nate")).toHaveTextContent("7.0");
+  expect(screen.getByTestId("apps-neika")).toHaveTextContent("5.0");
   expect(screen.getByTestId("apps-guy-lesperance")).toHaveTextContent("3.0");
   expect(screen.getByTestId("apps-ky-tisdale")).toHaveTextContent("2.0");
   expect(screen.getByTestId("apps-steve-nash")).toHaveTextContent("4.0");
-  expect(screen.getByTestId("apps-neika")).toHaveTextContent("4.0");
   expect(screen.getByTestId("apps-matthew-grant")).toHaveTextContent("4.0");
   expect(screen.getByTestId("apps-shatreasure-evans")).toHaveTextContent("2.0");
   expect(screen.getByTestId("apps-ismael-ramos")).toHaveTextContent("2.0");
@@ -40,12 +40,13 @@ test("renders the Thursday G-Unit sheet with Wed close plus live Thu sales", () 
   expect(screen.getByTestId("avg-ky-tisdale")).toHaveTextContent("7.7");
   expect(screen.getByTestId("avg-mackenzie-faith")).toHaveTextContent("4.0");
   expect(screen.getByTestId("avg-nate")).toHaveTextContent("7.0");
+  expect(screen.getByTestId("avg-neika")).toHaveTextContent("5.0");
   expect(screen.getByTestId("avg-steven-ramos")).toHaveTextContent("5.0");
   expect(screen.getByTestId("avg-matthew-grant")).toHaveTextContent("5.0");
   expect(screen.getByTestId("avg-steve-nash")).toHaveTextContent("6.0");
   expect(screen.getAllByText(/1st week/i).length).toBeGreaterThan(0);
   expect(screen.getAllByText(/Daily goal HIT/i).length).toBeGreaterThan(0);
-  expect(screen.getByText("22/12")).toBeInTheDocument();
+  expect(screen.getByText("1/12")).toBeInTheDocument();
 });
 
 test("clicking a day cell logs an app and re-ranks live", () => {
@@ -56,7 +57,7 @@ test("clicking a day cell logs an app and re-ranks live", () => {
   );
 
   expect(screen.getByTestId("apps-judah-rodgers")).toHaveTextContent("1.0");
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("42.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("43.0");
   expect(window.localStorage.getItem(STORAGE_KEY)).toContain("judah-rodgers");
 });
 

@@ -1,12 +1,12 @@
 import { SEED_BOARD } from "../data/seed";
 import { formatFullSheet } from "./slackSheet";
 
-test("full Thursday sheet includes every excel column and live totals", () => {
+test("full Friday sheet includes every excel column and live totals", () => {
   const sheet = formatFullSheet(SEED_BOARD);
 
-  expect(sheet.banner).toBe("DG: 22/12 | 33 NL LEFT | THURSDAY");
-  expect(sheet.teamApps).toBe(41);
-  expect(sheet.teamCx).toBe(26);
+  expect(sheet.banner).toBe("DG: 1/12 | 32 NL LEFT | FRIDAY");
+  expect(sheet.teamApps).toBe(42);
+  expect(sheet.teamCx).toBe(27);
   expect(sheet.header).toEqual([
     "Rk",
     "Name",
@@ -28,10 +28,10 @@ test("full Thursday sheet includes every excel column and live totals", () => {
   ]);
   expect(sheet.rows.map((row) => row[1])).toEqual([
     "Nate",
+    "Neika",
     "Mackenzie Faith",
     "Matthew ²",
     "Steve Nash",
-    "Neika",
     "Matthew Grant",
     "Guy Lesperance",
     "Kyron Tisdale",

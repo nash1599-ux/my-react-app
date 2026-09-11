@@ -13,6 +13,13 @@ function dash(value) {
   return Number(value) ? Number(value).toFixed(1) : "—";
 }
 
+function bannerDay(asOfLabel) {
+  const match = String(asOfLabel || "").match(
+    /monday|tuesday|wednesday|thursday|friday|saturday|sunday/i
+  );
+  return match ? match[0].toUpperCase() : "LIVE";
+}
+
 export function formatFullSheet(board) {
   const rows = rankedReps(board.reps);
   const totals = teamTotals(board.reps);
@@ -61,7 +68,7 @@ export function formatFullSheet(board) {
     title: `${board.teamName} SALES BOARD`,
     weekLabel,
     asOfLabel: board.asOfLabel,
-    banner: `DG: ${board.dg.current}/${board.dg.goal} | ${board.nlLeft} NL LEFT | THURSDAY`,
+    banner: `DG: ${board.dg.current}/${board.dg.goal} | ${board.nlLeft} NL LEFT | ${bannerDay(board.asOfLabel)}`,
     liveCall: board.liveCall,
     rate: BLENDED_RATE,
     header,
