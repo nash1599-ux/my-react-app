@@ -5,7 +5,7 @@ export const CX_TIERS = [
   [5, 50],
   [4, 30],
 ];
-export const STORAGE_KEY = "gunit-salesboard-v19";
+export const STORAGE_KEY = "gunit-salesboard-v20";
 export const DEFAULT_TEAM_WEEKLY_GOAL = 28;
 
 export const ALIASES = {
@@ -441,8 +441,8 @@ export const MONDAY_BOARD_TEXT = `
 8. Steve Nash             0 App  | 0 CX
 `;
 
-// Live board. Phones count as apps. DG resets each day.
-export const WEDNESDAY_BOARD_TEXT = `
+// Archived last tracked week (Sep 8–11).
+export const FRIDAY_SEP11_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
 ║ :bar_chart: DG:1/12 |34 NL LEFT | FRIDAY ║
@@ -461,6 +461,29 @@ export const WEDNESDAY_BOARD_TEXT = `
 10. Jordan #23 2 Apps | 1 CX
 11. Ashunte Reyes 1 App | 1 CX
 12. Judah Rodgers 0 App | 0 CX
+13. Shaad Hyppolite 0 Apps | 0 CX
+`;
+
+// Live board. Phones count as apps. DG resets each day.
+export const WEDNESDAY_BOARD_TEXT = `
+╔══════════════════════════════════════╗
+║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
+║ :bar_chart: DG:2/12 |27 NL LEFT | WEDNESDAY ║
+╚══════════════════════════════════════╝
+:trophy: LEADERBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+:first_place_medal: Matthew Grant 2 Apps | 1 CX
+:second_place_medal: Nate 0 Apps | 0 CX
+:third_place_medal: Neika 0 Apps | 0 CX
+4. Steveo Ramos 0 Apps | 0 CX
+5. Steve Nash 0 Apps | 0 CX
+6. Mackenzie Faith 0 Apps | 0 CX
+7. Matthew ² 0 Apps | 0 CX
+8. Guy Lesperance 0 Apps | 0 CX
+9. Jordan #23 0 Apps | 0 CX
+10. Kyron Tisdale 0 Apps | 0 CX
+11. Ashunte Reyes 0 Apps | 0 CX
+12. Judah Rodgers 0 Apps | 0 CX
 13. Shaad Hyppolite 0 Apps | 0 CX
 `;
 
@@ -586,17 +609,42 @@ export const SATURDAY_SNAPSHOT = summarizeBoard({
   ],
 });
 
+const FRIDAY_SEP11_PARSED = parseBoardText(FRIDAY_SEP11_BOARD_TEXT, WEEK_OPENING);
+export const PRIOR_WEEK_CLOSED = {
+  label: "Last tracked week · Sep 8–11",
+  day: "Friday close",
+  sourceLabel: "Friday Sep 11 live board",
+  pendingWeekend: false,
+  sundayRemaining: { team: 0, office: 0, cancun: 0 },
+  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 20, fri: 1, sat: null, sun: null },
+  notes: ["Archived last tracked G-Unit week (Sep 8–11). 40 apps / 26 CX."],
+  reps: FRIDAY_SEP11_PARSED.reps.map((rep) => ({
+    displayName: rep.displayName,
+    name: rep.name,
+    apps: rep.apps,
+    cx: rep.cx,
+    prevWeekApps: null,
+    prevWeekCx: null,
+  })),
+  totals: FRIDAY_SEP11_PARSED.totals,
+};
+
+export const WEEK_OF_SEP_22_OPENING = rolloverIntoNewWeek(
+  PRIOR_WEEK_CLOSED,
+  DEFAULT_TEAM_WEEKLY_GOAL
+);
+
 export const OFFICIAL_SNAPSHOT = summarizeBoard({
-  ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OPENING),
-  weekLabel: "Week of Sep 8",
-  sourceLabel: "Friday live board",
-    dataAsOf: "Neika Friday CX1 close (Galaxy)",
-  dailyTotals: { mon: 0, tue: 0, wed: 12, thu: 20, fri: 1, sat: 0, sun: 0 },
+  ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OF_SEP_22_OPENING),
+  weekLabel: "Week of Sep 22",
+  sourceLabel: "Wednesday live board",
+  dataAsOf: "Matthew Grant Wednesday CX1 close (NL1-NL2)",
+  dailyTotals: { mon: 0, tue: 0, wed: 2, thu: 0, fri: 0, sat: 0, sun: 0 },
   notes: [
-    "Friday live board. Phones count as apps. Daily goal resets each day.",
-    "Neika Friday CX1 / NL1 Galaxy #G-Unit.",
-    "Thursday closed at 20 phones. Campaign NL left carries over.",
-    "Last week (56 apps / 25 CX) stays archived.",
+    "New week of Sep 22. Last tracked week (Sep 8–11) is archived.",
+    "Matthew Grant CX1 / NL1-NL2 #G-Unit. Phones count as apps.",
+    "Daily goal resets each day. Team weekly goal starts at 28 NL.",
+    "Last tracked week (40 apps / 26 CX) stays archived.",
   ],
 });
 

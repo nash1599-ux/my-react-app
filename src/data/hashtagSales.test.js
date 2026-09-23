@@ -96,6 +96,24 @@ NL3
     expect(parsed.name).toBe("Matthew Grant");
   });
 
+  test("credits Matthew Grant Wednesday CX1 NL1-NL2 #G-Unit to him", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O Drew Tepper
+S/O Jamaal Brown for the student mentality
+S/O the car ride Jordan Aguirre
+Cx1
+NL1
+NL2
+#G-Unit`,
+      { author: "Matthew Grant" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Matthew Grant");
+  });
+
   test("maps GUY author to Guy Lesperance and ignores S/O names", () => {
     const parsed = parseHashtagSale(
       `D2D
