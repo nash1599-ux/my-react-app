@@ -61,7 +61,11 @@ export function formatFullSheet(board) {
     title: `${board.teamName} SALES BOARD`,
     weekLabel,
     asOfLabel: board.asOfLabel,
-    banner: `DG: ${board.dg.current}/${board.dg.goal} | ${board.nlLeft} NL LEFT | THURSDAY`,
+    banner: `DG: ${board.dg.current}/${board.dg.goal} | ${board.nlLeft} NL LEFT | ${String(
+      board.asOfLabel || ""
+    )
+      .replace(/^as of /i, "")
+      .toUpperCase()}`,
     liveCall: board.liveCall,
     rate: BLENDED_RATE,
     header,
