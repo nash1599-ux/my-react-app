@@ -162,7 +162,9 @@ DG: 4/10 | 25 NL LEFT | Monday
 1. 🥇 Quay Tyler 12 Apps | 8 CX
 2. 🥈 Ky. Tisdale 10 Apps | 7 CX
 3. 🥉 Steve Nash 8 Apps | 5 CX
-`);
+`,
+      WEEK_OPENING
+    );
     expect(board.day).toBe("Monday");
     expect(board.totals.apps).toBe(30);
     expect(board.weeklyGoal.nlLeft).toBe(25);
