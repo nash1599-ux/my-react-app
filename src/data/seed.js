@@ -1,4 +1,4 @@
-export const STORAGE_KEY = "gunit-board-v12";
+export const STORAGE_KEY = "gunit-board-v13";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -7,7 +7,7 @@ function days({ wed = 0, thu = 0, fri = 0, sat = 0 } = {}) {
 }
 
 // Week of Mon Sep 21 – Sun Sep 27, 2026, as of Thursday.
-// This week live #G-UNIT: Grant Wed +2 / +1 CX. Ismael two Wed closes on Steveo (+4 / +2 CX). Kyron Thu +1 / +1 CX.
+// This week live #G-UNIT: Grant Wed +2 / +1 CX. Ismael two Wed closes on Steveo (+4 / +2 CX). Kyron Thu +1 / +1 CX. Nate Thu +2 / +1 CX.
 // Last week (Mon 9/14): Ismael Friday closes sit on Steveo (4 apps / 3 CX).
 // Prev week (Mon 9/7): Thursday live board plus Shaad Sat late post (+2 / +1 CX).
 // Ismael is Steveo Ramos. Shaad CC #3 was not counted.
@@ -16,12 +16,12 @@ export const SEED_BOARD = {
   tagline: "Results get Rewarded",
   weekStart: "2026-09-21",
   asOfLabel: "as of Thursday",
-  dg: { current: 7, goal: 12 },
+  dg: { current: 9, goal: 12 },
   nlLeft: 37,
   liveCall:
-    "LIVE: Kyron broke the ice Thu Cx1 / iPhone 18 Pro. Grant +2 / +1 CX. Ismael two Wed closes sit on Steveo +4 / +2 CX. DG 7/12.",
+    "LIVE: Nate Thu Cx1 / iPhone 18 Pro Max + Galaxy S26 Ultra. Kyron ice-breaker +1 / +1 CX. Grant +2 / +1 CX. Steveo +4 / +2 CX. DG 9/12.",
   notes:
-    "Week of Mon 9/21. Only tagged #G-UNIT closes are on this sheet. Grant Wed +2 / +1 CX. Ismael two Wed closes (+4 / +2 CX) count on Steveo Ramos. Kyron Thu +1 / +1 CX. Last week Steveo 4 is Ismael's Friday closes. Prev week includes Shaad Sat late post. NL left not refreshed for the new week. Shaad CC #3 was not counted.",
+    "Week of Mon 9/21. Only tagged #G-UNIT closes are on this sheet. Grant Wed +2 / +1 CX. Ismael two Wed closes (+4 / +2 CX) count on Steveo Ramos. Kyron Thu +1 / +1 CX. Nate Thu +2 / +1 CX. Last week Steveo 4 is Ismael's Friday closes. Prev week includes Shaad Sat late post. NL left not refreshed for the new week. Shaad CC #3 was not counted. Jordan's untagged 18 Pro Max was not counted.",
   reps: [
     {
       id: "mackenzie-faith",
@@ -75,8 +75,8 @@ export const SEED_BOARD = {
       listOrder: 0,
       lastWeekApps: 0,
       prevWeekApps: 7,
-      days: days(),
-      cx: 0,
+      days: days({ thu: 2 }),
+      cx: 1,
     },
     {
       id: "guy-lesperance",
