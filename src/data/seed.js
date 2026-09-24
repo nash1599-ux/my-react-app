@@ -1,4 +1,4 @@
-export const STORAGE_KEY = "gunit-board-v10";
+export const STORAGE_KEY = "gunit-board-v11";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -7,7 +7,7 @@ function days({ wed = 0, thu = 0, fri = 0, sat = 0 } = {}) {
 }
 
 // Week of Mon Sep 21 – Sun Sep 27, 2026, as of Wednesday.
-// This week live #G-UNIT: Matthew Grant Cx1 / NL1–NL2 (+2 phones).
+// This week live #G-UNIT: Grant Wed +2 / +1 CX. Ismael two Wed closes on Steveo (+4 / +2 CX).
 // Last week (Mon 9/14): Ismael Friday closes sit on Steveo (4 apps / 3 CX).
 // Prev week (Mon 9/7): Thursday live board plus Shaad Sat late post (+2 / +1 CX).
 // Ismael is Steveo Ramos. Shaad CC #3 was not counted.
@@ -16,12 +16,12 @@ export const SEED_BOARD = {
   tagline: "Results get Rewarded",
   weekStart: "2026-09-21",
   asOfLabel: "as of Wednesday",
-  dg: { current: 4, goal: 12 },
+  dg: { current: 6, goal: 12 },
   nlLeft: 37,
   liveCall:
-    "LIVE: Grant +2 / +1 CX. Ismael #G-UNIT Cx1 / two iPhone 18 Pro Prem sits on Steveo +2 / +1 CX. DG 4/12.",
+    "LIVE: Grant +2 / +1 CX. Ismael two #G-UNIT Cx1 / two iPhone 18 Pro Prem closes sit on Steveo +4 / +2 CX. DG 6/12.",
   notes:
-    "Week of Mon 9/21. Only tagged #G-UNIT closes are on this sheet. Grant Wed +2 / +1 CX. Ismael Wed +2 / +1 CX counts on Steveo Ramos. Last week Steveo 4 is Ismael's Friday closes. Prev week includes Shaad Sat late post. NL left not refreshed for the new week. Shaad CC #3 was not counted.",
+    "Week of Mon 9/21. Only tagged #G-UNIT closes are on this sheet. Grant Wed +2 / +1 CX. Ismael two Wed closes (+4 / +2 CX) count on Steveo Ramos. Last week Steveo 4 is Ismael's Friday closes. Prev week includes Shaad Sat late post. NL left not refreshed for the new week. Shaad CC #3 was not counted.",
   reps: [
     {
       id: "mackenzie-faith",
@@ -97,8 +97,8 @@ export const SEED_BOARD = {
       listOrder: 7,
       lastWeekApps: 4,
       prevWeekApps: 4,
-      days: days({ wed: 2 }),
-      cx: 1,
+      days: days({ wed: 4 }),
+      cx: 2,
     },
     {
       id: "jordan-aguirre",
