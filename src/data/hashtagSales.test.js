@@ -291,6 +291,24 @@ precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
     expect(parsed.name).toBe("Ismael Ramos");
   });
 
+  test("credits Kyron's Thursday ice-break #G-Unit D2D to him", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O (Drew Tepper) Ice Broken
+S/O (Matthew Grant) Getting you to AM
+S/O G-Unit (Ismael) (Nash-Sama) (GUY) (Fritzna Salomon) (Jordan Aguirre) (Big Sister General) (Nate)
+Cx1
+NL1
+iPhone 18 Pro
+#G-Unit #BackInMotion #1More`,
+      { author: "Kyron Tisdale" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(1);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Kyron Tisdale");
+  });
+
   test("credits Nianna's Thursday #G-Unit D2D to her, not shout-out names", () => {
     const parsed = parseHashtagSale(
       `:door::moneybag::door:

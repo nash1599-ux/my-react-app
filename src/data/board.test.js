@@ -93,12 +93,13 @@ describe("salesboard scoring", () => {
     const steveo = board.reps.find((rep) => rep.name === "Ismael Ramos");
     const coivon = board.reps.find((rep) => rep.name === "Coivon Patterson");
     const nianna = board.reps.find((rep) => rep.name === "Nianna");
+    const kyron = board.reps.find((rep) => rep.name === "Kyron Tisdale");
     expect(board.day).toBe("Thursday");
-    expect(board.dgNum).toBe(2);
-    expect(board.weeklyGoal.nlLeft).toBe(24);
+    expect(board.dgNum).toBe(3);
+    expect(board.weeklyGoal.nlLeft).toBe(23);
     expect(board.weeklyGoal.goal).toBe(28);
-    expect(board.totals.apps).toBe(7);
-    expect(board.totals.cx).toBe(4);
+    expect(board.totals.apps).toBe(8);
+    expect(board.totals.cx).toBe(5);
     expect(board.lastWeek.totals.apps).toBe(40);
     expect(board.lastWeek.totals.cx).toBe(26);
     expect(matthewGrant.apps).toBe(2);
@@ -107,7 +108,7 @@ describe("salesboard scoring", () => {
     expect(matthewGrant.lastWeekApps).toBe(4);
     expect(nate.apps).toBe(0);
     expect(nate.lastWeekApps).toBe(7);
-    expect(nate.rank).toBe(5);
+    expect(nate.rank).toBe(6);
     expect(neika.apps).toBe(0);
     expect(neika.lastWeekApps).toBe(5);
     expect(steveo.apps).toBe(2);
@@ -116,14 +117,18 @@ describe("salesboard scoring", () => {
     expect(steveo.displayName).toBe("Steveo Ramos");
     expect(coivon.apps).toBe(1);
     expect(coivon.cx).toBe(1);
-    expect(coivon.rank).toBe(4);
+    expect(coivon.rank).toBe(5);
     expect(nianna.apps).toBe(2);
     expect(nianna.cx).toBe(1);
     expect(nianna.rank).toBe(3);
+    expect(kyron.apps).toBe(1);
+    expect(kyron.cx).toBe(1);
+    expect(kyron.rank).toBe(4);
     const posted = formatSlackBoard(board);
     expect(posted).toMatch(/Steveo Ramos 2 Apps \| 1 CX/);
     expect(posted).toMatch(/Matthew Grant 2 Apps \| 1 CX/);
     expect(posted).toMatch(/Nianna 2 Apps \| 1 CX/);
+    expect(posted).toMatch(/Kyron Tisdale 1 App \| 1 CX/);
     expect(posted).toMatch(/Coivon Patterson 1 App \| 1 CX/);
     expect(posted).toMatch(/Nate 0 Apps \| 0 CX/);
   });
@@ -150,12 +155,13 @@ describe("salesboard scoring", () => {
     );
   });
 
-  test("parses the Thursday Slack board with Nianna's close", () => {
+  test("parses the Thursday Slack board with Nianna and Kyron closes", () => {
     const board = parseBoardText(THURSDAY_BOARD_TEXT, WEEK_OPENING);
     expect(board.day).toBe("Thursday");
-    expect(board.dgNum).toBe(2);
+    expect(board.dgNum).toBe(3);
     expect(board.reps.find((rep) => rep.name === "Nianna").apps).toBe(2);
     expect(board.reps.find((rep) => rep.name === "Nianna").cx).toBe(1);
+    expect(board.reps.find((rep) => rep.name === "Kyron Tisdale").apps).toBe(1);
     expect(board.reps.find((rep) => rep.name === "Coivon Patterson").apps).toBe(1);
   });
 

@@ -65,6 +65,23 @@ NL 2 iPhone 18 Pro/Prem
         self.assertEqual(event["cx"], 1)
         self.assertEqual(event["name"], "Ismael Ramos")
 
+    def test_kyron_thursday_ice_break_is_one_phone(self):
+        event = parse_hashtag_sale(
+            """D2D
+S/O (Drew Tepper) Ice Broken
+S/O (Matthew Grant) Getting you to AM
+S/O G-Unit (Ismael) (Nash-Sama) (GUY) (Nate)
+Cx1
+NL1
+iPhone 18 Pro
+#G-Unit #BackInMotion #1More""",
+            {"author": "Kyron Tisdale"},
+        )
+        self.assertTrue(event["matched"])
+        self.assertEqual(event["phones"], 1)
+        self.assertEqual(event["cx"], 1)
+        self.assertEqual(event["name"], "Kyron Tisdale")
+
     def test_nianna_so_lines_do_not_steal_seller(self):
         event = parse_hashtag_sale(
             """*S/O* (Drew Tepper) & (Matthew Grant) for Business mentorship
