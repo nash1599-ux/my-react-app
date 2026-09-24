@@ -1,4 +1,4 @@
-export const STORAGE_KEY = "gunit-board-v9";
+export const STORAGE_KEY = "gunit-board-v10";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -16,12 +16,12 @@ export const SEED_BOARD = {
   tagline: "Results get Rewarded",
   weekStart: "2026-09-21",
   asOfLabel: "as of Wednesday",
-  dg: { current: 2, goal: 12 },
+  dg: { current: 4, goal: 12 },
   nlLeft: 37,
   liveCall:
-    "LIVE: Grant #G-Unit D2D Cx1 / NL1–NL2. +2 phones / +1 CX. Ismael is Steveo Ramos. DG 2/12.",
+    "LIVE: Grant +2 / +1 CX. Ismael #G-UNIT Cx1 / two iPhone 18 Pro Prem sits on Steveo +2 / +1 CX. DG 4/12.",
   notes:
-    "Week of Mon 9/21. Only tagged #G-UNIT closes are on this sheet. Grant Wed +2 / +1 CX. Last week Steveo 4 is Ismael's Friday closes. Prev week includes Shaad Sat late post. Ismael phones stay on Steveo. NL left not refreshed for the new week. Shaad CC #3 was not counted.",
+    "Week of Mon 9/21. Only tagged #G-UNIT closes are on this sheet. Grant Wed +2 / +1 CX. Ismael Wed +2 / +1 CX counts on Steveo Ramos. Last week Steveo 4 is Ismael's Friday closes. Prev week includes Shaad Sat late post. NL left not refreshed for the new week. Shaad CC #3 was not counted.",
   reps: [
     {
       id: "mackenzie-faith",
@@ -97,8 +97,8 @@ export const SEED_BOARD = {
       listOrder: 7,
       lastWeekApps: 4,
       prevWeekApps: 4,
-      days: days(),
-      cx: 0,
+      days: days({ wed: 2 }),
+      cx: 1,
     },
     {
       id: "jordan-aguirre",
