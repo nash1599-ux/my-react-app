@@ -82,32 +82,35 @@ describe("salesboard scoring", () => {
     expect(board.reps.find((rep) => rep.name === "Ismael Ramos").cx).toBe(4);
   });
 
-  test("starts the week of Sep 22 with Matthew Grant's Wednesday 2-phone close", () => {
+  test("starts the week of Sep 22 with Wednesday G-Unit closes", () => {
     const board = summarizeBoard(OFFICIAL_SNAPSHOT);
     const matthewGrant = board.reps.find((rep) => rep.name === "Matthew Grant");
     const nate = board.reps.find((rep) => rep.name === "Nate");
     const neika = board.reps.find((rep) => rep.name === "Neika");
     const steveo = board.reps.find((rep) => rep.name === "Ismael Ramos");
     expect(board.day).toBe("Wednesday");
-    expect(board.dgNum).toBe(2);
-    expect(board.weeklyGoal.nlLeft).toBe(27);
+    expect(board.dgNum).toBe(4);
+    expect(board.weeklyGoal.nlLeft).toBe(26);
     expect(board.weeklyGoal.goal).toBe(28);
-    expect(board.totals.apps).toBe(2);
-    expect(board.totals.cx).toBe(1);
+    expect(board.totals.apps).toBe(4);
+    expect(board.totals.cx).toBe(2);
     expect(board.lastWeek.totals.apps).toBe(40);
     expect(board.lastWeek.totals.cx).toBe(26);
     expect(matthewGrant.apps).toBe(2);
     expect(matthewGrant.cx).toBe(1);
-    expect(matthewGrant.rank).toBe(1);
+    expect(matthewGrant.rank).toBe(2);
     expect(matthewGrant.lastWeekApps).toBe(4);
     expect(nate.apps).toBe(0);
     expect(nate.lastWeekApps).toBe(7);
-    expect(nate.rank).toBe(2);
+    expect(nate.rank).toBe(3);
     expect(neika.apps).toBe(0);
     expect(neika.lastWeekApps).toBe(5);
-    expect(steveo.apps).toBe(0);
+    expect(steveo.apps).toBe(2);
+    expect(steveo.cx).toBe(1);
+    expect(steveo.rank).toBe(1);
     expect(steveo.displayName).toBe("Steveo Ramos");
     const posted = formatSlackBoard(board);
+    expect(posted).toMatch(/Steveo Ramos 2 Apps \| 1 CX/);
     expect(posted).toMatch(/Matthew Grant 2 Apps \| 1 CX/);
     expect(posted).toMatch(/Nate 0 Apps \| 0 CX/);
   });
@@ -126,6 +129,7 @@ describe("salesboard scoring", () => {
     expect(board.day).toBe("Wednesday");
     expect(board.reps.find((rep) => rep.name === "Matthew Grant").apps).toBe(2);
     expect(board.reps.find((rep) => rep.name === "Matthew Grant").cx).toBe(1);
+    expect(board.reps.find((rep) => rep.name === "Ismael Ramos").apps).toBe(2);
     expect(board.reps.find((rep) => rep.name === "Nate").apps).toBe(0);
     expect(board.reps.find((rep) => rep.name === "Ismael Ramos").displayName).toBe(
       "Steveo Ramos"

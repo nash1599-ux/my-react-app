@@ -468,17 +468,17 @@ export const FRIDAY_SEP11_BOARD_TEXT = `
 export const WEDNESDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:2/12 |27 NL LEFT | WEDNESDAY ║
+║ :bar_chart: DG:4/12 |26 NL LEFT | WEDNESDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-:first_place_medal: Matthew Grant 2 Apps | 1 CX
-:second_place_medal: Nate 0 Apps | 0 CX
-:third_place_medal: Neika 0 Apps | 0 CX
-4. Steveo Ramos 0 Apps | 0 CX
-5. Steve Nash 0 Apps | 0 CX
-6. Mackenzie Faith 0 Apps | 0 CX
-7. Matthew ² 0 Apps | 0 CX
+:first_place_medal: Steveo Ramos 2 Apps | 1 CX
+:second_place_medal: Matthew Grant 2 Apps | 1 CX
+:third_place_medal: Nate 0 Apps | 0 CX
+4. Neika 0 Apps | 0 CX
+5. Mackenzie Faith 0 Apps | 0 CX
+6. Matthew ² 0 Apps | 0 CX
+7. Steve Nash 0 Apps | 0 CX
 8. Guy Lesperance 0 Apps | 0 CX
 9. Jordan #23 0 Apps | 0 CX
 10. Kyron Tisdale 0 Apps | 0 CX
@@ -638,12 +638,12 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(WEDNESDAY_BOARD_TEXT, WEEK_OF_SEP_22_OPENING),
   weekLabel: "Week of Sep 22",
   sourceLabel: "Wednesday live board",
-  dataAsOf: "Matthew Grant Wednesday CX1 close (NL1-NL2)",
-  dailyTotals: { mon: 0, tue: 0, wed: 2, thu: 0, fri: 0, sat: 0, sun: 0 },
+  dataAsOf: "Steveo Ramos Wednesday CX1 close (NL1-NL2)",
+  dailyTotals: { mon: 0, tue: 0, wed: 4, thu: 0, fri: 0, sat: 0, sun: 0 },
   notes: [
     "New week of Sep 22. Last tracked week (Sep 8–11) is archived.",
-    "Matthew Grant CX1 / NL1-NL2 #G-Unit. Phones count as apps.",
-    "Daily goal resets each day. Team weekly goal starts at 28 NL.",
+    "Matthew Grant CX1 / NL1-NL2 #G-Unit. Steveo Ramos CX1 / NL1-NL2 #G-Unit.",
+    "Phones count as apps. Daily goal resets each day.",
     "Last tracked week (40 apps / 26 CX) stays archived.",
   ],
 });

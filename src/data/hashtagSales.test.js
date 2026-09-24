@@ -269,6 +269,28 @@ Next ×3`,
     expect(parsed.name).toBe("Matthew 2");
   });
 
+  test("credits Ismael's starred S/O Wednesday D2D to Steveo, not shout-out names", () => {
+    const parsed = parseHashtagSale(
+      `*Drum rolls please!!!!!*
+*D2D*
+*S/O Drew Tepper
+S/O Matthew Grant*
+*S/O G-UNIT Nash-Sama Rashaad Hyppolite@Kyron MY DAWG!@Jordan@MattJ@Judah
+@GEE@Kenziee@Nate@Shaunte@Neika@Treasure@Fritzna@Davon@
+Cx1
+
+NL 1 iPhone 18 Pro/Prem
+NL 2 iPhone 18 Pro/Prem
+
+precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
+      { author: "Ismael" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Ismael Ramos");
+  });
+
   test("counts Ismael's Thursday D2D #G-UNIT post as 2 phones on Steveo", () => {
     const parsed = parseHashtagSale(
       `D2D

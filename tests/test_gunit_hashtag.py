@@ -44,6 +44,27 @@ class HashtagParserTests(unittest.TestCase):
         self.assertEqual(event["cx"], 1)
         self.assertEqual(event["name"], "Jordan Aguirre")
 
+    def test_starred_so_lines_do_not_steal_seller(self):
+        event = parse_hashtag_sale(
+            """*Drum rolls please!!!!!*
+*D2D*
+*S/O Drew Tepper
+S/O Matthew Grant*
+*S/O G-UNIT Nash-Sama Rashaad Hyppolite@Kyron MY DAWG!@Jordan@MattJ@Judah
+@GEE@Kenziee@Nate@Shaunte@Neika@Treasure@Fritzna@Davon@
+Cx1
+
+NL 1 iPhone 18 Pro/Prem
+NL 2 iPhone 18 Pro/Prem
+
+#G-UNIT *#IAM back* *#1More* *#keystothecity*""",
+            {"author": "Ismael"},
+        )
+        self.assertTrue(event["matched"])
+        self.assertEqual(event["phones"], 2)
+        self.assertEqual(event["cx"], 1)
+        self.assertEqual(event["name"], "Ismael Ramos")
+
     def test_nate_d2d_shoutout_ignores_so_names(self):
         event = parse_hashtag_sale(
             """D2D
