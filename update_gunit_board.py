@@ -94,6 +94,7 @@ ALIASES = {
     "guy lesperance": "Guy Lesperance",
     "coivon": "Coivon Patterson",
     "coivon patterson": "Coivon Patterson",
+    "nianna": "Nianna",
 }
 
 CX_TIERS = [(9, 100), (7, 75), (5, 50), (4, 30)]

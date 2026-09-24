@@ -291,6 +291,24 @@ precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
     expect(parsed.name).toBe("Ismael Ramos");
   });
 
+  test("credits Nianna's Thursday #G-Unit D2D to her, not shout-out names", () => {
+    const parsed = parseHashtagSale(
+      `:door::moneybag::door:
+*S/O* (Drew Tepper) & (Matthew Grant) for Business mentorship
+*S/O* (Nash-Sama) for training
+*S/O The UNIT* (Rashaad Hyppolite) (Kyron Tisdale) (Ismael) (Jordan Aguirre) (GUY) (Nate) (Big Sister General) (shunte jade) (Matthew J) (Judah Rodgers)
+*CX 1*
+*NL 1: Galaxy S26 +*
+*NL 2: Galaxy S26 +*
+*#G-Unit* *#Team7* *#ontop*`,
+      { author: "Nianna" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Nianna");
+  });
+
   test("credits Coivon's starred S/O Wednesday D2D to him, not shout-out names", () => {
     const parsed = parseHashtagSale(
       `*D2D*

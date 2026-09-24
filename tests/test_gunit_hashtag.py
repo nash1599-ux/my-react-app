@@ -65,6 +65,22 @@ NL 2 iPhone 18 Pro/Prem
         self.assertEqual(event["cx"], 1)
         self.assertEqual(event["name"], "Ismael Ramos")
 
+    def test_nianna_so_lines_do_not_steal_seller(self):
+        event = parse_hashtag_sale(
+            """*S/O* (Drew Tepper) & (Matthew Grant) for Business mentorship
+*S/O* (Nash-Sama) for training
+*S/O The UNIT* (Rashaad Hyppolite) (Kyron Tisdale) (Ismael) (Jordan Aguirre) (GUY) (Nate)
+*CX 1*
+*NL 1: Galaxy S26 +*
+*NL 2: Galaxy S26 +*
+#G-Unit #Team7 #ontop""",
+            {"author": "Nianna"},
+        )
+        self.assertTrue(event["matched"])
+        self.assertEqual(event["phones"], 2)
+        self.assertEqual(event["cx"], 1)
+        self.assertEqual(event["name"], "Nianna")
+
     def test_coivon_starred_so_lines_do_not_steal_seller(self):
         event = parse_hashtag_sale(
             """*D2D*
