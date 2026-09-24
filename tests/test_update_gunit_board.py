@@ -86,6 +86,7 @@ class NormalizeNameTests(unittest.TestCase):
         self.assertEqual(normalize_name("Big Sister General"), "Mackenzie Faith")
         self.assertEqual(normalize_name("Matthew J"), "Matthew 2")
         self.assertEqual(normalize_name("GUY"), "Guy Lesperance")
+        self.assertEqual(normalize_name("Coivon"), "Coivon Patterson")
 
     def test_unknown_name_is_preserved(self):
         self.assertEqual(normalize_name("Jordan Reeces"), "Jordan Reeces")

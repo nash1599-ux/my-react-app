@@ -47,6 +47,8 @@ const KNOWN_NAMES = [
   "neika",
   "guy",
   "guy lesperance",
+  "coivon",
+  "coivon patterson",
   "quay tyler",
   "quay",
   "gigi",

@@ -291,6 +291,24 @@ precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
     expect(parsed.name).toBe("Ismael Ramos");
   });
 
+  test("credits Coivon's starred S/O Wednesday D2D to him, not shout-out names", () => {
+    const parsed = parseHashtagSale(
+      `*D2D*
+*S/O Drew Tepper*
+*S/O Matthew Grant*
+*S/O Ismael for the training/Mentorship*
+*S/O G-UNIT Nash-Sama@Kyron MY DAWG!@Jordan@MattJ@GEE@Kenziee@Nate@Shaunte@Neika@Treasure@Fritzna@Davon@Jamal*
+*Cx1*
+*NL 1 iPhone 18 pro/Premium*
+*precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
+      { author: "Coivon Patterson" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(1);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Coivon Patterson");
+  });
+
   test("counts Ismael's Thursday D2D #G-UNIT post as 2 phones on Steveo", () => {
     const parsed = parseHashtagSale(
       `D2D
