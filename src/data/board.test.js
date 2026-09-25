@@ -8,6 +8,7 @@ import {
   SATURDAY_SNAPSHOT,
   WEDNESDAY_BOARD_TEXT,
   THURSDAY_BOARD_TEXT,
+  FRIDAY_BOARD_TEXT,
   FRIDAY_SEP11_BOARD_TEXT,
   formatSlackBoard,
   normalizeName,
@@ -85,7 +86,7 @@ describe("salesboard scoring", () => {
     expect(board.reps.find((rep) => rep.name === "Ismael Ramos").cx).toBe(4);
   });
 
-  test("tracks week of Sep 22 through Thursday G-Unit closes", () => {
+  test("tracks week of Sep 22 through Friday G-Unit closes", () => {
     const board = summarizeBoard(OFFICIAL_SNAPSHOT);
     const matthewGrant = board.reps.find((rep) => rep.name === "Matthew Grant");
     const nate = board.reps.find((rep) => rep.name === "Nate");
@@ -96,20 +97,20 @@ describe("salesboard scoring", () => {
     const kyron = board.reps.find((rep) => rep.name === "Kyron Tisdale");
     const jordan = board.reps.find((rep) => rep.name === "Jordan Aguirre");
     const guy = board.reps.find((rep) => rep.name === "Guy Lesperance");
-    expect(board.day).toBe("Thursday");
-    expect(board.dgNum).toBe(12);
-    expect(board.weeklyGoal.nlLeft).toBe(18);
+    expect(board.day).toBe("Friday");
+    expect(board.dgNum).toBe(3);
+    expect(board.weeklyGoal.nlLeft).toBe(17);
     expect(board.weeklyGoal.goal).toBe(28);
-    expect(board.totals.apps).toBe(17);
-    expect(board.totals.cx).toBe(10);
+    expect(board.totals.apps).toBe(20);
+    expect(board.totals.cx).toBe(11);
     expect(board.lastWeek.totals.apps).toBe(40);
     expect(board.lastWeek.totals.cx).toBe(26);
     expect(matthewGrant.apps).toBe(2);
     expect(matthewGrant.cx).toBe(1);
     expect(matthewGrant.rank).toBe(3);
     expect(matthewGrant.lastWeekApps).toBe(4);
-    expect(nate.apps).toBe(5);
-    expect(nate.cx).toBe(2);
+    expect(nate.apps).toBe(8);
+    expect(nate.cx).toBe(3);
     expect(nate.lastWeekApps).toBe(7);
     expect(nate.rank).toBe(1);
     expect(neika.apps).toBe(0);
@@ -134,7 +135,7 @@ describe("salesboard scoring", () => {
     expect(guy.cx).toBe(1);
     expect(guy.rank).toBe(4);
     const posted = formatSlackBoard(board);
-    expect(posted).toMatch(/Nate 5 Apps \| 2 CX/);
+    expect(posted).toMatch(/Nate 8 Apps \| 3 CX/);
     expect(posted).toMatch(/Steveo Ramos 3 Apps \| 2 CX/);
     expect(posted).toMatch(/Matthew Grant 2 Apps \| 1 CX/);
     expect(posted).toMatch(/Guy Lesperance 2 Apps \| 1 CX/);
@@ -178,6 +179,17 @@ describe("salesboard scoring", () => {
     expect(board.reps.find((rep) => rep.name === "Jordan Aguirre").apps).toBe(1);
     expect(board.reps.find((rep) => rep.name === "Kyron Tisdale").apps).toBe(1);
     expect(board.reps.find((rep) => rep.name === "Coivon Patterson").apps).toBe(1);
+  });
+
+  test("parses the Friday Slack board after Nate CX1 NL1-NL3", () => {
+    const board = parseBoardText(FRIDAY_BOARD_TEXT, WEEK_OPENING);
+    expect(board.day).toBe("Friday");
+    expect(board.dgNum).toBe(3);
+    expect(board.weeklyGoal.nlLeft).toBe(17);
+    expect(board.reps.find((rep) => rep.name === "Nate").apps).toBe(8);
+    expect(board.reps.find((rep) => rep.name === "Nate").cx).toBe(3);
+    expect(board.reps.find((rep) => rep.name === "Ismael Ramos").apps).toBe(3);
+    expect(board.reps.find((rep) => rep.name === "Guy Lesperance").apps).toBe(2);
   });
 
   test("parses Saturday SATDI paste including Cam and Matthew 2", () => {

@@ -491,7 +491,7 @@ export const WEDNESDAY_BOARD_TEXT = `
 14. Shaad Hyppolite 0 Apps | 0 CX
 `;
 
-// Live board. Phones count as apps. DG resets each day.
+// Thursday close. Phones count as apps. DG resets each day.
 export const THURSDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
@@ -500,6 +500,31 @@ export const THURSDAY_BOARD_TEXT = `
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 :first_place_medal: Nate 5 Apps | 2 CX
+:second_place_medal: Steveo Ramos 3 Apps | 2 CX
+:third_place_medal: Matthew Grant 2 Apps | 1 CX
+4. Guy Lesperance 2 Apps | 1 CX
+5. Nianna 2 Apps | 1 CX
+6. Jordan #23 1 App | 1 CX
+7. Kyron Tisdale 1 App | 1 CX
+8. Coivon Patterson 1 App | 1 CX
+9. Neika 0 Apps | 0 CX
+10. Mackenzie Faith 0 Apps | 0 CX
+11. Matthew ² 0 Apps | 0 CX
+12. Steve Nash 0 Apps | 0 CX
+13. Ashunte Reyes 0 Apps | 0 CX
+14. Judah Rodgers 0 Apps | 0 CX
+15. Shaad Hyppolite 0 Apps | 0 CX
+`;
+
+// Live board. Phones count as apps. DG resets each day.
+export const FRIDAY_BOARD_TEXT = `
+╔══════════════════════════════════════╗
+║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
+║ :bar_chart: DG:3/12 |17 NL LEFT | FRIDAY ║
+╚══════════════════════════════════════╝
+:trophy: LEADERBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+:first_place_medal: Nate 8 Apps | 3 CX
 :second_place_medal: Steveo Ramos 3 Apps | 2 CX
 :third_place_medal: Matthew Grant 2 Apps | 1 CX
 4. Guy Lesperance 2 Apps | 1 CX
@@ -664,15 +689,16 @@ export const WEEK_OF_SEP_22_OPENING = rolloverIntoNewWeek(
 );
 
 export const OFFICIAL_SNAPSHOT = summarizeBoard({
-  ...parseBoardText(THURSDAY_BOARD_TEXT, WEEK_OF_SEP_22_OPENING),
+  ...parseBoardText(FRIDAY_BOARD_TEXT, WEEK_OF_SEP_22_OPENING),
   weekLabel: "Week of Sep 22",
-  sourceLabel: "Thursday live board",
-  dataAsOf: "Nate Thursday CX2 close (NL3-NL5)",
-  dailyTotals: { mon: 0, tue: 0, wed: 5, thu: 12, fri: 0, sat: 0, sun: 0 },
+  sourceLabel: "Friday live board",
+  dataAsOf: "Nate Friday CX1 close (NL1-NL3)",
+  dailyTotals: { mon: 0, tue: 0, wed: 5, thu: 12, fri: 3, sat: 0, sun: 0 },
   notes: [
     "New week of Sep 22. Last tracked week (Sep 8–11) is archived.",
     "Wednesday: Matthew Grant and Steveo Ramos CX1 / NL1-NL2, Coivon Patterson CX1 / NL1.",
     "Thursday: Nate also CX2 / NL3-NL5 (+1 CX, 3 phones). DG hit 12/12.",
+    "Friday: Nate CX1 / NL1-NL3 (+1 CX, 3 phones). DG reset to 3/12.",
     "Last tracked week (40 apps / 26 CX) stays archived.",
   ],
 });

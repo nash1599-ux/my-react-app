@@ -291,6 +291,25 @@ precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
     expect(parsed.name).toBe("Ismael Ramos");
   });
 
+  test("counts Nate Friday CX1 NL1-NL3 as 3 phones", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O @DrewTeppper For the opportunity
+S/O @Matthew Grant For the mentorship always
+S/O G-UNIT
+Cx1
+NL 1 IPhone 18 pro
+NL 2 IPhone 18 pro
+NL 3 IPhone 17e
+#G-unit`,
+      { author: "Nate" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(3);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Nate");
+  });
+
   test("counts Nate CX2 NL3-NL5 as 3 phones, not 5", () => {
     const parsed = parseHashtagSale(
       `D2D
