@@ -1,4 +1,4 @@
-export const STORAGE_KEY = "gunit-board-v17";
+export const STORAGE_KEY = "gunit-board-v18";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -7,7 +7,7 @@ function days({ wed = 0, thu = 0, fri = 0, sat = 0 } = {}) {
 }
 
 // Week of Mon Sep 21 – Sun Sep 27, 2026, as of Friday.
-// This week live #G-UNIT: Grant Wed +2 / +1 CX. Ismael two Wed + one Thu close on Steveo (+5 / +3 CX). Kyron Thu +1 / +1 CX. Nate Thu +2 plus Fri +6 / +4 CX. Guy Fri +2 / +1 CX.
+// This week live #G-UNIT: Grant Wed +2 / +1 CX. Ismael two Wed + one Thu + one Fri close on Steveo (+6 / +4 CX). Kyron Thu +1 / +1 CX. Nate Thu +2 plus Fri +6 / +4 CX. Guy Fri +2 / +1 CX.
 // Last week (Mon 9/14): Ismael Friday closes sit on Steveo (4 apps / 3 CX).
 // Prev week (Mon 9/7): Thursday live board plus Shaad Sat late post (+2 / +1 CX).
 // Ismael is Steveo Ramos. Shaad CC #3 was not counted.
@@ -16,12 +16,12 @@ export const SEED_BOARD = {
   tagline: "Results get Rewarded",
   weekStart: "2026-09-21",
   asOfLabel: "as of Friday",
-  dg: { current: 18, goal: 12 },
+  dg: { current: 19, goal: 12 },
   nlLeft: 37,
   liveCall:
-    "LIVE: Nate Fri Cx1 / two 18 Pros + 17e. Earlier Fri Cx2 / three Samsungs. Guy Fri +2 / +1 CX. Steveo +5 / +3 CX. Grant +2 / +1 CX. Kyron +1 / +1 CX. DG 18/12.",
+    "LIVE: Ismael Fri Cx1 / 18 Pro Prem on Steveo. Nate Fri +6 / +4 CX. Guy Fri +2 / +1 CX. Grant +2 / +1 CX. Kyron +1 / +1 CX. DG 19/12.",
   notes:
-    "Week of Mon 9/21. Only tagged #G-UNIT closes are on this sheet. Grant Wed +2 / +1 CX. Ismael two Wed closes plus one Thu Cx1 / iPhone 18 Pro Prem (+5 / +3 CX) count on Steveo Ramos. Kyron Thu +1 / +1 CX. Nate Thu +2 / +1 CX plus Fri Cx2 / three Samsungs and Fri Cx1 / two 18 Pros + 17e (+8 / +4 CX). Guy Fri +2 / +1 CX. Last week Steveo 4 is Ismael's Friday closes. Prev week includes Shaad Sat late post. NL left not refreshed for the new week. Shaad CC #3 was not counted. Jordan's untagged 18 Pro Max was not counted.",
+    "Week of Mon 9/21. Only tagged #G-UNIT closes are on this sheet. Grant Wed +2 / +1 CX. Ismael two Wed closes plus one Thu Cx1 / iPhone 18 Pro Prem plus one Fri Cx1 / iPhone 18 Pro Prem (+6 / +4 CX) count on Steveo Ramos. Kyron Thu +1 / +1 CX. Nate Thu +2 / +1 CX plus Fri Cx2 / three Samsungs and Fri Cx1 / two 18 Pros + 17e (+8 / +4 CX). Guy Fri +2 / +1 CX. Last week Steveo 4 is Ismael's Friday closes. Prev week includes Shaad Sat late post. NL left not refreshed for the new week. Shaad CC #3 was not counted. Jordan's untagged 18 Pro Max was not counted. Coivon's tagged Friday 17e was not counted.",
   reps: [
     {
       id: "mackenzie-faith",
@@ -97,8 +97,8 @@ export const SEED_BOARD = {
       listOrder: 7,
       lastWeekApps: 4,
       prevWeekApps: 4,
-      days: days({ wed: 4, thu: 1 }),
-      cx: 3,
+      days: days({ wed: 4, thu: 1, fri: 1 }),
+      cx: 4,
     },
     {
       id: "jordan-aguirre",

@@ -7,7 +7,7 @@ beforeEach(() => {
   window.localStorage.clear();
 });
 
-test("renders the Friday G-Unit sheet with Nate's third #G-UNIT close", () => {
+test("renders the Friday G-Unit sheet with Ismael's close on Steveo", () => {
   render(<App />);
 
   expect(screen.getByText("G-UNIT")).toBeInTheDocument();
@@ -27,18 +27,18 @@ test("renders the Friday G-Unit sheet with Nate's third #G-UNIT close", () => {
   expect(screen.queryByTestId("apps-cameron-winfield")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-leo-chowdhury")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-ismael-ramos")).not.toBeInTheDocument();
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("18.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("19.0");
   expect(screen.getByTestId("apps-matthew-grant")).toHaveTextContent("2.0");
-  expect(screen.getByTestId("apps-steven-ramos")).toHaveTextContent("5.0");
+  expect(screen.getByTestId("apps-steven-ramos")).toHaveTextContent("6.0");
   expect(screen.getByTestId("apps-ky-tisdale")).toHaveTextContent("1.0");
   expect(screen.getByTestId("apps-nate")).toHaveTextContent("8.0");
   expect(screen.getByTestId("apps-guy-lesperance")).toHaveTextContent("2.0");
   expect(screen.getByTestId("avg-matthew-grant")).toHaveTextContent("2.0");
-  expect(screen.getByTestId("avg-steven-ramos")).toHaveTextContent("4.3");
+  expect(screen.getByTestId("avg-steven-ramos")).toHaveTextContent("4.7");
   expect(screen.getByTestId("avg-ky-tisdale")).toHaveTextContent("0.7");
   expect(screen.getByTestId("avg-nate")).toHaveTextContent("5.0");
   expect(screen.getByTestId("avg-guy-lesperance")).toHaveTextContent("1.3");
-  expect(screen.getByText("18/12")).toBeInTheDocument();
+  expect(screen.getByText("19/12")).toBeInTheDocument();
 });
 
 test("clicking a day cell logs an app and re-ranks live", () => {
@@ -49,7 +49,7 @@ test("clicking a day cell logs an app and re-ranks live", () => {
   );
 
   expect(screen.getByTestId("apps-judah-rodgers")).toHaveTextContent("1.0");
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("19.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("20.0");
   expect(window.localStorage.getItem(STORAGE_KEY)).toContain("judah-rodgers");
 });
 
