@@ -291,6 +291,25 @@ precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
     expect(parsed.name).toBe("Ismael Ramos");
   });
 
+  test("counts Nate CX2 NL3-NL5 as 3 phones, not 5", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+*Big S/O* (Drew Tepper) For bringing me on
+S/O (Matthew Grant) For the mentorship
+S/O G-UNIT (Nash-Sama)
+Cx2
+NL 3 Samsung galaxy s26
+NL 4 Samsung Galaxy s26
+NL 5 Samsung Galaxy a17
+#G-unit`,
+      { author: "Nate" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(3);
+    expect(parsed.cx).toBe(2);
+    expect(parsed.name).toBe("Nate");
+  });
+
   test("credits GUY's late Thursday #G-unit D2D to Guy Lesperance", () => {
     const parsed = parseHashtagSale(
       `*D2D*

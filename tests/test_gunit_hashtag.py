@@ -65,6 +65,24 @@ NL 2 iPhone 18 Pro/Prem
         self.assertEqual(event["cx"], 1)
         self.assertEqual(event["name"], "Ismael Ramos")
 
+    def test_nate_cx2_nl3_to_nl5_is_three_phones(self):
+        event = parse_hashtag_sale(
+            """D2D
+*Big S/O* (Drew Tepper) For bringing me on
+S/O (Matthew Grant) For the mentorship
+S/O G-UNIT (Nash-Sama)
+Cx2
+NL 3 Samsung galaxy s26
+NL 4 Samsung Galaxy s26
+NL 5 Samsung Galaxy a17
+#G-unit""",
+            {"author": "Nate"},
+        )
+        self.assertTrue(event["matched"])
+        self.assertEqual(event["phones"], 3)
+        self.assertEqual(event["cx"], 2)
+        self.assertEqual(event["name"], "Nate")
+
     def test_guy_thursday_two_phone_close(self):
         event = parse_hashtag_sale(
             """*D2D*

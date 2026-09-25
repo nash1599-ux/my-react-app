@@ -495,12 +495,12 @@ export const WEDNESDAY_BOARD_TEXT = `
 export const THURSDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:9/12 |19 NL LEFT | THURSDAY ║
+║ :bar_chart: DG:12/12 |18 NL LEFT | THURSDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-:first_place_medal: Steveo Ramos 3 Apps | 2 CX
-:second_place_medal: Nate 2 Apps | 1 CX
+:first_place_medal: Nate 5 Apps | 2 CX
+:second_place_medal: Steveo Ramos 3 Apps | 2 CX
 :third_place_medal: Matthew Grant 2 Apps | 1 CX
 4. Guy Lesperance 2 Apps | 1 CX
 5. Nianna 2 Apps | 1 CX
@@ -667,12 +667,12 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(THURSDAY_BOARD_TEXT, WEEK_OF_SEP_22_OPENING),
   weekLabel: "Week of Sep 22",
   sourceLabel: "Thursday live board",
-  dataAsOf: "Guy Lesperance Thursday CX1 close (NL1-NL2)",
-  dailyTotals: { mon: 0, tue: 0, wed: 5, thu: 9, fri: 0, sat: 0, sun: 0 },
+  dataAsOf: "Nate Thursday CX2 close (NL3-NL5)",
+  dailyTotals: { mon: 0, tue: 0, wed: 5, thu: 12, fri: 0, sat: 0, sun: 0 },
   notes: [
     "New week of Sep 22. Last tracked week (Sep 8–11) is archived.",
     "Wednesday: Matthew Grant and Steveo Ramos CX1 / NL1-NL2, Coivon Patterson CX1 / NL1.",
-    "Thursday: Nianna, Nate, Guy CX1 / NL1-NL2. Kyron, Jordan, Steveo CX1 / NL1.",
+    "Thursday: Nate also CX2 / NL3-NL5 (+1 CX, 3 phones). DG hit 12/12.",
     "Last tracked week (40 apps / 26 CX) stays archived.",
   ],
 });
