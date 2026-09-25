@@ -521,17 +521,17 @@ export const THURSDAY_BOARD_TEXT = `
 export const FRIDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:5/12 |15 NL LEFT | FRIDAY ║
+║ :bar_chart: DG:6/12 |14 NL LEFT | FRIDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 :first_place_medal: Nate 8 Apps | 3 CX
 :second_place_medal: Steveo Ramos 4 Apps | 3 CX
-:third_place_medal: Coivon Patterson 2 Apps | 2 CX
-4. Matthew Grant 2 Apps | 1 CX
-5. Guy Lesperance 2 Apps | 1 CX
-6. Nianna 2 Apps | 1 CX
-7. Jordan #23 1 App | 1 CX
+:third_place_medal: Jordan #23 2 Apps | 2 CX
+4. Coivon Patterson 2 Apps | 2 CX
+5. Matthew Grant 2 Apps | 1 CX
+6. Guy Lesperance 2 Apps | 1 CX
+7. Nianna 2 Apps | 1 CX
 8. Kyron Tisdale 1 App | 1 CX
 9. Neika 0 Apps | 0 CX
 10. Mackenzie Faith 0 Apps | 0 CX
@@ -693,13 +693,13 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(FRIDAY_BOARD_TEXT, WEEK_OF_SEP_22_OPENING),
   weekLabel: "Week of Sep 22",
   sourceLabel: "Friday live board",
-  dataAsOf: "Coivon and Steveo Friday CX1 NL1 closes",
-  dailyTotals: { mon: 0, tue: 0, wed: 5, thu: 12, fri: 5, sat: 0, sun: 0 },
+  dataAsOf: "Jordan Friday CX1 NL1 roster D2D",
+  dailyTotals: { mon: 0, tue: 0, wed: 5, thu: 12, fri: 6, sat: 0, sun: 0 },
   notes: [
     "New week of Sep 22. Last tracked week (Sep 8–11) is archived.",
     "Wednesday: Matthew Grant and Steveo Ramos CX1 / NL1-NL2, Coivon Patterson CX1 / NL1.",
     "Thursday: Nate also CX2 / NL3-NL5 (+1 CX, 3 phones). DG hit 12/12.",
-    "Friday: Nate CX1 / NL1-NL3, then Coivon and Steveo CX1 / NL1 each. DG 5/12.",
+    "Friday: Nate CX1 / NL1-NL3, Coivon and Steveo CX1 / NL1, Jordan CX1 / NL1 roster D2D. DG 6/12.",
     "Last tracked week (40 apps / 26 CX) stays archived.",
   ],
 });
