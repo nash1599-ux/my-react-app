@@ -92,6 +92,7 @@ ALIASES = {
     "big sister general": "Mackenzie Faith",
     "guy": "Guy Lesperance",
     "guy lesperance": "Guy Lesperance",
+    "coi": "Coivon Patterson",
     "coivon": "Coivon Patterson",
     "coivon patterson": "Coivon Patterson",
     "nianna": "Nianna",

@@ -419,6 +419,25 @@ iPhone 18 Pro
     expect(parsed.name).toBe("Nianna");
   });
 
+  test("maps Coi author to Coivon on Friday CX1 NL1 #G-UNIT", () => {
+    const parsed = parseHashtagSale(
+      `*D2D*
+*S/O Drew Tepper FOR THIS AMAZING OPPORTUNITY*
+*S/O Matthew Grant*
+*S/O Ismael for mentorship/training*
+*S/O G-UNIT Nash-Sama @Kyron MY DAWG!@Jordan!!!*
+*@GEE@Kenziee@Nate@Shaunte@Neika@COIVON@Treasure@Fritzna@Davon@LEO WHO LET YOU OUT OF YOUR CAGE!!!!!!*
+*Cx1*
+*NL 1 iPhone 17e*
+*precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
+      { author: "Coi" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(1);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Coivon Patterson");
+  });
+
   test("credits Coivon's starred S/O Wednesday D2D to him, not shout-out names", () => {
     const parsed = parseHashtagSale(
       `*D2D*
@@ -435,6 +454,24 @@ iPhone 18 Pro
     expect(parsed.phones).toBe(1);
     expect(parsed.cx).toBe(1);
     expect(parsed.name).toBe("Coivon Patterson");
+  });
+
+  test("counts Ismael's Friday CX1 NL1 #G-UNIT close as 1 phone", () => {
+    const parsed = parseHashtagSale(
+      `*D2D*
+*S/O Drew Tepper FOR THIS AMAZING OPPORTUNITY*
+*S/O Matthew Grant*
+*S/O G-UNIT Nash-Sama @Kyron MY DAWG!@_Jordan_!!!*
+*@GEE@Kenziee@Nate@Shaunte@Neika@COIVON@Treasure@Fritzna@Davon@LEO WHO LET YOU OUT OF YOUR CAGE!!!!!!*
+*Cx1*
+*NL 1 iPhone 18 Pro/Prem*
+*precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
+      { author: "Ismael" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(1);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Ismael Ramos");
   });
 
   test("counts Ismael's Thursday D2D #G-UNIT post as 2 phones on Steveo", () => {

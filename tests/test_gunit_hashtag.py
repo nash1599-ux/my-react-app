@@ -184,6 +184,41 @@ iPhone 18 Pro
         self.assertEqual(event["cx"], 1)
         self.assertEqual(event["name"], "Nianna")
 
+    def test_coi_friday_cx1_nl1_maps_to_coivon(self):
+        event = parse_hashtag_sale(
+            """*D2D*
+*S/O Drew Tepper FOR THIS AMAZING OPPORTUNITY*
+*S/O Matthew Grant*
+*S/O Ismael for mentorship/training*
+*S/O G-UNIT Nash-Sama @Kyron MY DAWG!@Jordan!!!*
+*@GEE@Kenziee@Nate@Shaunte@Neika@COIVON@Treasure@Fritzna@Davon@LEO WHO LET YOU OUT OF YOUR CAGE!!!!!!*
+*Cx1*
+*NL 1 iPhone 17e*
+#G-UNIT *#IAM back* *#1More* *#keystothecity*""",
+            {"author": "Coi"},
+        )
+        self.assertTrue(event["matched"])
+        self.assertEqual(event["phones"], 1)
+        self.assertEqual(event["cx"], 1)
+        self.assertEqual(event["name"], "Coivon Patterson")
+
+    def test_ismael_friday_cx1_nl1_is_one_phone(self):
+        event = parse_hashtag_sale(
+            """*D2D*
+*S/O Drew Tepper FOR THIS AMAZING OPPORTUNITY*
+*S/O Matthew Grant*
+*S/O G-UNIT Nash-Sama @Kyron MY DAWG!@_Jordan_!!!*
+*@GEE@Kenziee@Nate@Shaunte@Neika@COIVON@Treasure@Fritzna@Davon@LEO WHO LET YOU OUT OF YOUR CAGE!!!!!!*
+*Cx1*
+*NL 1 iPhone 18 Pro/Prem*
+#G-UNIT *#IAM back* *#1More* *#keystothecity*""",
+            {"author": "Ismael"},
+        )
+        self.assertTrue(event["matched"])
+        self.assertEqual(event["phones"], 1)
+        self.assertEqual(event["cx"], 1)
+        self.assertEqual(event["name"], "Ismael Ramos")
+
     def test_coivon_starred_so_lines_do_not_steal_seller(self):
         event = parse_hashtag_sale(
             """*D2D*
