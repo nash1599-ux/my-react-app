@@ -291,6 +291,24 @@ precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
     expect(parsed.name).toBe("Ismael Ramos");
   });
 
+  test("credits GUY's late Thursday #G-unit D2D to Guy Lesperance", () => {
+    const parsed = parseHashtagSale(
+      `*D2D*
+*S/O* (Drew Tepper) *For the opportunity
+S/O* (Matthew Grant) *For the mentorship
+S/O G-UNIT*
+*Cx1
+NL1 iphone 18 pro
+NL 2Samsung galaxy s26+
+#G-unit*`,
+      { author: "GUY" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Guy Lesperance");
+  });
+
   test("credits Ismael's Thursday 1-phone #G-UNIT D2D to Steveo", () => {
     const parsed = parseHashtagSale(
       `*D2D*

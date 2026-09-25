@@ -495,22 +495,22 @@ export const WEDNESDAY_BOARD_TEXT = `
 export const THURSDAY_BOARD_TEXT = `
 ╔══════════════════════════════════════╗
 ║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║
-║ :bar_chart: DG:7/12 |20 NL LEFT | THURSDAY ║
+║ :bar_chart: DG:9/12 |19 NL LEFT | THURSDAY ║
 ╚══════════════════════════════════════╝
 :trophy: LEADERBOARD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 :first_place_medal: Steveo Ramos 3 Apps | 2 CX
 :second_place_medal: Nate 2 Apps | 1 CX
 :third_place_medal: Matthew Grant 2 Apps | 1 CX
-4. Nianna 2 Apps | 1 CX
-5. Jordan #23 1 App | 1 CX
-6. Kyron Tisdale 1 App | 1 CX
-7. Coivon Patterson 1 App | 1 CX
-8. Neika 0 Apps | 0 CX
-9. Mackenzie Faith 0 Apps | 0 CX
-10. Matthew ² 0 Apps | 0 CX
-11. Steve Nash 0 Apps | 0 CX
-12. Guy Lesperance 0 Apps | 0 CX
+4. Guy Lesperance 2 Apps | 1 CX
+5. Nianna 2 Apps | 1 CX
+6. Jordan #23 1 App | 1 CX
+7. Kyron Tisdale 1 App | 1 CX
+8. Coivon Patterson 1 App | 1 CX
+9. Neika 0 Apps | 0 CX
+10. Mackenzie Faith 0 Apps | 0 CX
+11. Matthew ² 0 Apps | 0 CX
+12. Steve Nash 0 Apps | 0 CX
 13. Ashunte Reyes 0 Apps | 0 CX
 14. Judah Rodgers 0 Apps | 0 CX
 15. Shaad Hyppolite 0 Apps | 0 CX
@@ -667,12 +667,12 @@ export const OFFICIAL_SNAPSHOT = summarizeBoard({
   ...parseBoardText(THURSDAY_BOARD_TEXT, WEEK_OF_SEP_22_OPENING),
   weekLabel: "Week of Sep 22",
   sourceLabel: "Thursday live board",
-  dataAsOf: "Steveo Ramos Thursday CX1 close (NL1)",
-  dailyTotals: { mon: 0, tue: 0, wed: 5, thu: 7, fri: 0, sat: 0, sun: 0 },
+  dataAsOf: "Guy Lesperance Thursday CX1 close (NL1-NL2)",
+  dailyTotals: { mon: 0, tue: 0, wed: 5, thu: 9, fri: 0, sat: 0, sun: 0 },
   notes: [
     "New week of Sep 22. Last tracked week (Sep 8–11) is archived.",
     "Wednesday: Matthew Grant and Steveo Ramos CX1 / NL1-NL2, Coivon Patterson CX1 / NL1.",
-    "Thursday: Nianna CX1 / NL1-NL2, Kyron CX1 / NL1, Jordan #23 CX1 / NL1, Nate CX1 / NL1-NL2, Steveo CX1 / NL1.",
+    "Thursday: Nianna, Nate, Guy CX1 / NL1-NL2. Kyron, Jordan, Steveo CX1 / NL1.",
     "Last tracked week (40 apps / 26 CX) stays archived.",
   ],
 });
