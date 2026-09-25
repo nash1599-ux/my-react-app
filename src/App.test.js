@@ -7,7 +7,7 @@ beforeEach(() => {
   window.localStorage.clear();
 });
 
-test("renders the Thursday G-Unit sheet with Ismael's late #G-UNIT close on Steveo", () => {
+test("renders the Friday G-Unit sheet with Guy's #G-UNIT close", () => {
   render(<App />);
 
   expect(screen.getByText("G-UNIT")).toBeInTheDocument();
@@ -27,16 +27,18 @@ test("renders the Thursday G-Unit sheet with Ismael's late #G-UNIT close on Stev
   expect(screen.queryByTestId("apps-cameron-winfield")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-leo-chowdhury")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-ismael-ramos")).not.toBeInTheDocument();
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("10.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("12.0");
   expect(screen.getByTestId("apps-matthew-grant")).toHaveTextContent("2.0");
   expect(screen.getByTestId("apps-steven-ramos")).toHaveTextContent("5.0");
   expect(screen.getByTestId("apps-ky-tisdale")).toHaveTextContent("1.0");
   expect(screen.getByTestId("apps-nate")).toHaveTextContent("2.0");
+  expect(screen.getByTestId("apps-guy-lesperance")).toHaveTextContent("2.0");
   expect(screen.getByTestId("avg-matthew-grant")).toHaveTextContent("2.0");
   expect(screen.getByTestId("avg-steven-ramos")).toHaveTextContent("4.3");
   expect(screen.getByTestId("avg-ky-tisdale")).toHaveTextContent("0.7");
   expect(screen.getByTestId("avg-nate")).toHaveTextContent("3.0");
-  expect(screen.getByText("10/12")).toBeInTheDocument();
+  expect(screen.getByTestId("avg-guy-lesperance")).toHaveTextContent("1.3");
+  expect(screen.getByText("12/12")).toBeInTheDocument();
 });
 
 test("clicking a day cell logs an app and re-ranks live", () => {
@@ -47,7 +49,7 @@ test("clicking a day cell logs an app and re-ranks live", () => {
   );
 
   expect(screen.getByTestId("apps-judah-rodgers")).toHaveTextContent("1.0");
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("11.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("13.0");
   expect(window.localStorage.getItem(STORAGE_KEY)).toContain("judah-rodgers");
 });
 
