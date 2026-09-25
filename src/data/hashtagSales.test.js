@@ -291,6 +291,24 @@ precisionmanagement-att-sales #G-UNIT* *#IAM back* *#1More* *#keystothecity*`,
     expect(parsed.name).toBe("Ismael Ramos");
   });
 
+  test("credits Ismael's Thursday 1-phone #G-UNIT D2D to Steveo", () => {
+    const parsed = parseHashtagSale(
+      `*D2D*
+*S/O Drew Tepper FOR THIS AMAZING OPPORTUNITY*
+*S/O Matthew Grant*
+*S/O G-UNIT Nash-Sama @Kyron MY DAWG!@_Jordan_!!!*
+*@GEE@Kenziee@Nate@Shaunte@Neika@COIVON@Treasure@Fritzna@Davon@LEO*
+*Cx1*
+*NL 1 iPhone 18 Pro/Prem*
+#G-UNIT *#IAM back* *#1More* *#keystothecity*`,
+      { author: "Ismael" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(1);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Ismael Ramos");
+  });
+
   test("credits Nate's Thursday #G-unit D2D to him, not shout-out names", () => {
     const parsed = parseHashtagSale(
       `D2D
