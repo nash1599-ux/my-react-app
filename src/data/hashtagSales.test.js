@@ -417,6 +417,24 @@ iPhone 18 Pro
     expect(parsed.name).toBe("Kyron Tisdale");
   });
 
+  test("counts Nianna Friday CX1 NL1-NL2 iPhone 18 P as 2 phones", () => {
+    const parsed = parseHashtagSale(
+      `:door::moneybag::door:
+*S/O* (Drew Tepper) & (Matthew Grant) for Business mentorship
+*S/O* (Nash-Sama) for training
+*S/O The UNIT* (Rashaad Hyppolite) (Kyron Tisdale) (Ismael) (Jordan Aguirre) (GUY) (Nate) (Big Sister General) (shunte jade) (Matthew J) (Judah Rodgers)
+*CX 1*
+*NL 1: iPhone 18 P*
+*NL 2: iPhone 18 P*
+*#G-Unit* *#Team7* *#ontop*`,
+      { author: "Nianna" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(2);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Nianna");
+  });
+
   test("credits Nianna's Thursday #G-Unit D2D to her, not shout-out names", () => {
     const parsed = parseHashtagSale(
       `:door::moneybag::door:

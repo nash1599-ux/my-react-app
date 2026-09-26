@@ -99,16 +99,16 @@ describe("salesboard scoring", () => {
     const jordan = board.reps.find((rep) => rep.name === "Jordan Aguirre");
     const guy = board.reps.find((rep) => rep.name === "Guy Lesperance");
     expect(board.day).toBe("Friday");
-    expect(board.dgNum).toBe(7);
-    expect(board.weeklyGoal.nlLeft).toBe(13);
+    expect(board.dgNum).toBe(9);
+    expect(board.weeklyGoal.nlLeft).toBe(12);
     expect(board.weeklyGoal.goal).toBe(28);
-    expect(board.totals.apps).toBe(24);
-    expect(board.totals.cx).toBe(15);
+    expect(board.totals.apps).toBe(26);
+    expect(board.totals.cx).toBe(16);
     expect(board.lastWeek.totals.apps).toBe(40);
     expect(board.lastWeek.totals.cx).toBe(26);
     expect(matthewGrant.apps).toBe(3);
     expect(matthewGrant.cx).toBe(2);
-    expect(matthewGrant.rank).toBe(3);
+    expect(matthewGrant.rank).toBe(4);
     expect(matthewGrant.lastWeekApps).toBe(4);
     expect(nate.apps).toBe(8);
     expect(nate.cx).toBe(3);
@@ -122,27 +122,27 @@ describe("salesboard scoring", () => {
     expect(steveo.displayName).toBe("Steveo Ramos");
     expect(coivon.apps).toBe(2);
     expect(coivon.cx).toBe(2);
-    expect(coivon.rank).toBe(5);
-    expect(nianna.apps).toBe(2);
-    expect(nianna.cx).toBe(1);
-    expect(nianna.rank).toBe(7);
+    expect(coivon.rank).toBe(6);
+    expect(nianna.apps).toBe(4);
+    expect(nianna.cx).toBe(2);
+    expect(nianna.rank).toBe(3);
     expect(kyron.apps).toBe(1);
     expect(kyron.cx).toBe(1);
     expect(kyron.rank).toBe(8);
     expect(jordan.apps).toBe(2);
     expect(jordan.cx).toBe(2);
-    expect(jordan.rank).toBe(4);
+    expect(jordan.rank).toBe(5);
     expect(guy.apps).toBe(2);
     expect(guy.cx).toBe(1);
-    expect(guy.rank).toBe(6);
+    expect(guy.rank).toBe(7);
     const posted = formatSlackBoard(board);
     expect(posted).toMatch(/Nate 8 Apps \| 3 CX/);
     expect(posted).toMatch(/Steveo Ramos 4 Apps \| 3 CX/);
+    expect(posted).toMatch(/Nianna 4 Apps \| 2 CX/);
     expect(posted).toMatch(/Matthew Grant 3 Apps \| 2 CX/);
     expect(posted).toMatch(/Jordan #23 2 Apps \| 2 CX/);
     expect(posted).toMatch(/Coivon Patterson 2 Apps \| 2 CX/);
     expect(posted).toMatch(/Guy Lesperance 2 Apps \| 1 CX/);
-    expect(posted).toMatch(/Nianna 2 Apps \| 1 CX/);
     expect(posted).toMatch(/Kyron Tisdale 1 App \| 1 CX/);
   });
 
@@ -182,14 +182,16 @@ describe("salesboard scoring", () => {
     expect(board.reps.find((rep) => rep.name === "Coivon Patterson").apps).toBe(1);
   });
 
-  test("parses the Friday Slack board after Nate, Coivon, Steveo, Jordan, and Matthew closes", () => {
+  test("parses the Friday Slack board after Nianna's late CX1 NL1-NL2 close", () => {
     const board = parseBoardText(FRIDAY_BOARD_TEXT, WEEK_OPENING);
     expect(board.day).toBe("Friday");
-    expect(board.dgNum).toBe(7);
-    expect(board.weeklyGoal.nlLeft).toBe(13);
+    expect(board.dgNum).toBe(9);
+    expect(board.weeklyGoal.nlLeft).toBe(12);
     expect(board.reps.find((rep) => rep.name === "Nate").apps).toBe(8);
     expect(board.reps.find((rep) => rep.name === "Nate").cx).toBe(3);
     expect(board.reps.find((rep) => rep.name === "Ismael Ramos").apps).toBe(4);
+    expect(board.reps.find((rep) => rep.name === "Nianna").apps).toBe(4);
+    expect(board.reps.find((rep) => rep.name === "Nianna").cx).toBe(2);
     expect(board.reps.find((rep) => rep.name === "Matthew Grant").apps).toBe(3);
     expect(board.reps.find((rep) => rep.name === "Matthew Grant").cx).toBe(2);
     expect(board.reps.find((rep) => rep.name === "Jordan Aguirre").apps).toBe(2);
