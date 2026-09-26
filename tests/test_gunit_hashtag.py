@@ -184,6 +184,21 @@ iPhone 18 Pro
         self.assertEqual(event["cx"], 1)
         self.assertEqual(event["name"], "Nianna")
 
+    def test_matthew_grant_friday_cx1_nl1_is_one_phone(self):
+        event = parse_hashtag_sale(
+            """D2D
+S/O (Drew Tepper) (JAIRO RUIZ) (Colten Wright) (Eduardo Meonez)
+S/O (Jamaal Brown) (Nate) (GUY) (Jordan Aguirre) (Amaya Montero)
+Cx1
+NL1
+#G-Unit""",
+            {"author": "Matthew Grant"},
+        )
+        self.assertTrue(event["matched"])
+        self.assertEqual(event["phones"], 1)
+        self.assertEqual(event["cx"], 1)
+        self.assertEqual(event["name"], "Matthew Grant")
+
     def test_coi_friday_cx1_nl1_maps_to_coivon(self):
         event = parse_hashtag_sale(
             """*D2D*

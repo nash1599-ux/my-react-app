@@ -96,6 +96,22 @@ NL3
     expect(parsed.name).toBe("Matthew Grant");
   });
 
+  test("counts Matthew Grant Friday CX1 NL1 #G-Unit as 1 phone", () => {
+    const parsed = parseHashtagSale(
+      `D2D
+S/O (Drew Tepper) (JAIRO RUIZ) (Colten Wright) (Eduardo Meonez)
+S/O (Jamaal Brown) (Nate) (GUY) (Jordan Aguirre) (Amaya Montero)
+Cx1
+NL1
+#G-Unit`,
+      { author: "Matthew Grant" }
+    );
+    expect(parsed.matched).toBe(true);
+    expect(parsed.phones).toBe(1);
+    expect(parsed.cx).toBe(1);
+    expect(parsed.name).toBe("Matthew Grant");
+  });
+
   test("credits Matthew Grant Wednesday CX1 NL1-NL2 #G-Unit to him", () => {
     const parsed = parseHashtagSale(
       `D2D
