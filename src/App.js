@@ -106,7 +106,7 @@ export default function App() {
   }
 
   function resetBoard() {
-    const ok = window.confirm("Reset the board back to the Friday G-Unit snapshot?");
+    const ok = window.confirm("Reset the board back to the Sunday G-Unit snapshot?");
     if (!ok) return;
     window.localStorage.removeItem(STORAGE_KEY);
     setBoard(cloneSeed());
@@ -239,9 +239,9 @@ export default function App() {
             </thead>
             <tbody>
               {rows.map((rep) => (
-                <tr key={rep.id}>
+                <tr key={rep.id} className={rep.struck ? "is-out" : undefined}>
                   <td className="rank">{rep.rank}</td>
-                  <td className={`name accent-${rep.accent}`}>
+                  <td className={`name accent-${rep.accent}${rep.struck ? " is-out" : ""}`}>
                     <span>{rep.name}</span>
                     {rep.badge && <span className="rep-badge">{rep.badge}</span>}
                     {editRoster && (

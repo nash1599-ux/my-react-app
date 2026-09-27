@@ -237,6 +237,12 @@ td {
   text-transform: uppercase;
 }
 
+tr.is-out .name span:first-child,
+.name.is-out span:first-child {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
 .live-call {
   margin: 10px 0 0;
   color: #86efac;

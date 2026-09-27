@@ -13,11 +13,22 @@ function dash(value) {
   return Number(value) ? Number(value).toFixed(1) : "—";
 }
 
+const SLACK_DAYS = {
+  monday: "Mondi",
+  tuesday: "Tuesdi",
+  wednesday: "WEDNESDAY",
+  thursday: "THURSDAY",
+  friday: "FRIDAY",
+  saturday: "Satdi",
+  sunday: "Sundi",
+};
+
 export function bannerDay(asOfLabel) {
   const match = String(asOfLabel || "").match(
     /monday|tuesday|wednesday|thursday|friday|saturday|sunday/i
   );
-  return match ? match[0].toUpperCase() : "LIVE";
+  if (!match) return "LIVE";
+  return SLACK_DAYS[match[0].toLowerCase()] || match[0].toUpperCase();
 }
 
 function appLabel(apps) {
@@ -34,15 +45,20 @@ export function formatCompactBoard(board) {
   const lines = [
     "╔══════════════════════════════════════╗",
     "║ :military_helmet: G-UNIT SALES BOARD :saluting_face::moneybag: ║",
-    `║ :bar_chart: DG:${board.dg.current}/${board.dg.goal} |${board.nlLeft} NL LEFT | ${bannerDay(board.asOfLabel)} ║`,
+    `║ :bar_chart: DG:${board.dg.current}/${board.dg.goal} | ${board.nlLeft}NL LEFT | ${bannerDay(board.asOfLabel)} ║`,
     "╚══════════════════════════════════════╝",
     ":trophy: LEADERBOARD",
     "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
   ];
   for (const rep of rows) {
     const prefix = medals[rep.rank] || `${rep.rank}.`;
+    const name = rep.struck ? `~${rep.name}~` : rep.name;
+    if (rep.lifeline) {
+      lines.push(`${prefix} ${name}  :ring_buoy: Apps | :ring_buoy: CX`);
+      continue;
+    }
     lines.push(
-      `${prefix} ${rep.name}  ${rep.apps} ${appLabel(rep.apps)} | ${rep.cx} CX`
+      `${prefix} ${name}  ${rep.apps} ${appLabel(rep.apps)} | ${rep.cx} CX`
     );
   }
   return lines.join("\n");

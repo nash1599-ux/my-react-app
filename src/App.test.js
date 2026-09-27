@@ -7,56 +7,49 @@ beforeEach(() => {
   window.localStorage.clear();
 });
 
-test("renders the Friday G-Unit sheet with Steveo holding Ismael's phones", () => {
+test("renders the Sunday G-Unit sheet from the live close", () => {
   render(<App />);
 
   expect(screen.getByText("G-UNIT")).toBeInTheDocument();
-  expect(screen.getByText(/Mackenzie Faith/i)).toBeInTheDocument();
-  expect(screen.getAllByText(/^Nate$/i).length).toBeGreaterThan(0);
-  expect(screen.getAllByText(/Matthew ²/).length).toBeGreaterThan(0);
-  expect(screen.getByText(/Guy Lesperance/i)).toBeInTheDocument();
+  expect(screen.getByText(/Nate Hilarie/i)).toBeInTheDocument();
   expect(screen.getByText(/Jordan #23/i)).toBeInTheDocument();
-  expect(screen.getAllByText(/Steveo Ramos/i).length).toBeGreaterThan(0);
-  expect(screen.queryByText(/^Ismael Ramos$/)).not.toBeInTheDocument();
-  expect(screen.getAllByText(/^Neika$/i).length).toBeGreaterThan(0);
-  expect(screen.getByText(/Kyron Tisdale/i)).toBeInTheDocument();
+  expect(screen.getByText(/Guy Lesperance/i)).toBeInTheDocument();
+  expect(screen.getByText(/Coivon Patterson/i)).toBeInTheDocument();
+  expect(screen.getByText(/Jamaal Brown/i)).toBeInTheDocument();
+  expect(screen.getByText(/Neika Bolívar/i)).toBeInTheDocument();
   expect(screen.getAllByText(/Matthew Grant/i).length).toBeGreaterThan(0);
+  expect(screen.getAllByText(/Steveo Ramos/i).length).toBeGreaterThan(0);
   expect(screen.getByText(/Steve Nash/i)).toBeInTheDocument();
-  expect(screen.getByText(/Shatreasure Evans/i)).toBeInTheDocument();
   expect(screen.getByText(/Shaad Hyppolite/i)).toBeInTheDocument();
+  expect(screen.getByText(/Mackenzie Faith/i)).toBeInTheDocument();
+  expect(screen.getByText(/Kyron Tisdale/i)).toBeInTheDocument();
+  expect(screen.getByText(/Fritzna Salomon/i)).toBeInTheDocument();
+  expect(screen.getByText(/Amaya Montero/i)).toBeInTheDocument();
+  expect(screen.queryByText(/^Ismael Ramos$/)).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-gianna-smith")).not.toBeInTheDocument();
-  expect(screen.queryByTestId("apps-cameron-winfield")).not.toBeInTheDocument();
-  expect(screen.queryByTestId("apps-leo-chowdhury")).not.toBeInTheDocument();
   expect(screen.queryByTestId("apps-ismael-ramos")).not.toBeInTheDocument();
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("42.0");
-  expect(screen.getByTestId("apps-nate")).toHaveTextContent("7.0");
-  expect(screen.getByTestId("apps-neika")).toHaveTextContent("5.0");
-  expect(screen.getByTestId("apps-steve-nash")).toHaveTextContent("4.0");
-  expect(screen.getByTestId("apps-matthew-grant")).toHaveTextContent("4.0");
-  expect(screen.getByTestId("apps-steven-ramos")).toHaveTextContent("4.0");
-  expect(screen.getByTestId("apps-shatreasure-evans")).toHaveTextContent("2.0");
-  expect(screen.getByTestId("avg-ky-tisdale")).toHaveTextContent("7.7");
-  expect(screen.getByTestId("avg-mackenzie-faith")).toHaveTextContent("4.0");
-  expect(screen.getByTestId("avg-nate")).toHaveTextContent("7.0");
-  expect(screen.getByTestId("avg-neika")).toHaveTextContent("5.0");
-  expect(screen.getByTestId("avg-steven-ramos")).toHaveTextContent("5.7");
-  expect(screen.getByTestId("avg-matthew-grant")).toHaveTextContent("5.0");
-  expect(screen.getByTestId("avg-steve-nash")).toHaveTextContent("6.0");
-  expect(screen.getAllByText(/1st week/i).length).toBeGreaterThan(0);
-  expect(screen.getAllByText(/Daily goal HIT/i).length).toBeGreaterThan(0);
-  expect(screen.getByText("1/12")).toBeInTheDocument();
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("47.0");
+  expect(screen.getByTestId("apps-nate")).toHaveTextContent("9.0");
+  expect(screen.getByTestId("apps-jordan-aguirre")).toHaveTextContent("7.0");
+  expect(screen.getByTestId("apps-guy-lesperance")).toHaveTextContent("4.0");
+  expect(screen.getByTestId("apps-coivon-patterson")).toHaveTextContent("4.0");
+  expect(screen.getByTestId("apps-neika")).toHaveTextContent("4.0");
+  expect(screen.getByTestId("apps-steven-ramos")).toHaveTextContent("3.0");
+  expect(screen.getByTestId("apps-fritzna-salomon")).toHaveTextContent("0.0");
+  expect(screen.getByText("4/13")).toBeInTheDocument();
+  expect(screen.getAllByText(/need a save/i).length).toBeGreaterThan(0);
 });
 
 test("clicking a day cell logs an app and re-ranks live", () => {
   render(<App />);
 
   fireEvent.click(
-    screen.getByTitle("Judah Rodgers SUN: click to add an app, shift-click to remove.")
+    screen.getByTitle("Amaya Montero SUN: click to add an app, shift-click to remove.")
   );
 
-  expect(screen.getByTestId("apps-judah-rodgers")).toHaveTextContent("1.0");
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("43.0");
-  expect(window.localStorage.getItem(STORAGE_KEY)).toContain("judah-rodgers");
+  expect(screen.getByTestId("apps-amaya-montero")).toHaveTextContent("1.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("48.0");
+  expect(window.localStorage.getItem(STORAGE_KEY)).toContain("amaya-montero");
 });
 
 test("merges a saved Ismael row into Steveo Ramos on load", () => {
@@ -64,25 +57,25 @@ test("merges a saved Ismael row into Steveo Ramos on load", () => {
     STORAGE_KEY,
     JSON.stringify({
       teamName: "G-UNIT",
-      weekStart: "2026-09-07",
-      dg: { current: 1, goal: 12 },
-      nlLeft: 32,
+      weekStart: "2026-09-21",
+      dg: { current: 4, goal: 13 },
+      nlLeft: 28,
       reps: [
         {
           id: "steven-ramos",
           name: "Steveo Ramos",
-          lastWeekApps: 10,
-          prevWeekApps: 3,
-          days: [0, 0, 2, 0, 0, 0, 0],
-          cx: 1,
+          lastWeekApps: 4,
+          prevWeekApps: 10,
+          days: [0, 0, 0, 0, 0, 0, 3],
+          cx: 3,
         },
         {
           id: "ismael-ramos",
           name: "Ismael",
           lastWeekApps: 0,
           prevWeekApps: 0,
-          days: [0, 0, 0, 2, 0, 0, 0],
-          cx: 1,
+          days: [0, 0, 0, 0, 0, 0, 0],
+          cx: 0,
         },
       ],
     })
@@ -91,8 +84,8 @@ test("merges a saved Ismael row into Steveo Ramos on load", () => {
   render(<App />);
 
   expect(screen.queryByTestId("apps-ismael-ramos")).not.toBeInTheDocument();
-  expect(screen.getByTestId("apps-steven-ramos")).toHaveTextContent("4.0");
-  expect(screen.getByTestId("team-apps")).toHaveTextContent("4.0");
+  expect(screen.getByTestId("apps-steven-ramos")).toHaveTextContent("3.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("3.0");
 });
 
 test("does not add Ismael as a new roster row", () => {
