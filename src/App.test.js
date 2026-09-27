@@ -38,6 +38,11 @@ test("renders the Sunday G-Unit sheet from the live close", () => {
   expect(screen.getByTestId("apps-fritzna-salomon")).toHaveTextContent("0.0");
   expect(screen.getByText("4/13")).toBeInTheDocument();
   expect(screen.getAllByText(/need a save/i).length).toBeGreaterThan(0);
+  expect(screen.getByTestId("avg-nate")).toHaveTextContent("8.0");
+  expect(screen.getByTestId("avg-jordan-aguirre")).toHaveTextContent("7.7");
+  expect(screen.getByTestId("avg-steve-nash")).toHaveTextContent("6.0");
+  expect(screen.getByTestId("avg-neika")).toHaveTextContent("5.0");
+  expect(screen.getByTestId("avg-fritzna-salomon")).toHaveTextContent("1.3");
 });
 
 test("clicking a day cell logs an app and re-ranks live", () => {

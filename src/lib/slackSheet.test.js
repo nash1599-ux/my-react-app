@@ -24,7 +24,10 @@ test("full Sunday sheet includes every excel column and live totals", () => {
     "Amaya Montero",
   ]);
   expect(sheet.rows[0][2]).toBe("9.0");
+  expect(sheet.rows[0][7]).toBe("8.0");
   expect(sheet.rows[1][2]).toBe("7.0");
+  expect(sheet.rows[1][7]).toBe("14.0");
+  expect(sheet.rows[8][7]).toBe("11.0");
   expect(sheet.rows[7][1]).toBe("Steveo Ramos");
   expect(sheet.rows[7][2]).toBe("3.0");
   expect(sheet.rows.map((row) => row[1])).not.toContain("Ismael Ramos");

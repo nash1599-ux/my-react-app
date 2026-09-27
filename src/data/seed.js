@@ -1,4 +1,4 @@
-export const STORAGE_KEY = "gunit-board-v12";
+export const STORAGE_KEY = "gunit-board-v13";
 export const BLENDED_RATE = 97.5;
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -7,8 +7,10 @@ function days({ sun = 0 } = {}) {
 }
 
 // Week of Mon Sep 21 – Sun Sep 27, 2026, Sunday close from Nash.
-// Last week = prior tracked G-Unit week (Mon 9/7). Shaad, Mackenzie,
-// and Kyron are listed struck. Fritzna and Amaya are on the lifeline.
+// Last week = Thursday close (DG 13/12, -3 NL): Jordan 14, Nash 11,
+// Nate 8. Prev week = tracked week of Mon 9/7. Davon, Jason, and
+// Matthew ² were on last week only. Shaad, Mackenzie, and Kyron are
+// struck. Fritzna and Amaya are on the lifeline this week.
 export const SEED_BOARD = {
   teamName: "G-UNIT",
   tagline: "Results get Rewarded",
@@ -17,9 +19,9 @@ export const SEED_BOARD = {
   dg: { current: 4, goal: 13 },
   nlLeft: 28,
   liveCall:
-    "SUNDI CLOSE: Shout out Neika, Nate, Guy, Jamaal, Coi, and Steveo. Let's finish strong.",
+    "SUNDI CLOSE: Last week Jordan 14 / Nash 11 / Nate 8. Shout out Neika, Nate, Guy, Jamaal, Coi, and Steveo.",
   notes:
-    "Week of Mon 9/21. Sunday G-Unit close pasted by Nash. DG 4/13, 28 NL left. Last week = tracked week of 9/7. Shaad, Mackenzie, and Kyron are struck on this cycle. Fritzna and Amaya still need a save. Ismael stays Steveo Ramos. Coivon, Jamaal, Fritzna, Amaya: first week on this board.",
+    "Week of Mon 9/21. Sunday G-Unit close. DG 4/13, 28 NL left. Last week = Thursday close DG 13/12 and -3 NL (Jordan 14, Nash 11, Nate 8, Neika 6, Steveo 5, Fritzna 4). Prev week = week of 9/7. Shaad, Mackenzie, and Kyron are struck. Fritzna and Amaya still need a save. Coivon and Jamaal: first week. Ismael stays Steveo Ramos.",
   reps: [
     {
       id: "nate",
@@ -27,8 +29,8 @@ export const SEED_BOARD = {
       shortName: "Nate",
       accent: "green",
       listOrder: 0,
-      lastWeekApps: 7,
-      prevWeekApps: 0,
+      lastWeekApps: 8,
+      prevWeekApps: 7,
       days: days({ sun: 9 }),
       cx: 4,
     },
@@ -38,8 +40,8 @@ export const SEED_BOARD = {
       shortName: "Jordan",
       accent: "green",
       listOrder: 1,
-      lastWeekApps: 2,
-      prevWeekApps: 9,
+      lastWeekApps: 14,
+      prevWeekApps: 2,
       days: days({ sun: 7 }),
       cx: 5,
     },
@@ -49,8 +51,8 @@ export const SEED_BOARD = {
       shortName: "Guy",
       accent: "teal",
       listOrder: 2,
-      lastWeekApps: 3,
-      prevWeekApps: 0,
+      lastWeekApps: 1,
+      prevWeekApps: 3,
       days: days({ sun: 4 }),
       cx: 3,
     },
@@ -86,8 +88,8 @@ export const SEED_BOARD = {
       shortName: "Neika",
       accent: "teal",
       listOrder: 5,
-      lastWeekApps: 5,
-      prevWeekApps: 0,
+      lastWeekApps: 6,
+      prevWeekApps: 5,
       days: days({ sun: 4 }),
       cx: 2,
     },
@@ -97,8 +99,8 @@ export const SEED_BOARD = {
       shortName: "Grant",
       accent: "gold",
       listOrder: 6,
-      lastWeekApps: 4,
-      prevWeekApps: 3,
+      lastWeekApps: 2,
+      prevWeekApps: 4,
       days: days({ sun: 4 }),
       cx: 2,
     },
@@ -108,8 +110,8 @@ export const SEED_BOARD = {
       shortName: "Steveo",
       accent: "green",
       listOrder: 7,
-      lastWeekApps: 4,
-      prevWeekApps: 10,
+      lastWeekApps: 5,
+      prevWeekApps: 4,
       days: days({ sun: 3 }),
       cx: 3,
     },
@@ -119,8 +121,8 @@ export const SEED_BOARD = {
       shortName: "Nash",
       accent: "slate",
       listOrder: 8,
-      lastWeekApps: 4,
-      prevWeekApps: 5,
+      lastWeekApps: 11,
+      prevWeekApps: 4,
       days: days({ sun: 3 }),
       cx: 1,
     },
@@ -130,7 +132,7 @@ export const SEED_BOARD = {
       shortName: "Shaad",
       accent: "purple",
       listOrder: 9,
-      lastWeekApps: 0,
+      lastWeekApps: 3,
       prevWeekApps: 0,
       days: days({ sun: 2 }),
       cx: 1,
@@ -142,8 +144,8 @@ export const SEED_BOARD = {
       shortName: "Mackenzie",
       accent: "gold",
       listOrder: 10,
-      lastWeekApps: 4,
-      prevWeekApps: 0,
+      lastWeekApps: 3,
+      prevWeekApps: 4,
       days: days({ sun: 2 }),
       cx: 1,
       struck: true,
@@ -154,8 +156,8 @@ export const SEED_BOARD = {
       shortName: "Kyron",
       accent: "blue",
       listOrder: 11,
-      lastWeekApps: 2,
-      prevWeekApps: 15,
+      lastWeekApps: 3,
+      prevWeekApps: 2,
       days: days({ sun: 1 }),
       cx: 1,
       struck: true,
@@ -166,8 +168,7 @@ export const SEED_BOARD = {
       shortName: "Fritzna",
       accent: "purple",
       listOrder: 12,
-      firstWeek: true,
-      lastWeekApps: 0,
+      lastWeekApps: 4,
       prevWeekApps: 0,
       days: days({ sun: 0 }),
       cx: 0,
@@ -180,8 +181,7 @@ export const SEED_BOARD = {
       shortName: "Amaya",
       accent: "slate",
       listOrder: 13,
-      firstWeek: true,
-      lastWeekApps: 0,
+      lastWeekApps: 1,
       prevWeekApps: 0,
       days: days({ sun: 0 }),
       cx: 0,
