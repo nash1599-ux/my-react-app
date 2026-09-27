@@ -194,7 +194,9 @@ export function wow(week, lastWeek) {
   return { kind: "flat", label: "0%" };
 }
 
-export function deriveBoard(reps) {
+export function deriveBoard(reps, options = {}) {
+  const blendedRate = options.blendedRate === undefined ? BLENDED_RATE : options.blendedRate;
+  const weeklyLineGoal = options.weeklyLineGoal === undefined ? WEEKLY_LINE_GOAL : options.weeklyLineGoal;
   const rows = reps.map((rep) => {
     const week = rep.days.reduce((sum, n) => sum + n, 0);
     const avg = rep.firstWeek ? week : (week + rep.lastWeek + rep.prevWeek) / 3;
@@ -204,7 +206,7 @@ export function deriveBoard(reps) {
       avg,
       cxPct: week <= 0 ? 0 : (rep.cx / week) * 100,
       wow: wow(week, rep.lastWeek),
-      est: Math.round(week * BLENDED_RATE),
+      est: blendedRate == null ? null : Math.round(week * blendedRate),
     };
   });
 
@@ -239,18 +241,30 @@ export function deriveBoard(reps) {
   totals.avg = ranked.length ? totals.avgSum / ranked.length : 0;
   totals.cxPct = totals.week <= 0 ? 0 : (totals.cx / totals.week) * 100;
   totals.wow = wow(totals.week, totals.lastWeek);
-  totals.est = Math.round(totals.week * BLENDED_RATE);
-  totals.nlLeft = Math.max(0, WEEKLY_LINE_GOAL - totals.week);
-  totals.blended = BLENDED_RATE;
+  totals.est = blendedRate == null ? null : Math.round(totals.week * blendedRate);
+  totals.nlLeft = weeklyLineGoal == null ? null : Math.max(0, weeklyLineGoal - totals.week);
+  totals.blended = blendedRate;
 
   return { ranked, totals };
 }
 
-export function cloneBoard() {
+export function cloneBoard(profile) {
+  const reps = profile?.reps || SEED_REPS;
+  const activity = profile?.activity || SEED_ACTIVITY;
   return {
-    reps: SEED_REPS.map((rep) => ({ ...rep, days: [...rep.days] })),
-    activity: SEED_ACTIVITY.map((item) => ({ ...item })),
+    reps: reps.map((rep) => ({ ...rep, days: [...rep.days] })),
+    activity: activity.map((item) => ({ ...item })),
   };
+}
+
+function nonNeg(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.max(0, number) : 0;
+}
+
+export function slugify(name) {
+  const base = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return base || "rep";
 }
 
 function sanitizeRep(seed, saved) {
@@ -259,37 +273,100 @@ function sanitizeRep(seed, saved) {
   }
   return {
     ...seed,
-    days: saved.days.map((n) => {
-      const value = Number(n);
-      return Number.isFinite(value) ? Math.max(0, value) : 0;
-    }),
-    cx: Number.isFinite(Number(saved.cx)) ? Math.max(0, Number(saved.cx)) : 0,
+    days: saved.days.map(nonNeg),
+    cx: nonNeg(saved.cx),
   };
 }
 
-export function loadBoardState() {
+function sanitizeAddedRep(raw, index) {
+  if (!raw || typeof raw.name !== "string" || !raw.name.trim()) return null;
+  if (!Array.isArray(raw.days) || raw.days.length !== 7) return null;
+  const name = raw.name.trim().replace(/\s+/g, " ");
+  return {
+    id: String(raw.id || slugify(name)),
+    name,
+    firstWeek: raw.firstWeek !== false,
+    dailyGoalHit: Boolean(raw.dailyGoalHit),
+    tag: typeof raw.tag === "string" ? raw.tag : undefined,
+    seedOrder: Number.isFinite(Number(raw.seedOrder)) ? Number(raw.seedOrder) : index,
+    lastWeek: nonNeg(raw.lastWeek),
+    prevWeek: nonNeg(raw.prevWeek),
+    days: raw.days.map(nonNeg),
+    cx: nonNeg(raw.cx),
+  };
+}
+
+function readActivity(parsed, fallback) {
+  const activity = Array.isArray(parsed.activity)
+    ? parsed.activity.filter((item) => item && item.id && item.rep && item.detail).slice(0, 8)
+    : [];
+  return activity.length ? activity : fallback.map((item) => ({ ...item }));
+}
+
+export function loadBoardState(profile) {
+  const fresh = cloneBoard(profile);
+  const storageKey = profile?.storageKey || STORAGE_KEY;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return cloneBoard();
+    const raw = localStorage.getItem(storageKey);
+    if (!raw) return fresh;
     const parsed = JSON.parse(raw);
-    if (!parsed || !Array.isArray(parsed.reps)) return cloneBoard();
+    if (!parsed || !Array.isArray(parsed.reps)) return fresh;
+    if (profile?.allowAddedReps) {
+      return {
+        reps: parsed.reps.map(sanitizeAddedRep).filter(Boolean),
+        activity: readActivity(parsed, profile.activity),
+      };
+    }
+    const seeds = profile?.reps || SEED_REPS;
     const saved = new Map(parsed.reps.map((rep) => [rep.id, rep]));
-    const reps = SEED_REPS.map((seed) => sanitizeRep(seed, saved.get(seed.id)));
-    const activity = Array.isArray(parsed.activity)
-      ? parsed.activity
-          .filter((item) => item && item.id && item.rep && item.detail)
-          .slice(0, 8)
-      : [];
     return {
-      reps,
-      activity: activity.length ? activity : SEED_ACTIVITY.map((item) => ({ ...item })),
+      reps: seeds.map((seed) => sanitizeRep(seed, saved.get(seed.id))),
+      activity: readActivity(parsed, profile?.activity || SEED_ACTIVITY),
     };
   } catch {
-    return cloneBoard();
+    return fresh;
   }
 }
 
-export function applyCount(board, { repId, dayIndex, field, delta, entryId }) {
+export function addRep(board, name, entryId) {
+  const cleaned = name.trim().replace(/\s+/g, " ");
+  if (!cleaned) return { board, error: "Enter a name." };
+  if (board.reps.some((rep) => rep.name.toLowerCase() === cleaned.toLowerCase())) {
+    return { board, error: "That rep is already on the board." };
+  }
+  let id = slugify(cleaned);
+  if (board.reps.some((rep) => rep.id === id)) id = `${id}-${board.reps.length + 1}`;
+  return {
+    board: {
+      reps: [
+        ...board.reps,
+        {
+          id,
+          name: cleaned,
+          firstWeek: true,
+          seedOrder: board.reps.length,
+          lastWeek: 0,
+          prevWeek: 0,
+          days: [0, 0, 0, 0, 0, 0, 0],
+          cx: 0,
+        },
+      ],
+      activity: [{ id: entryId, rep: cleaned, detail: "added to the board" }, ...board.activity].slice(0, 8),
+    },
+    error: "",
+  };
+}
+
+export function removeRep(board, repId, entryId) {
+  const rep = board.reps.find((item) => item.id === repId);
+  if (!rep) return board;
+  return {
+    reps: board.reps.filter((item) => item.id !== repId),
+    activity: [{ id: entryId, rep: rep.name, detail: "removed from the board" }, ...board.activity].slice(0, 8),
+  };
+}
+
+export function applyCount(board, { repId, dayIndex, field, delta, entryId, days = DAYS }) {
   const rep = board.reps.find((item) => item.id === repId);
   if (!rep) return board;
 
@@ -312,7 +389,7 @@ export function applyCount(board, { repId, dayIndex, field, delta, entryId }) {
   const current = rep.days[dayIndex] || 0;
   const nextValue = Math.max(0, current + delta);
   if (nextValue === current) return board;
-  const day = DAYS[dayIndex];
+  const day = days[dayIndex];
   return {
     reps: board.reps.map((item) => {
       if (item.id !== repId) return item;
@@ -330,3 +407,86 @@ export function applyCount(board, { repId, dayIndex, field, delta, entryId }) {
     ].slice(0, 8),
   };
 }
+
+const GUNIT_NOTES = [
+  "Week of Monday 9/7. Wednesday is the close. Thursday is the G-Unit live log. This board is as of Thursday 9/10.",
+  "Last week is the Sunday G-Unit close. Previous week is the PM board: Grant 8, Kyron 6, Jordan 5, Shaad 2, Matthew 1.",
+  "Steve Nash's previous week of 9 includes Granna 7, Leo 1, and his own 1.",
+  "Steveo Ramos's previous week of 3 is Cameron's lines. Ismael Ramos is not Steveo Ramos.",
+  "First week on this board: Nate, Mackenzie Faith, Neika, Guy Lesperance, Ismael Ramos, Shatreasure Evans, and Ashunte Reyes.",
+];
+
+export const TEAM7_DAYS = [
+  { key: "mon", short: "MON", date: "9/21" },
+  { key: "tue", short: "TUE", date: "9/22" },
+  { key: "wed", short: "WED", date: "9/23" },
+  { key: "thu", short: "THU", date: "9/24" },
+  { key: "fri", short: "FRI", date: "9/25" },
+  { key: "sat", short: "SAT", date: "9/26" },
+  { key: "sun", short: "SUN", date: "9/27", note: "LIVE", today: true },
+];
+
+export const BOARDS = {
+  gunit: {
+    id: "gunit",
+    storageKey: STORAGE_KEY,
+    brand: "G-UNIT",
+    eyebrow: "Sales channel",
+    tagline: "Results get rewarded",
+    channel: "#G-UNIT",
+    weekLabel: "Sep 7 – Sep 13",
+    asOf: "As of Thursday · Sep 10",
+    caption: "G-Unit running week totals, week of Sep 7 through Sep 13, as of Thursday.",
+    days: DAYS,
+    reps: SEED_REPS,
+    activity: SEED_ACTIVITY,
+    notes: GUNIT_NOTES,
+    resetLabel: "Reset to Thursday snapshot",
+    resetConfirm: "Reset the board to the Thursday snapshot?",
+    blendedRate: BLENDED_RATE,
+    dailyAppGoal: DAILY_APP_GOAL,
+    dailyCxGoal: DAILY_CX_GOAL,
+    weeklyLineGoal: WEEKLY_LINE_GOAL,
+    liveDayIndex: 3,
+    liveDayName: "Thursday",
+    pushLine: "Keep pushing.",
+    allowAddedReps: false,
+    switchLabel: "G-Unit",
+  },
+  team7: {
+    id: "team7",
+    storageKey: "team7-production-board-2026-09-21",
+    brand: "TEAM 7",
+    eyebrow: "Production",
+    tagline: "Live floor",
+    channel: "#TEAM-7",
+    weekLabel: "Sep 21 – Sep 27",
+    asOf: "As of Sunday · Sep 27",
+    caption: "Team 7 production board, week of Sep 21 through Sep 27, as of Sunday.",
+    days: TEAM7_DAYS,
+    reps: [],
+    activity: [
+      {
+        id: "team7-live",
+        rep: "Team 7",
+        detail: "production board is live",
+      },
+    ],
+    notes: [
+      "Week of Monday 9/21 through Sunday 9/27. Sunday is the live production day.",
+      "Add each rep, then click a day to log an app and CX to log a close. Shift-click subtracts.",
+      "This board starts at zero. It does not copy the G-Unit roster, pay rate, or Thursday snapshot.",
+    ],
+    resetLabel: "Clear the production board",
+    resetConfirm: "Clear Team 7 and start the week over?",
+    blendedRate: null,
+    dailyAppGoal: null,
+    dailyCxGoal: null,
+    weeklyLineGoal: null,
+    liveDayIndex: 6,
+    liveDayName: "Sunday",
+    pushLine: "Log the floor.",
+    allowAddedReps: true,
+    switchLabel: "Team 7",
+  },
+};
