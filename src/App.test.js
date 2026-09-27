@@ -109,3 +109,48 @@ test("logs an app, logs a close, and shift-click subtracts", () => {
   const nateRow = screen.getByTestId("rep-nate");
   expect(within(nateRow).getByTestId("week-nate")).toHaveTextContent("7.0");
 });
+
+test("logs Team 7 production without copying the G-Unit roster", () => {
+  render(<App />);
+
+  fireEvent.click(screen.getByRole("button", { name: "Team 7" }));
+
+  expect(screen.getByRole("heading", { name: "TEAM 7" })).toBeInTheDocument();
+  expect(screen.getByText("Production")).toBeInTheDocument();
+  expect(screen.getByText("Sep 21 – Sep 27")).toBeInTheDocument();
+  expect(screen.getByText("As of Sunday · Sep 27")).toBeInTheDocument();
+  expect(screen.getByText("No reps yet. Add one to start the live log.")).toBeInTheDocument();
+  expect(screen.queryByText("Nate")).not.toBeInTheDocument();
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("0.0");
+  expect(screen.getByTestId("live-line")).toHaveTextContent("Team 7 production board is live");
+
+  fireEvent.change(screen.getByLabelText("Rep name"), { target: { value: "Avery Cole" } });
+  fireEvent.click(screen.getByRole("button", { name: "Add rep" }));
+
+  expect(screen.getByTestId("rep-avery-cole")).toBeInTheDocument();
+  fireEvent.click(screen.getByTestId("app-avery-cole-sun"));
+  expect(screen.getByTestId("app-avery-cole-sun")).toHaveTextContent("1.0");
+  expect(screen.getByTestId("week-avery-cole")).toHaveTextContent("1.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("1.0");
+  expect(screen.getByTestId("live-day-apps")).toHaveTextContent("Sunday live log 1.0 apps");
+  expect(screen.getByTestId("live-line")).toHaveTextContent("Avery Cole +1 app · SUN");
+
+  fireEvent.click(screen.getByTestId("cx-avery-cole"));
+  expect(screen.getByTestId("cx-avery-cole")).toHaveTextContent("1");
+  expect(screen.getByTestId("team-cx")).toHaveTextContent("1");
+  expect(screen.getByTestId("cxpct-avery-cole")).toHaveTextContent("100%");
+  expect(screen.getByTestId("live-line")).toHaveTextContent("Avery Cole +1 close");
+
+  fireEvent.click(screen.getByTestId("app-avery-cole-sun"), { shiftKey: true });
+  expect(screen.getByTestId("app-avery-cole-sun")).toHaveTextContent("0.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("0.0");
+
+  fireEvent.click(screen.getByRole("button", { name: "G-Unit" }));
+  expect(screen.getByRole("heading", { name: "G-UNIT" })).toBeInTheDocument();
+  expect(screen.getByTestId("week-nate")).toHaveTextContent("7.0");
+  expect(screen.getByTestId("team-apps")).toHaveTextContent("41.0");
+
+  fireEvent.click(screen.getByRole("button", { name: "Team 7" }));
+  expect(screen.getByTestId("cx-avery-cole")).toHaveTextContent("1");
+  expect(screen.getByTestId("app-avery-cole-sun")).toHaveTextContent("0.0");
+});
